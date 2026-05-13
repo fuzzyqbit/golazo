@@ -73,44 +73,48 @@
 
 ## Traceability
 
-(empty — populated by `gsd-roadmapper` in Step 8)
-
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| CLI-01 | TBD | Pending |
-| CLI-02 | TBD | Pending |
-| CLI-03 | TBD | Pending |
-| CFG-01 | TBD | Pending |
-| CFG-02 | TBD | Pending |
-| PREP-01 | TBD | Pending |
-| PREP-02 | TBD | Pending |
-| PREP-03 | TBD | Pending |
-| PREP-04 | TBD | Pending |
-| PREP-05 | TBD | Pending |
-| PREP-06 | TBD | Pending |
-| PREP-07 | TBD | Pending |
-| REN-01 | TBD | Pending |
-| REN-02 | TBD | Pending |
-| REN-03 | TBD | Pending |
-| REN-04 | TBD | Pending |
-| REN-05 | TBD | Pending |
-| REN-06 | TBD | Pending |
-| PUB-01 | TBD | Pending |
-| PUB-02 | TBD | Pending |
-| PUB-03 | TBD | Pending |
-| PUB-04 | TBD | Pending |
-| PUB-05 | TBD | Pending |
-| PUB-06 | TBD | Pending |
-| PUB-07 | TBD | Pending |
-| QA-01 | TBD | Pending |
-| QA-02 | TBD | Pending |
-| QA-03 | TBD | Pending |
+| CLI-01 | Phase 1 | Pending |
+| CLI-02 | Phase 4 | Pending |
+| CLI-03 | Phase 3 | Pending |
+| CFG-01 | Phase 1 | Pending |
+| CFG-02 | Phase 1 | Pending |
+| PREP-01 | Phase 1 | Pending |
+| PREP-02 | Phase 1 | Pending |
+| PREP-03 | Phase 1 | Pending |
+| PREP-04 | Phase 1 | Pending |
+| PREP-05 | Phase 2 | Pending |
+| PREP-06 | Phase 2 | Pending |
+| PREP-07 | Phase 1 | Pending |
+| REN-01 | Phase 2 | Pending |
+| REN-02 | Phase 2 | Pending |
+| REN-03 | Phase 2 | Pending |
+| REN-04 | Phase 2 | Pending |
+| REN-05 | Phase 2 | Pending |
+| REN-06 | Phase 2 | Pending |
+| PUB-01 | Phase 3 | Pending |
+| PUB-02 | Phase 3 | Pending |
+| PUB-03 | Phase 3 | Pending |
+| PUB-04 | Phase 3 | Pending |
+| PUB-05 | Phase 3 | Pending |
+| PUB-06 | Phase 3 | Pending |
+| PUB-07 | Phase 3 | Pending |
+| QA-01 | Phase 4 | Pending |
+| QA-02 | Phase 4 | Pending |
+| QA-03 | Phase 4 | Pending |
 
 **Coverage:**
 - v1 requirements: 28 total
-- Mapped to phases: 0 (pending roadmap)
-- Unmapped: 28 ⚠️ (resolved by roadmapper)
+- Mapped to phases: 28 ✓
+- Unmapped: 0
+
+**Phase distribution:**
+- Phase 1 (Foundation & Prepare Pipeline): 8 requirements — CLI-01, CFG-01, CFG-02, PREP-01, PREP-02, PREP-03, PREP-04, PREP-07
+- Phase 2 (Render Pipeline): 8 requirements — PREP-05, PREP-06, REN-01, REN-02, REN-03, REN-04, REN-05, REN-06
+- Phase 3 (Publish Pipeline): 8 requirements — CLI-03, PUB-01, PUB-02, PUB-03, PUB-04, PUB-05, PUB-06, PUB-07
+- Phase 4 (Convenience & QA Polish): 4 requirements — CLI-02, QA-01, QA-02, QA-03
 
 ---
 *Requirements defined: 2026-05-13*
-*Last updated: 2026-05-13 after initial definition (synthesized from `docs/superpowers/specs/2026-05-13-golazo-design.md`)*
+*Last updated: 2026-05-13 after roadmap creation (28/28 v1 requirements mapped to 4 phases by gsd-roadmapper)*
