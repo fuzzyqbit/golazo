@@ -29,7 +29,13 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Malformed folder names, missing parent kid directory, zero matching clips, and ffprobe failures each abort `prepare` with a specific path + reason + remediation hint (no silent swallows)
   4. Re-running `prepare` on an unchanged folder is a no-op — `manifestHash` (sha256 over sorted `(clipFile, clipSha256)` pairs + folder name) matches the recorded hash, so the manifest is not rewritten
   5. The `golazo` binary exposes `prepare`, `render`, `publish`, `auth`, and `all` subcommands via commander.js, with `render`/`publish`/`auth`/`all` returning a "not yet implemented" stub
-**Plans**: TBD
+**Plans**: 5 plans
+Plans:
+- [ ] 01-01-PLAN.md — Project bootstrap, tooling, commander.js scaffold with all 5 subcommands (CLI-01 scaffold)
+- [ ] 01-02-PLAN.md — channels.yaml zod schema + loader with table-driven validation tests (CFG-01, CFG-02)
+- [ ] 01-03-PLAN.md — Pure filename parser + kid-from-path resolver with table-driven tests (PREP-01, PREP-02)
+- [ ] 01-04-PLAN.md — Clip discovery + ffprobe wrapper + sha256 + manifest-hash function + committed test fixture infrastructure (PREP-03, PREP-04, PREP-07 input half)
+- [ ] 01-05-PLAN.md — Manifest zod schema + builder/reader/writer + runPrepare orchestrator with idempotency + CLI handler + integration tests (CLI-01 prepare half, PREP-07 output half)
 
 ### Phase 2: Render Pipeline
 **Goal**: Operator can run `golazo render <folder>` against a prepared folder and get `episode.mp4` + `thumb.png` written into `.golazo/` with deterministic music selection and the documented cinematic style
@@ -75,11 +81,13 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Prepare Pipeline | 0/TBD | Not started | - |
+| 1. Foundation & Prepare Pipeline | 0/5 | Planned | - |
 | 2. Render Pipeline | 0/TBD | Not started | - |
 | 3. Publish Pipeline | 0/TBD | Not started | - |
 | 4. Convenience & QA Polish | 0/TBD | Not started | - |
 
 ---
 *Roadmap created: 2026-05-13 by gsd-roadmapper*
+*Phase 1 planned: 2026-05-13 by gsd-planner (4 plans, 3 waves)*
+*Phase 1 revised: 2026-05-13 by gsd-planner (5 plans, 5 waves — Plan 03 moved to wave 3 with depends_on [01,02]; Plan 04 split into 04 (leaf modules + fixtures) and 05 (manifest + orchestrator + CLI + integration); see 01-04 and 01-05 PLANs)*
 *Granularity: coarse (4 phases) · Mode: standard (horizontal layers) · Coverage: 28/28 v1 requirements mapped*
