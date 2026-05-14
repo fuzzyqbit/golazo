@@ -9,7 +9,7 @@
 
 - [x] **CLI-01**: Operator can run `golazo prepare <folder>`, `golazo render <folder>`, `golazo publish <folder>` as separate idempotent subcommands; each is safe to re-run and only acts when needed
 - [ ] **CLI-02**: Operator can run `golazo all <folder>` to chain prepare → render → publish in one invocation
-- [ ] **CLI-03**: Operator can run `golazo auth <kid>` once per kid to perform YouTube OAuth and persist a refreshable token at the path declared in `channels.yaml`
+- [x] **CLI-03**: Operator can run `golazo auth <kid>` once per kid to perform YouTube OAuth and persist a refreshable token at the path declared in `channels.yaml`
 
 ### Config
 
@@ -40,7 +40,7 @@
 - [ ] **PUB-01**: `publish` uploads `episode.mp4` via YouTube Data API v3 `videos.insert` with `privacyStatus: "unlisted"`, attaches the rendered thumbnail, and applies title/description templates from manifest + channel config
 - [ ] **PUB-02**: Title and description templates substitute `{Kid}`, `{Opponent}`, `{scoreFor}`, `{scoreAgainst}`, `{result}`, `{date}`, `{jersey}`, `{club}`, and `{source}` from manifest + channel data
 - [ ] **PUB-03**: Opponent slug is pretty-printed via title-case + hyphen-to-space, with an acronym allow-list (`sc`, `fc`, `ac`) preserved upper-case
-- [ ] **PUB-04**: OAuth tokens are stored per-kid at the path declared in `channels.yaml`; tokens refresh silently on use; refresh failures print a clear prompt to rerun `golazo auth <kid>`
+- [x] **PUB-04**: OAuth tokens are stored per-kid at the path declared in `channels.yaml`; tokens refresh silently on use; refresh failures print a clear prompt to rerun `golazo auth <kid>`
 - [ ] **PUB-05**: Network and 5xx failures retry up to 3 times with exponential backoff (1s, 4s, 16s); large uploads use the YouTube resumable upload protocol so a mid-upload network drop resumes from the last chunk
 - [ ] **PUB-06**: Quota-exhausted responses (HTTP 403 `quotaExceeded`) fail loudly with a "rerun tomorrow" remediation hint and do not write `publish.json`
 - [ ] **PUB-07**: `publish.json` records `videoId`, `watchUrl`, `uploadedAt`, `channelId`, `privacyStatus`; presence of `videoId` short-circuits subsequent runs unless `--force`
@@ -77,7 +77,7 @@
 |-------------|-------|--------|
 | CLI-01 | Phase 1 | Complete |
 | CLI-02 | Phase 4 | Pending |
-| CLI-03 | Phase 3 | Pending |
+| CLI-03 | Phase 3 | Complete |
 | CFG-01 | Phase 1 | Complete |
 | CFG-02 | Phase 1 | Complete |
 | PREP-01 | Phase 1 | Complete |
@@ -96,7 +96,7 @@
 | PUB-01 | Phase 3 | Pending |
 | PUB-02 | Phase 3 | Pending |
 | PUB-03 | Phase 3 | Pending |
-| PUB-04 | Phase 3 | Pending |
+| PUB-04 | Phase 3 | Complete |
 | PUB-05 | Phase 3 | Pending |
 | PUB-06 | Phase 3 | Pending |
 | PUB-07 | Phase 3 | Pending |

@@ -67,7 +67,7 @@ Plans:
   5. Re-running `publish` on a folder whose `publish.json` already has a `videoId` exits early without re-uploading; `--force` overrides and uploads a new video
 **Plans**: 5 plans
 Plans:
-- [ ] 03-01-PLAN.md — googleapis + nock deps, OAuth helpers (createOAuth2Client / loadToken / saveToken / runAuth) + permissive channels loader + `golazo auth <kid>` CLI handler (CLI-03 auth half, PUB-04)
+- [x] 03-01-PLAN.md — googleapis + nock deps, OAuth helpers (createOAuth2Client / loadToken / saveToken / runAuth) + permissive channels loader + `golazo auth <kid>` CLI handler (CLI-03 auth half, PUB-04)
 - [ ] 03-02-PLAN.md — Pure title + description template renderers + TemplateError + table-driven tests; REUSES `prettyOpponent` from Plan 02-04 (PUB-02, PUB-03)
 - [ ] 03-03-PLAN.md — `uploadEpisode()` single-attempt videos.insert + thumbnails.set with `privacyStatus: 'unlisted'` against nock-stubbed YouTube (PUB-01)
 - [ ] 03-04-PLAN.md — Retry / backoff / quota policy: `classifyError` + `withRetry` (3 retries, 1s/4s/16s) + `publishWithRetry` + `QuotaExceededError` (PUB-05, PUB-06)
@@ -94,7 +94,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. Foundation & Prepare Pipeline | 5/5 | Complete | 2026-05-14 |
 | 2. Render Pipeline | 4/4 | Complete   | 2026-05-14 |
-| 3. Publish Pipeline | 0/5 | Not started | - |
+| 3. Publish Pipeline | 1/5 | In Progress|  |
 | 4. Convenience & QA Polish | 0/TBD | Not started | - |
 
 ---
