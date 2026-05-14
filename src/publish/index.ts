@@ -1,6 +1,7 @@
 /**
- * Public barrel for src/publish — re-exports the OAuth helpers and error
- * classes that downstream Plans 03-02..03-05 import from here.
+ * Public barrel for src/publish — re-exports the OAuth helpers, template
+ * renderers, and error classes that downstream Plans 03-03..03-05 import
+ * from here.
  */
 export {
   createOAuth2Client,
@@ -12,4 +13,12 @@ export {
   YOUTUBE_UPLOAD_SCOPE,
 } from './oauth.js';
 export type { RunAuthOpts, RunAuthResult } from './oauth.js';
-export { OAuthError } from './errors.js';
+export { OAuthError, TemplateError } from './errors.js';
+export {
+  renderTitle,
+  renderDescription,
+  renderTemplates,
+  TITLE_TEMPLATE,
+  DESCRIPTION_TEMPLATE,
+} from './templates.js';
+export type { TemplateInput, TemplateOutput } from './templates.js';

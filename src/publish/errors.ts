@@ -7,8 +7,12 @@
  *  3. Exchange failure — Google rejected the authorization code (exchangeCode — field: 'exchange')
  *  4. Refresh failure — refresh_token revoked / invalid_grant (loadToken — field: 'refresh')
  *
+ * TemplateError is thrown by renderTitle / renderDescription / renderTemplates
+ * when zod's defensive safeParse finds a shape violation at runtime.
+ *
  * Message format mirrors ManifestError / RenderError:
  *   "oauth: <field>: <reason>. <remediation>"
+ *   "template: <field>: <reason>. <remediation>"
  */
 
 /** Inputs to {@link OAuthError}. */
@@ -53,6 +57,60 @@ export class OAuthError extends Error {
   toJSON(): OAuthErrorJson {
     return {
       name: 'OAuthError',
+      field: this.field,
+      reason: this.reason,
+      remediation: this.remediation,
+    };
+  }
+}
+
+// ---------------------------------------------------------------------------
+// TemplateError
+// ---------------------------------------------------------------------------
+
+/** Inputs to {@link TemplateError}. */
+export interface TemplateErrorInput {
+  /** Dotted field path that failed validation. */
+  field: string;
+  /** Short reason for the failure. */
+  reason: string;
+  /** Operator-facing remediation hint. */
+  remediation: string;
+}
+
+/** Serialised representation of {@link TemplateError} for structured logging. */
+export interface TemplateErrorJson {
+  name: 'TemplateError';
+  field: string;
+  reason: string;
+  remediation: string;
+}
+
+/**
+ * Thrown by template renderers when the defensive zod parse detects a shape
+ * violation at runtime. TypeScript catches most violations at compile time;
+ * this class exists for the `as any` / edge cases that reach the runtime path.
+ *
+ * Single-line message format `template: <field>: <reason>. <remediation>`
+ * mirrors `OAuthError` / `ManifestError` / `RenderError`.
+ */
+export class TemplateError extends Error {
+  public readonly field: string;
+  public readonly reason: string;
+  public readonly remediation: string;
+
+  constructor(input: TemplateErrorInput) {
+    super(`template: ${input.field}: ${input.reason}. ${input.remediation}`);
+    this.name = 'TemplateError';
+    this.field = input.field;
+    this.reason = input.reason;
+    this.remediation = input.remediation;
+    Object.setPrototypeOf(this, TemplateError.prototype);
+  }
+
+  toJSON(): TemplateErrorJson {
+    return {
+      name: 'TemplateError',
       field: this.field,
       reason: this.reason,
       remediation: this.remediation,
