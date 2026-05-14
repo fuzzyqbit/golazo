@@ -45,11 +45,11 @@ describe('cli/index — commander wiring', () => {
     expect(typeof internal._actionHandler).toBe('function');
   });
 
-  // Plan 02-04 replaced the render stub with a real handler; render no longer
-  // surfaces "not yet implemented". The remaining stub commands still do.
+  // Plan 02-04 replaced the render stub with a real handler.
+  // Plan 03-01 replaced the auth stub with a real handler.
+  // The remaining stub commands (publish, all) still surface "not yet implemented".
   it.each([
     ['publish', './nope'],
-    ['auth', 'leo'],
     ['all', './nope'],
   ])('main() surfaces "%s: not yet implemented" with exit code 2', async (cmdName, arg) => {
     let caught: unknown;
@@ -69,5 +69,11 @@ describe('cli/index — commander wiring', () => {
     expect(renderCmd).toBeDefined();
     const internal = renderCmd as unknown as { _actionHandler?: unknown };
     expect(typeof internal._actionHandler).toBe('function');
+  });
+
+  it('registers auth command with an action handler (Plan 03-01 replaced stub)', () => {
+    const authCmd = program.commands.find((c) => c.name() === 'auth');
+    expect(authCmd).toBeDefined();
+    expect(typeof (authCmd as unknown as { _actionHandler: unknown })._actionHandler).toBe('function');
   });
 });
