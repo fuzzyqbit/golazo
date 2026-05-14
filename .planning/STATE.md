@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
-stopped_at: Plan 01-04 complete; ready for Plan 01-05 (manifest builder + runPrepare orchestrator + CLI prepare handler swap + integration test) — LAST PLAN OF PHASE 1
-last_updated: "2026-05-14T01:48:39.674Z"
+status: verifying
+stopped_at: Plan 01-05 complete; Phase 1 feature-complete (CLI-01 + PREP-07 closed, all 8 phase requirements complete) - ready for gsd-verify-work / gsd-verifier against Phase 1, then transition to Phase 2 (Render Pipeline)
+last_updated: "2026-05-14T02:08:25.988Z"
 last_activity: 2026-05-14
 progress:
   total_phases: 4
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 5
-  completed_plans: 4
-  percent: 80
+  completed_plans: 5
+  percent: 100
 ---
 
 # Project State
@@ -27,10 +27,10 @@ See: .planning/PROJECT.md (updated 2026-05-13)
 
 Phase: 01 (Foundation & Prepare Pipeline) — EXECUTING
 Plan: 5 of 5 (Plans 01-01, 01-02, 01-03, and 01-04 complete; next is 01-05 manifest builder + runPrepare orchestrator + CLI prepare handler swap + integration test — LAST PLAN OF PHASE 1)
-Status: Ready to execute
-Last activity: 2026-05-14 -- Plan 01-04 (clip discovery + ffprobe + sha256 + manifest-hash + fixtures) complete
+Status: Phase complete — ready for verification
+Last activity: 2026-05-14
 
-Progress: [████████░░] 80%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
@@ -59,6 +59,7 @@ Progress: [████████░░] 80%
 |------|----------|-------|-------|
 | 01-foundation-prepare-pipeline P03 | 4min 31s | 2 tasks | 8 files |
 | Phase 01-foundation-prepare-pipeline P04 | 7min 34s | 2 tasks | 14 files |
+| Phase 01-foundation-prepare-pipeline P05 | 12min 45s | 3 tasks | 9 files |
 
 ## Accumulated Context
 
@@ -92,6 +93,12 @@ Recent decisions affecting current work:
 - 01-04: ffprobe wrapper uses `promisify(execFile)` — reusable for Phase 2 Remotion CLI invocation; string error codes (ENOENT) coerce to exitCode `-1`
 - 01-04: fixture `HOME="$PWD"` convention codified — tilde-pathed `oauth_token` paths in `tests/fixtures/golazo/channels.yaml` require HOME stub (vitest: `vi.stubEnv('HOME', process.cwd())`, manual: `HOME="$PWD" npx tsx ...`)
 - 01-04: committed fixture clips (libx264 ultrafast 320x180@15fps yuv420p, ~28KB each) are canonical bytes; regen via `scripts/build-fixtures.sh` may flap due to libx264 threading nondeterminism
+- [Phase ?]: 01-05: manifestHash at TOP LEVEL of manifest (not nested in render) - load-bearing contract for Phase 1 idempotency; Phase 2 adds sibling render block, must not relocate
+- [Phase ?]: 01-05: resolveKidFromPath uses lastIndexOf('golazo') instead of indexOf so paths with multiple golazo segments resolve to the innermost game-folder triple (Rule 1 fix in Plan 03 module)
+- [Phase ?]: 01-05: CLI handler output strings frozen as contract - first-run/hash-match/hash-changed/force lines preserved across Phase 2/3 plans
+- [Phase ?]: 01-05: case 4 CHANGED CONTENT uses appendFileSync not cpSync(03,02) - 3 committed fixture clips are byte-identical; appendFileSync preserves mp4 MOOV atom so probeDuration succeeds AND sha256 changes, exercising the hash-changed branch distinctly from case 6's ProbeError path
+- [Phase ?]: 01-05: runPrepare step order pins probe+hash BEFORE the existing-manifest hash compare so corrupt clips short-circuit to ProbeError, never reaching the hash-changed branch
+- [Phase ?]: 01-05: CLI shell-out integration tests via promisify(execFile)('npx', ['tsx', 'src/cli/index.ts', ...]) + HOME forwarded in spawn env - no pnpm build dependency; reusable pattern for Phase 2/3/4
 
 ### Pending Todos
 
@@ -111,6 +118,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-05-14T01:48:39.669Z
-Stopped at: Plan 01-04 complete; ready for Plan 01-05 (manifest builder + runPrepare orchestrator + CLI prepare handler swap + integration test) — LAST PLAN OF PHASE 1
-Resume file: .planning/phases/01-foundation-prepare-pipeline/01-05-PLAN.md
+Last session: 2026-05-14T02:08:25.984Z
+Stopped at: Plan 01-05 complete; Phase 1 feature-complete (CLI-01 + PREP-07 closed, all 8 phase requirements complete) - ready for gsd-verify-work / gsd-verifier against Phase 1, then transition to Phase 2 (Render Pipeline)
+Resume file: None

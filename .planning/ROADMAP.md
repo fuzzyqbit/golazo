@@ -12,7 +12,7 @@ golazo is a local-Mac CLI that transforms folders of soccer highlight clips into
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation & Prepare Pipeline** - Project scaffold, channels config, filename parser, clip discovery, and manifest writer
+- [x] **Phase 1: Foundation & Prepare Pipeline** - Project scaffold, channels config, filename parser, clip discovery, and manifest writer
 - [ ] **Phase 2: Render Pipeline** - Deterministic music picker, Remotion Episode + Thumbnail compositions, programmatic render driver
 - [ ] **Phase 3: Publish Pipeline** - OAuth flow, idempotent YouTube upload with templates, retry / quota / resumable handling
 - [ ] **Phase 4: Convenience & QA Polish** - `golazo all` chain, vitest unit + integration suite, Remotion visual snapshots
@@ -35,7 +35,7 @@ Plans:
 - [x] 01-02-PLAN.md — channels.yaml zod schema + loader with table-driven validation tests (CFG-01, CFG-02) — completed 2026-05-14, commits 6e6c000 + 3f7696c
 - [x] 01-03-PLAN.md — Pure filename parser + kid-from-path resolver with table-driven tests (PREP-01, PREP-02)
 - [x] 01-04-PLAN.md — Clip discovery + ffprobe wrapper + sha256 + manifest-hash function + committed test fixture infrastructure (PREP-03, PREP-04, PREP-07 input half) — completed 2026-05-14, commits 9e35cdc + 5d7a110
-- [ ] 01-05-PLAN.md — Manifest zod schema + builder/reader/writer + runPrepare orchestrator with idempotency + CLI handler + integration tests (CLI-01 prepare half, PREP-07 output half)
+- [x] 01-05-PLAN.md — Manifest zod schema + builder/reader/writer + runPrepare orchestrator with idempotency + CLI handler + integration tests (CLI-01 prepare half, PREP-07 output half)
 
 ### Phase 2: Render Pipeline
 **Goal**: Operator can run `golazo render <folder>` against a prepared folder and get `episode.mp4` + `thumb.png` written into `.golazo/` with deterministic music selection and the documented cinematic style
@@ -81,7 +81,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Prepare Pipeline | 3/5 | In Progress|  |
+| 1. Foundation & Prepare Pipeline | 5/5 | Complete | 2026-05-14 |
 | 2. Render Pipeline | 0/TBD | Not started | - |
 | 3. Publish Pipeline | 0/TBD | Not started | - |
 | 4. Convenience & QA Polish | 0/TBD | Not started | - |

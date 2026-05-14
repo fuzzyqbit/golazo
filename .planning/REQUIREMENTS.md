@@ -7,7 +7,7 @@
 
 ### CLI
 
-- [ ] **CLI-01**: Operator can run `golazo prepare <folder>`, `golazo render <folder>`, `golazo publish <folder>` as separate idempotent subcommands; each is safe to re-run and only acts when needed
+- [x] **CLI-01**: Operator can run `golazo prepare <folder>`, `golazo render <folder>`, `golazo publish <folder>` as separate idempotent subcommands; each is safe to re-run and only acts when needed
 - [ ] **CLI-02**: Operator can run `golazo all <folder>` to chain prepare → render → publish in one invocation
 - [ ] **CLI-03**: Operator can run `golazo auth <kid>` once per kid to perform YouTube OAuth and persist a refreshable token at the path declared in `channels.yaml`
 
@@ -24,7 +24,7 @@
 - [x] **PREP-04**: Pipeline probes each clip with `ffprobe` and records duration in the manifest; corrupt clips fail loudly by file name
 - [ ] **PREP-05**: Pipeline picks a music track deterministically from a curated YouTube Audio Library pool, seeded by `manifestHash` so re-renders are byte-stable
 - [ ] **PREP-06**: Pipeline handles music vs episode length — trim+fade when track ≥ episode; deterministic re-roll for a longer track when shorter; crossfade two passes as final fallback with a stdout warning
-- [ ] **PREP-07**: Pipeline writes `<folder>/.golazo/manifest.json` whose `manifestHash` is sha256 over the sorted `(clipFile, clipSha256)` pairs plus the folder name (music and render metadata excluded), enabling stable cache invalidation
+- [x] **PREP-07**: Pipeline writes `<folder>/.golazo/manifest.json` whose `manifestHash` is sha256 over the sorted `(clipFile, clipSha256)` pairs plus the folder name (music and render metadata excluded), enabling stable cache invalidation
 
 ### Render
 
@@ -75,7 +75,7 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| CLI-01 | Phase 1 | Pending |
+| CLI-01 | Phase 1 | Complete |
 | CLI-02 | Phase 4 | Pending |
 | CLI-03 | Phase 3 | Pending |
 | CFG-01 | Phase 1 | Complete |
@@ -86,7 +86,7 @@
 | PREP-04 | Phase 1 | Complete |
 | PREP-05 | Phase 2 | Pending |
 | PREP-06 | Phase 2 | Pending |
-| PREP-07 | Phase 1 | Pending |
+| PREP-07 | Phase 1 | Complete |
 | REN-01 | Phase 2 | Pending |
 | REN-02 | Phase 2 | Pending |
 | REN-03 | Phase 2 | Pending |
