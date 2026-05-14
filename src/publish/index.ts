@@ -49,3 +49,5 @@ export {
   PUBLISH_RECORD_FILE_NAME,
 } from './publishRecord.js';
 export type { PublishRecordDoc } from './publishRecord.js';
+export { runPublish } from './runner.js';
+export type { RunPublishOpts, RunPublishResult, PublishReason } from './runner.js';
