@@ -4,7 +4,7 @@
  * the instance + a `toJSON()` method, and the `message` is a single line
  * naming the offending input, the reason, and a remediation hint.
  *
- * Four classes:
+ * Five classes:
  *  - {@link FilenameError} — thrown by `parseFilename` when a folder name
  *    does not match the canonical convention or the date is not a real
  *    calendar date or a score component is > 99.
@@ -18,6 +18,11 @@
  *  - {@link ProbeError} — thrown by `probeDuration` when ffprobe exits
  *    non-zero or returns a non-numeric duration. Carries the file path,
  *    exit code, and full stderr so the failure mode is reproducible.
+ *  - {@link ManifestError} — thrown by `buildManifest` / `readManifest`
+ *    (Plan 05) when an input fails the manifest contract (e.g. empty clips
+ *    array, malformed on-disk manifest.json, zod validation failure on the
+ *    parsed object). Carries the field that failed, the reason, and a
+ *    remediation hint.
  */
 
 /** Inputs to {@link FilenameError}. */
@@ -211,6 +216,59 @@ export class ProbeError extends Error {
       filePath: this.filePath,
       exitCode: this.exitCode,
       stderr: this.stderr,
+    };
+  }
+}
+
+/** Inputs to {@link ManifestError}. */
+export interface ManifestErrorInput {
+  /**
+   * Dotted field path inside the manifest that failed (e.g. `clips`,
+   * `clips.0.sha256`, `version`, or `(yaml)` / `(file)` for top-level
+   * failures). Mirrors the convention used by `ChannelsConfigError`.
+   */
+  field: string;
+  /** Short reason for the failure (e.g. `must contain at least one clip`). */
+  reason: string;
+  /** Operator-facing remediation hint (e.g. `add NN-*.mp4 files to the folder`). */
+  remediation: string;
+}
+
+/** Serialised representation of {@link ManifestError} for structured logging. */
+export interface ManifestErrorJson {
+  name: 'ManifestError';
+  field: string;
+  reason: string;
+  remediation: string;
+}
+
+/**
+ * Thrown by `buildManifest`, `readManifest`, and (transitively)
+ * `runPrepare` when an input or on-disk file violates the manifest
+ * contract. Single-line message format `manifest: <field>: <reason>.
+ * <remediation>` keeps stderr output operator-friendly and matches the
+ * shape of `ChannelsConfigError` for stylistic consistency.
+ */
+export class ManifestError extends Error {
+  public readonly field: string;
+  public readonly reason: string;
+  public readonly remediation: string;
+
+  constructor(input: ManifestErrorInput) {
+    super(`manifest: ${input.field}: ${input.reason}. ${input.remediation}`);
+    this.name = 'ManifestError';
+    this.field = input.field;
+    this.reason = input.reason;
+    this.remediation = input.remediation;
+    Object.setPrototypeOf(this, ManifestError.prototype);
+  }
+
+  toJSON(): ManifestErrorJson {
+    return {
+      name: 'ManifestError',
+      field: this.field,
+      reason: this.reason,
+      remediation: this.remediation,
     };
   }
 }
