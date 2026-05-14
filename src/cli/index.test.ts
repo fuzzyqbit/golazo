@@ -45,8 +45,9 @@ describe('cli/index — commander wiring', () => {
     expect(typeof internal._actionHandler).toBe('function');
   });
 
+  // Plan 02-04 replaced the render stub with a real handler; render no longer
+  // surfaces "not yet implemented". The remaining stub commands still do.
   it.each([
-    ['render', './nope'],
     ['publish', './nope'],
     ['auth', 'leo'],
     ['all', './nope'],
@@ -61,5 +62,12 @@ describe('cli/index — commander wiring', () => {
     const cmdErr = caught as CommanderError;
     expect(cmdErr.exitCode).toBe(2);
     expect(cmdErr.message).toContain(`${cmdName}: not yet implemented`);
+  });
+
+  it('registers render with an action handler bound (Plan 02-04 replaced stub)', () => {
+    const renderCmd = program.commands.find((c) => c.name() === 'render');
+    expect(renderCmd).toBeDefined();
+    const internal = renderCmd as unknown as { _actionHandler?: unknown };
+    expect(typeof internal._actionHandler).toBe('function');
   });
 });
