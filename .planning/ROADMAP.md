@@ -34,7 +34,7 @@ Plans:
 - [x] 01-01-PLAN.md — Project bootstrap, tooling, commander.js scaffold with all 5 subcommands (CLI-01 scaffold) — completed 2026-05-14, commits fa49898 + 66d2c67
 - [x] 01-02-PLAN.md — channels.yaml zod schema + loader with table-driven validation tests (CFG-01, CFG-02) — completed 2026-05-14, commits 6e6c000 + 3f7696c
 - [x] 01-03-PLAN.md — Pure filename parser + kid-from-path resolver with table-driven tests (PREP-01, PREP-02)
-- [ ] 01-04-PLAN.md — Clip discovery + ffprobe wrapper + sha256 + manifest-hash function + committed test fixture infrastructure (PREP-03, PREP-04, PREP-07 input half)
+- [x] 01-04-PLAN.md — Clip discovery + ffprobe wrapper + sha256 + manifest-hash function + committed test fixture infrastructure (PREP-03, PREP-04, PREP-07 input half) — completed 2026-05-14, commits 9e35cdc + 5d7a110
 - [ ] 01-05-PLAN.md — Manifest zod schema + builder/reader/writer + runPrepare orchestrator with idempotency + CLI handler + integration tests (CLI-01 prepare half, PREP-07 output half)
 
 ### Phase 2: Render Pipeline

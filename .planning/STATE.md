@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Plan 01-03 complete; ready for Plan 01-04 (clip discovery + ffprobe + sha256 + manifest-hash)
-last_updated: "2026-05-14T01:34:53.430Z"
-last_activity: 2026-05-14 -- Plan 01-03 (filename parser + kid-from-path resolver) complete
+stopped_at: Plan 01-04 complete; ready for Plan 01-05 (manifest builder + runPrepare orchestrator + CLI prepare handler swap + integration test) — LAST PLAN OF PHASE 1
+last_updated: "2026-05-14T01:48:39.674Z"
+last_activity: 2026-05-14
 progress:
   total_phases: 4
   completed_phases: 0
   total_plans: 5
-  completed_plans: 3
-  percent: 60
+  completed_plans: 4
+  percent: 80
 ---
 
 # Project State
@@ -26,38 +26,39 @@ See: .planning/PROJECT.md (updated 2026-05-13)
 ## Current Position
 
 Phase: 01 (Foundation & Prepare Pipeline) — EXECUTING
-Plan: 4 of 5 (Plans 01-01, 01-02, and 01-03 complete; next is 01-04 clip discovery + ffprobe + sha256 + manifest-hash)
+Plan: 5 of 5 (Plans 01-01, 01-02, 01-03, and 01-04 complete; next is 01-05 manifest builder + runPrepare orchestrator + CLI prepare handler swap + integration test — LAST PLAN OF PHASE 1)
 Status: Ready to execute
-Last activity: 2026-05-14 -- Plan 01-03 (filename parser + kid-from-path resolver) complete
+Last activity: 2026-05-14 -- Plan 01-04 (clip discovery + ffprobe + sha256 + manifest-hash + fixtures) complete
 
-Progress: [██████░░░░] 60%
+Progress: [████████░░] 80%
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 3
-- Average duration: 6 min 39 s (7 min + 8 min 27 s + 4 min 31 s averaged)
-- Total execution time: 0.33 hours
+- Total plans completed: 4
+- Average duration: 6 min 53 s (7 min + 8 min 27 s + 4 min 31 s + 7 min 34 s averaged = 27 min 32 s / 4)
+- Total execution time: 0.46 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 1. Foundation & Prepare Pipeline | 3 | 19 min 58 s | 6 min 39 s |
+| 1. Foundation & Prepare Pipeline | 4 | 27 min 32 s | 6 min 53 s |
 | 2. Render Pipeline | 0 | — | — |
 | 3. Publish Pipeline | 0 | — | — |
 | 4. Convenience & QA Polish | 0 | — | — |
 
 **Recent Trend:**
 
-- Last 5 plans: 01-01 (7 min), 01-02 (8 min 27 s), 01-03 (4 min 31 s)
-- Trend: improving; 01-03 was the fastest of the three (less yak-shaving than 01-01/02 because the project conventions and *.test-cases.ts pattern were already settled)
+- Last 5 plans: 01-01 (7 min), 01-02 (8 min 27 s), 01-03 (4 min 31 s), 01-04 (7 min 34 s)
+- Trend: steady; 01-04 added two atomic commits (Task 1 TDD + Task 2 fixture infra) plus four auto-fixed deviations (1 grep-gate compat, 1 ESLint flat-config, 2 `.gitignore` augmentations for fixture binaries + `.npm/` cache)
 
 *Updated after each plan completion*
 | Plan | Duration | Tasks | Files |
 |------|----------|-------|-------|
 | 01-foundation-prepare-pipeline P03 | 4min 31s | 2 tasks | 8 files |
+| Phase 01-foundation-prepare-pipeline P04 | 7min 34s | 2 tasks | 14 files |
 
 ## Accumulated Context
 
@@ -85,6 +86,12 @@ Recent decisions affecting current work:
 - 01-03: `resolveKidFromPath` reuses `UnknownKidError` from `src/config/errors.js` (Plan 02) — does NOT redefine; test asserts via instanceof on the canonical import
 - 01-03: `'golazo'` as final segment → `KidPathError`; `'golazo'` followed only by game folder → `UnknownKidError` (game-folder name offered as candidate kid). Distinct error vocabularies
 - 01-03: Reaffirmed `*.test-cases.ts` sibling pattern from Plan 02 — vitest test files cannot be imported under `tsx -e` because `describe()` crashes outside the runner
+- 01-04: manifestHash canonical input is `folderName + '\n' + sorted "file:sha256" lines` — pinned by independent recomputation test (DO NOT mutate in Phase 2)
+- 01-04: manifest schema additively includes per-clip `sha256` field (deviation from design spec example) — required for manifestHash reproducibility from manifest contents alone
+- 01-04: `probeDuration` rounds to 3 decimals (`Math.round(d*1000)/1000`) for JSON-stable manifest values across re-probes
+- 01-04: ffprobe wrapper uses `promisify(execFile)` — reusable for Phase 2 Remotion CLI invocation; string error codes (ENOENT) coerce to exitCode `-1`
+- 01-04: fixture `HOME="$PWD"` convention codified — tilde-pathed `oauth_token` paths in `tests/fixtures/golazo/channels.yaml` require HOME stub (vitest: `vi.stubEnv('HOME', process.cwd())`, manual: `HOME="$PWD" npx tsx ...`)
+- 01-04: committed fixture clips (libx264 ultrafast 320x180@15fps yuv420p, ~28KB each) are canonical bytes; regen via `scripts/build-fixtures.sh` may flap due to libx264 threading nondeterminism
 
 ### Pending Todos
 
@@ -104,6 +111,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-05-14T01:34:53.425Z
-Stopped at: Plan 01-03 complete; ready for Plan 01-04 (clip discovery + ffprobe + sha256 + manifest-hash)
-Resume file: .planning/phases/01-foundation-prepare-pipeline/01-04-PLAN.md
+Last session: 2026-05-14T01:48:39.669Z
+Stopped at: Plan 01-04 complete; ready for Plan 01-05 (manifest builder + runPrepare orchestrator + CLI prepare handler swap + integration test) — LAST PLAN OF PHASE 1
+Resume file: .planning/phases/01-foundation-prepare-pipeline/01-05-PLAN.md
