@@ -13,7 +13,7 @@ export {
   YOUTUBE_UPLOAD_SCOPE,
 } from './oauth.js';
 export type { RunAuthOpts, RunAuthResult } from './oauth.js';
-export { OAuthError, TemplateError } from './errors.js';
+export { OAuthError, TemplateError, UploadError } from './errors.js';
 export {
   renderTitle,
   renderDescription,
@@ -22,3 +22,9 @@ export {
   DESCRIPTION_TEMPLATE,
 } from './templates.js';
 export type { TemplateInput, TemplateOutput } from './templates.js';
+export {
+  uploadEpisode,
+  DEFAULT_YOUTUBE_CATEGORY_ID,
+  PRIVACY_STATUS,
+} from './uploader.js';
+export type { UploadEpisodeArgs, PublishRecord } from './uploader.js';
