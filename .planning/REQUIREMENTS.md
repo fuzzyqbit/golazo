@@ -13,8 +13,8 @@
 
 ### Config
 
-- [ ] **CFG-01**: Operator can edit a single `channels.yaml` file holding per-kid branding (name, club, jersey, accent hex, footage source) and YouTube channel binding (channel id, oauth token path)
-- [ ] **CFG-02**: `channels.yaml` is validated at load time; invalid hex, jersey out of range, or missing token path fail with a clear remediation message
+- [x] **CFG-01**: Operator can edit a single `channels.yaml` file holding per-kid branding (name, club, jersey, accent hex, footage source) and YouTube channel binding (channel id, oauth token path)
+- [x] **CFG-02**: `channels.yaml` is validated at load time; invalid hex, jersey out of range, or missing token path fail with a clear remediation message
 
 ### Prepare
 
@@ -78,8 +78,8 @@
 | CLI-01 | Phase 1 | Pending |
 | CLI-02 | Phase 4 | Pending |
 | CLI-03 | Phase 3 | Pending |
-| CFG-01 | Phase 1 | Pending |
-| CFG-02 | Phase 1 | Pending |
+| CFG-01 | Phase 1 | Complete |
+| CFG-02 | Phase 1 | Complete |
 | PREP-01 | Phase 1 | Pending |
 | PREP-02 | Phase 1 | Pending |
 | PREP-03 | Phase 1 | Pending |
