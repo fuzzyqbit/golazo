@@ -31,7 +31,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   5. The `golazo` binary exposes `prepare`, `render`, `publish`, `auth`, and `all` subcommands via commander.js, with `render`/`publish`/`auth`/`all` returning a "not yet implemented" stub
 **Plans**: 5 plans
 Plans:
-- [ ] 01-01-PLAN.md — Project bootstrap, tooling, commander.js scaffold with all 5 subcommands (CLI-01 scaffold)
+- [x] 01-01-PLAN.md — Project bootstrap, tooling, commander.js scaffold with all 5 subcommands (CLI-01 scaffold) — completed 2026-05-14, commits fa49898 + 66d2c67
 - [ ] 01-02-PLAN.md — channels.yaml zod schema + loader with table-driven validation tests (CFG-01, CFG-02)
 - [ ] 01-03-PLAN.md — Pure filename parser + kid-from-path resolver with table-driven tests (PREP-01, PREP-02)
 - [ ] 01-04-PLAN.md — Clip discovery + ffprobe wrapper + sha256 + manifest-hash function + committed test fixture infrastructure (PREP-03, PREP-04, PREP-07 input half)
@@ -81,7 +81,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Prepare Pipeline | 0/5 | Planned | - |
+| 1. Foundation & Prepare Pipeline | 1/5 | In progress | - |
 | 2. Render Pipeline | 0/TBD | Not started | - |
 | 3. Publish Pipeline | 0/TBD | Not started | - |
 | 4. Convenience & QA Polish | 0/TBD | Not started | - |
