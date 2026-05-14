@@ -65,7 +65,13 @@ Plans:
   3. Opponent slugs render pretty in title/description — `city-sc` → `City SC`, `united` → `United`, `ac-milan` → `AC Milan` — via title-case + hyphen-to-space + acronym allow-list (`sc`, `fc`, `ac`)
   4. Transient 5xx / network errors retry exactly 3 times with 1s/4s/16s backoff before failing; mid-upload drops resume via the YouTube resumable upload protocol; HTTP 403 `quotaExceeded` fails loudly with a "rerun tomorrow" hint and does not write `publish.json`
   5. Re-running `publish` on a folder whose `publish.json` already has a `videoId` exits early without re-uploading; `--force` overrides and uploads a new video
-**Plans**: TBD
+**Plans**: 5 plans
+Plans:
+- [ ] 03-01-PLAN.md — googleapis + nock deps, OAuth helpers (createOAuth2Client / loadToken / saveToken / runAuth) + permissive channels loader + `golazo auth <kid>` CLI handler (CLI-03 auth half, PUB-04)
+- [ ] 03-02-PLAN.md — Pure title + description template renderers + TemplateError + table-driven tests; REUSES `prettyOpponent` from Plan 02-04 (PUB-02, PUB-03)
+- [ ] 03-03-PLAN.md — `uploadEpisode()` single-attempt videos.insert + thumbnails.set with `privacyStatus: 'unlisted'` against nock-stubbed YouTube (PUB-01)
+- [ ] 03-04-PLAN.md — Retry / backoff / quota policy: `classifyError` + `withRetry` (3 retries, 1s/4s/16s) + `publishWithRetry` + `QuotaExceededError` (PUB-05, PUB-06)
+- [ ] 03-05-PLAN.md — `runPublish` orchestrator + `publish.json` schema/read/write + `golazo publish <folder>` CLI handler with idempotency + `--force` + CLI integration tests (CLI-03 publish half, PUB-07)
 
 ### Phase 4: Convenience & QA Polish
 **Goal**: Operator can chain the whole pipeline with `golazo all <folder>` and the codebase ships with the full automated test suite and committed visual baselines
@@ -88,7 +94,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. Foundation & Prepare Pipeline | 5/5 | Complete | 2026-05-14 |
 | 2. Render Pipeline | 4/4 | Complete   | 2026-05-14 |
-| 3. Publish Pipeline | 0/TBD | Not started | - |
+| 3. Publish Pipeline | 0/5 | Not started | - |
 | 4. Convenience & QA Polish | 0/TBD | Not started | - |
 
 ---
@@ -97,3 +103,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 *Phase 1 revised: 2026-05-13 by gsd-planner (5 plans, 5 waves — Plan 03 moved to wave 3 with depends_on [01,02]; Plan 04 split into 04 (leaf modules + fixtures) and 05 (manifest + orchestrator + CLI + integration); see 01-04 and 01-05 PLANs)*
 *Granularity: coarse (4 phases) · Mode: standard (horizontal layers) · Coverage: 28/28 v1 requirements mapped*
 *Phase 2 planned: 2026-05-13 by gsd-planner (4 plans, 3 waves — Wave 1: 02-01 theme + 02-02 music in parallel; Wave 2: 02-03 compositions; Wave 3: 02-04 render driver + CLI swap)*
+*Phase 3 planned: 2026-05-14 by gsd-planner (5 plans, 5 waves — sequential due to shared `src/publish/errors.ts` + `src/publish/index.ts` barrel extension chain — Wave 1: 03-01 OAuth+auth CLI; Wave 2: 03-02 templates; Wave 3: 03-03 uploader (nock-stubbed); Wave 4: 03-04 retry/backoff/quota; Wave 5: 03-05 runPublish + publish.json + publish CLI handler swap)*
