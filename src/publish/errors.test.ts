@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { OAuthError } from './errors.js';
+import { OAuthError, TemplateError } from './errors.js';
 
 describe('OAuthError', () => {
   it('1. populates field, reason, remediation, and message correctly', () => {
@@ -37,5 +37,41 @@ describe('OAuthError', () => {
   it('4. err.name === "OAuthError"', () => {
     const err = new OAuthError({ field: 'tokenJson', reason: 'malformed', remediation: 'reauth' });
     expect(err.name).toBe('OAuthError');
+  });
+});
+
+describe('TemplateError', () => {
+  it('5. message format: "template: <field>: <reason>. <remediation>"', () => {
+    const err = new TemplateError({
+      field: 'game.opponent',
+      reason: 'empty string',
+      remediation: 'check manifest',
+    });
+    expect(err.message).toBe('template: game.opponent: empty string. check manifest');
+  });
+
+  it('6. instanceof TemplateError and instanceof Error both true', () => {
+    const err = new TemplateError({ field: 'kid.name', reason: 'required', remediation: 'check channels.yaml' });
+    expect(err).toBeInstanceOf(TemplateError);
+    expect(err).toBeInstanceOf(Error);
+  });
+
+  it('7. toJSON() returns { name: "TemplateError", field, reason, remediation }', () => {
+    const err = new TemplateError({
+      field: 'game.result',
+      reason: 'invalid enum',
+      remediation: 'check manifest',
+    });
+    expect(err.toJSON()).toEqual({
+      name: 'TemplateError',
+      field: 'game.result',
+      reason: 'invalid enum',
+      remediation: 'check manifest',
+    });
+  });
+
+  it('8. err.name === "TemplateError"', () => {
+    const err = new TemplateError({ field: 'game.scoreFor', reason: 'non-negative required', remediation: 'check manifest' });
+    expect(err.name).toBe('TemplateError');
   });
 });
