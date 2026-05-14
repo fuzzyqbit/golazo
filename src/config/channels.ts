@@ -145,9 +145,11 @@ function expandTilde(input: string): string {
  *  - yaml syntax error
  *  - any zod validation failure (invalid hex, jersey out of range, missing key, etc.)
  *  - any declared OAuth token file that does not exist on disk after tilde expansion
+ *    (skipped when `opts.skipTokenCheck === true` — used by `golazo auth` which
+ *    runs BEFORE any token exists)
  */
 export function loadChannelsFile(
-  opts: { path?: string } = {},
+  opts: { path?: string; skipTokenCheck?: boolean } = {},
 ): ChannelsFile {
   const filePath = resolve(opts.path ?? CHANNELS_FILE_DEFAULT);
 
@@ -209,7 +211,7 @@ export function loadChannelsFile(
     const tokenExpanded = expandTilde(tokenRaw);
     const tokenResolved = resolve(fileParentDir, tokenExpanded);
 
-    if (!existsSync(tokenResolved)) {
+    if (!opts.skipTokenCheck && !existsSync(tokenResolved)) {
       throw new ChannelsConfigError({
         field: `${kidKey}.youtube.oauth_token`,
         reason: `oauth token file does not exist at ${tokenResolved}`,
@@ -246,7 +248,7 @@ export function loadChannelsFile(
  */
 export function loadChannel(
   kidKey: KidKey,
-  opts: { path?: string } = {},
+  opts: { path?: string; skipTokenCheck?: boolean } = {},
 ): ChannelConfig {
   const file = loadChannelsFile(opts);
   const entry = file[kidKey];

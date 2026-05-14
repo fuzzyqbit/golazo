@@ -181,6 +181,8 @@ export interface ChannelsTestCase {
   readonly messageContains?: readonly (string | RegExp)[];
   /** When set, point the loader at this path instead of <tmpDir>/channels.yaml. */
   readonly pathOverride?: string;
+  /** When true, pass skipTokenCheck:true to the loader (bypasses existsSync for token files). */
+  readonly skipTokenCheck?: boolean;
 }
 
 /**
@@ -361,5 +363,30 @@ export const CHANNELS_TEST_CASES: readonly ChannelsTestCase[] = [
     ],
     kidToLoad: 'bobby',
     shouldThrow: false,
+  },
+
+  // 15. SKIP TOKEN CHECK — missing token: with skipTokenCheck:true, a yaml whose
+  //     oauth_token points at a non-existent path loads successfully; the resolved
+  //     oauthTokenPath is the absolute path even though the file does not exist.
+  {
+    name: 'SKIP TOKEN CHECK — missing token: skipTokenCheck:true allows load even when token file is absent',
+    yaml: buildYaml({
+      leo: { youtube: { oauth_token: './nonexistent-leo.token.json' } },
+    }),
+    tokenPaths: ['./mateo.token.json'],
+    kidToLoad: 'leo',
+    shouldThrow: false,
+    skipTokenCheck: true,
+  },
+
+  // 16. SKIP TOKEN CHECK — existing token: skipTokenCheck:true also allows load when
+  //     token file is present (the flag is permissive, not restrictive).
+  {
+    name: 'SKIP TOKEN CHECK — existing token: skipTokenCheck:true works equally when token file exists',
+    yaml: buildYaml({}),
+    tokenPaths: ['./leo.token.json', './mateo.token.json'],
+    kidToLoad: 'leo',
+    shouldThrow: false,
+    skipTokenCheck: true,
   },
 ] as const;

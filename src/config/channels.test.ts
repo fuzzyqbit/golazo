@@ -37,8 +37,8 @@ describe('loadChannel + loadChannelsFile (table-driven)', () => {
     rmSync(tmpDir, { recursive: true, force: true });
   });
 
-  it('table contains >= 14 cases', () => {
-    expect(CHANNELS_TEST_CASES.length).toBeGreaterThanOrEqual(14);
+  it('table contains >= 16 cases', () => {
+    expect(CHANNELS_TEST_CASES.length).toBeGreaterThanOrEqual(16);
   });
 
   it.each(CHANNELS_TEST_CASES.map((c) => [c.name, c] as const))(
@@ -63,8 +63,8 @@ describe('loadChannel + loadChannelsFile (table-driven)', () => {
 
       const call = (): unknown =>
         row.kidToLoad !== undefined
-          ? loadChannel(row.kidToLoad, { path: channelsPath })
-          : loadChannelsFile({ path: channelsPath });
+          ? loadChannel(row.kidToLoad, { path: channelsPath, skipTokenCheck: row.skipTokenCheck })
+          : loadChannelsFile({ path: channelsPath, skipTokenCheck: row.skipTokenCheck });
 
       if (row.shouldThrow) {
         const expectedClass = row.errorClass ?? ChannelsConfigError;
