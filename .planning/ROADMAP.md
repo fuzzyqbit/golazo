@@ -82,7 +82,12 @@ Plans:
   2. `pnpm test` (or `npm test`) runs the full vitest suite — table-driven unit tests for filename parser, channels loader, music-picker determinism, and title/description renderers — and all pass
   3. Integration tests run `prepare` against the committed `tests/fixtures/` folder, a low-res `render` end-to-end, and a `publish` with `nock`-stubbed YouTube API; line coverage on `src/` is ≥ 80%
   4. Remotion `Episode` title-card frame and `Thumbnail` are pinned by committed `renderStill` PNG snapshots under `tests/snapshots/`, with a 1% pixel-diff threshold that fails CI on visual regression
-**Plans**: TBD
+**Plans**: 4 plans
+Plans:
+- [ ] 04-01-PLAN.md — `runAll` orchestrator + `golazo all <folder>` CLI handler (replaces Plan 01-01 stub) with sequential prepare→render→publish, stage-labeled error surface, and shell-out integration tests (CLI-02)
+- [ ] 04-02-PLAN.md — Coverage tooling: extend vitest.config.ts with 80% line threshold + src/-only include + remotion/+tests/+config exclude, add `npm run test:coverage` script, gitignore `coverage/`, README `## Testing` section (QA-02 tooling half)
+- [ ] 04-03-PLAN.md — QA-01 audit test (four mandated table-driven test-cases files asserted) + measure baseline coverage + close any gap to ≥ 80% via fill-in integration cases on existing test files (QA-01, QA-02 passing-run half)
+- [ ] 04-04-PLAN.md — Remotion renderStill PNG baselines (Episode title-card + Thumbnail) + pixel-diff test (pixelmatch + pngjs at 1% threshold) + regen script + README docs + PUB-05 resumable-upload decision checkpoint (QA-03)
 **UI hint**: yes
 
 ## Progress
@@ -95,7 +100,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | 1. Foundation & Prepare Pipeline | 5/5 | Complete | 2026-05-14 |
 | 2. Render Pipeline | 4/4 | Complete   | 2026-05-14 |
 | 3. Publish Pipeline | 5/5 | Complete   | 2026-05-14 |
-| 4. Convenience & QA Polish | 0/TBD | Not started | - |
+| 4. Convenience & QA Polish | 0/4 | Not started | - |
 
 ---
 *Roadmap created: 2026-05-13 by gsd-roadmapper*
@@ -104,3 +109,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 *Granularity: coarse (4 phases) · Mode: standard (horizontal layers) · Coverage: 28/28 v1 requirements mapped*
 *Phase 2 planned: 2026-05-13 by gsd-planner (4 plans, 3 waves — Wave 1: 02-01 theme + 02-02 music in parallel; Wave 2: 02-03 compositions; Wave 3: 02-04 render driver + CLI swap)*
 *Phase 3 planned: 2026-05-14 by gsd-planner (5 plans, 5 waves — sequential due to shared `src/publish/errors.ts` + `src/publish/index.ts` barrel extension chain — Wave 1: 03-01 OAuth+auth CLI; Wave 2: 03-02 templates; Wave 3: 03-03 uploader (nock-stubbed); Wave 4: 03-04 retry/backoff/quota; Wave 5: 03-05 runPublish + publish.json + publish CLI handler swap)*
+*Phase 4 planned: 2026-05-14 by gsd-planner (4 plans, 2 waves — Wave 1: 04-01 `golazo all` CLI + 04-02 coverage tooling (file-disjoint, parallel); Wave 2: 04-03 QA audit + coverage-gap fill-ins + 04-04 visual snapshots + PUB-05 decision checkpoint (file-disjoint, parallel))*

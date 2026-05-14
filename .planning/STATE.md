@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: verifying
-stopped_at: Plan 03-05 complete; runPublish orchestrator + CLI handler; 367 tests passing; Phase 3 fully complete
-last_updated: "2026-05-14T19:01:58.937Z"
-last_activity: 2026-05-14
+status: planned
+stopped_at: Phase 04 planned (4 plans, 2 waves); plan-checker PASS_WITH_CONCERNS (2 warnings — non-blocking); PUB-05 resumable surfaced as in-phase checkpoint:decision in Plan 04-04; ready for /gsd-execute-phase 04
+last_updated: "2026-05-14T19:30:00.000Z"
+last_activity: 2026-05-14 -- Phase 04 planned by gsd-planner (4 plans, 2 waves; final phase of v1)
 progress:
   total_phases: 4
   completed_phases: 3
-  total_plans: 14
+  total_plans: 18
   completed_plans: 14
-  percent: 100
+  percent: 78
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-13)
 
 **Core value:** Drop a folder of clips on disk, get a cinematic per-game highlight episode uploaded to the right YouTube channel — minimal hands-on time per game even at 5+ games/week.
-**Current focus:** Phase 04 — Convenience & QA Polish
+**Current focus:** Phase 04 — Convenience & QA Polish (planned, not started)
 
 ## Current Position
 
-Phase: 03 (Publish Pipeline) — COMPLETE
-Plan: 5 of 5
-Status: Phase complete — ready for verification
+Phase: 04 (Convenience & QA Polish) — PLANNED
+Plan: 0 of 4 (Wave 1: 04-01 `golazo all` + 04-02 coverage tooling, parallel; Wave 2: 04-03 QA audit + coverage gap close + 04-04 Remotion snapshots + PUB-05 decision checkpoint, parallel)
+Status: Phase 4 plans written and verified; ready for /gsd-execute-phase 04
 Last activity: 2026-05-14
 
-Progress: [██████████] 100%
+Progress: [████████▒▒] 75% (Phases 1+2+3 of 4 complete)
 
 ## Performance Metrics
 
