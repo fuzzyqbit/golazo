@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation & Prepare Pipeline** - Project scaffold, channels config, filename parser, clip discovery, and manifest writer
 - [x] **Phase 2: Render Pipeline** - Deterministic music picker, Remotion Episode + Thumbnail compositions, programmatic render driver (completed 2026-05-14)
-- [ ] **Phase 3: Publish Pipeline** - OAuth flow, idempotent YouTube upload with templates, retry / quota / resumable handling
+- [x] **Phase 3: Publish Pipeline** - OAuth flow, idempotent YouTube upload with templates, retry / quota / resumable handling (completed 2026-05-14)
 - [ ] **Phase 4: Convenience & QA Polish** - `golazo all` chain, vitest unit + integration suite, Remotion visual snapshots
 
 ## Phase Details
@@ -71,7 +71,7 @@ Plans:
 - [x] 03-02-PLAN.md — Pure title + description template renderers + TemplateError + table-driven tests; REUSES `prettyOpponent` from Plan 02-04 (PUB-02, PUB-03)
 - [x] 03-03-PLAN.md — `uploadEpisode()` single-attempt videos.insert + thumbnails.set with `privacyStatus: 'unlisted'` against nock-stubbed YouTube (PUB-01)
 - [x] 03-04-PLAN.md — Retry / backoff / quota policy: `classifyError` + `withRetry` (3 retries, 1s/4s/16s) + `publishWithRetry` + `QuotaExceededError` (PUB-05, PUB-06)
-- [ ] 03-05-PLAN.md — `runPublish` orchestrator + `publish.json` schema/read/write + `golazo publish <folder>` CLI handler with idempotency + `--force` + CLI integration tests (CLI-03 publish half, PUB-07)
+- [x] 03-05-PLAN.md — `runPublish` orchestrator + `publish.json` schema/read/write + `golazo publish <folder>` CLI handler with idempotency + `--force` + CLI integration tests (CLI-03 publish half, PUB-07)
 
 ### Phase 4: Convenience & QA Polish
 **Goal**: Operator can chain the whole pipeline with `golazo all <folder>` and the codebase ships with the full automated test suite and committed visual baselines
@@ -94,7 +94,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. Foundation & Prepare Pipeline | 5/5 | Complete | 2026-05-14 |
 | 2. Render Pipeline | 4/4 | Complete   | 2026-05-14 |
-| 3. Publish Pipeline | 4/5 | In Progress|  |
+| 3. Publish Pipeline | 5/5 | Complete   | 2026-05-14 |
 | 4. Convenience & QA Polish | 0/TBD | Not started | - |
 
 ---

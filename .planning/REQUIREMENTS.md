@@ -43,7 +43,7 @@
 - [x] **PUB-04**: OAuth tokens are stored per-kid at the path declared in `channels.yaml`; tokens refresh silently on use; refresh failures print a clear prompt to rerun `golazo auth <kid>`
 - [x] **PUB-05**: Network and 5xx failures retry up to 3 times with exponential backoff (1s, 4s, 16s); large uploads use the YouTube resumable upload protocol so a mid-upload network drop resumes from the last chunk
 - [x] **PUB-06**: Quota-exhausted responses (HTTP 403 `quotaExceeded`) fail loudly with a "rerun tomorrow" remediation hint and do not write `publish.json`
-- [ ] **PUB-07**: `publish.json` records `videoId`, `watchUrl`, `uploadedAt`, `channelId`, `privacyStatus`; presence of `videoId` short-circuits subsequent runs unless `--force`
+- [x] **PUB-07**: `publish.json` records `videoId`, `watchUrl`, `uploadedAt`, `channelId`, `privacyStatus`; presence of `videoId` short-circuits subsequent runs unless `--force`
 
 ### QA
 
@@ -99,7 +99,7 @@
 | PUB-04 | Phase 3 | Complete |
 | PUB-05 | Phase 3 | Complete |
 | PUB-06 | Phase 3 | Complete |
-| PUB-07 | Phase 3 | Pending |
+| PUB-07 | Phase 3 | Complete |
 | QA-01 | Phase 4 | Pending |
 | QA-02 | Phase 4 | Pending |
 | QA-03 | Phase 4 | Pending |

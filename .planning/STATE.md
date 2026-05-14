@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
-stopped_at: Plan 02-04 complete; runRender orchestrator + CLI handler; 215 tests passing; Phase 2 fully complete
-last_updated: "2026-05-14T18:46:23.098Z"
+status: verifying
+stopped_at: Plan 03-05 complete; runPublish orchestrator + CLI handler; 367 tests passing; Phase 3 fully complete
+last_updated: "2026-05-14T19:01:58.937Z"
 last_activity: 2026-05-14
 progress:
   total_phases: 4
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 14
-  completed_plans: 13
-  percent: 93
+  completed_plans: 14
+  percent: 100
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-13)
 
 **Core value:** Drop a folder of clips on disk, get a cinematic per-game highlight episode uploaded to the right YouTube channel — minimal hands-on time per game even at 5+ games/week.
-**Current focus:** Phase 03 — Publish Pipeline
+**Current focus:** Phase 04 — Convenience & QA Polish
 
 ## Current Position
 
-Phase: 03 (Publish Pipeline) — EXECUTING
+Phase: 03 (Publish Pipeline) — COMPLETE
 Plan: 5 of 5
-Status: Ready to execute
+Status: Phase complete — ready for verification
 Last activity: 2026-05-14
 
-Progress: [█████████░] 93%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
@@ -67,6 +67,7 @@ Progress: [█████████░] 93%
 | Phase 03-publish-pipeline P02 | 4min | 1 tasks | 5 files |
 | Phase 03-publish-pipeline P03 | 8min | 1 tasks | 5 files |
 | Phase 03-publish-pipeline P04 | 5min 50s | 1 tasks | 5 files |
+| Phase 03-publish-pipeline P05 | 12 | 3 tasks | 10 files |
 
 ## Accumulated Context
 
@@ -123,6 +124,10 @@ Recent decisions affecting current work:
 - 02-04: hash-changed detection when episode.mp4 exists but manifest.render absent — existsSync(episodePath) check distinguishes first-render from hash-changed after runPrepare re-run
 - 02-04: CLI output strings frozen for Phase 3 chain parsing: episode rendered / render up to date / episode re-rendered (content changed) / episode re-rendered (force)
 - 02-04: prettyOpponent at src/render/opponentPretty.ts — Phase 3 PUB-03 imports same helper; may move to src/shared/ in Phase 3
+- 03-03: PRIVACY_STATUS = 'unlisted' as const in uploader.ts — single source of truth for unlisted-only constraint across all pipeline layers
+- 03-04: publishWithRetry [1000, 4000, 16000]ms backoff; QuotaExceededError immediate fail + resumeAtHint (next UTC midnight); classifyError pure classifier
+- 03-05: z.literal('unlisted') + const _binding = 'unlisted' satisfies typeof PRIVACY_STATUS — dual schema+typecheck privacy gate; publish.json written only on publishWithRetry success (PUB-06)
+- 03-05: in-process nock (block 1) + shell-out spawn (block 2) split — nock does not cross process boundary; in-process covers quota/force/idempotency cases
 
 ### Pending Todos
 
@@ -142,6 +147,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-05-14T18:46:23.093Z
-Stopped at: Plan 02-04 complete; runRender orchestrator + CLI handler; 215 tests passing; Phase 2 fully complete
+Last session: 2026-05-14T19:10:00.000Z
+Stopped at: Plan 03-05 complete; runPublish orchestrator + CLI handler; 367 tests passing; Phase 3 fully complete
 Resume file: None
