@@ -39,12 +39,16 @@ export { episodeInputPropsSchema } from './composition/inputProps.js';
 export const Episode: React.FC<EpisodeInputProps> = (props) => {
   const timeline = computeEpisodeTimeline({ clips: props.clips, fps: MOTION.fps });
 
-  // Music src — plain absolute path wrapped as file:// URL.
-  // Plan 02-04's driver must pass a plain absolute path (NOT file://) so the
-  // file:// convention lives here in one place.
-  const musicSrc = props.music.absPath.startsWith('file://')
-    ? props.music.absPath
-    : `file://${props.music.absPath}`;
+  // Music src — accept http://, https://, file://, or plain absolute paths.
+  // Plan 02-04's driver passes an HTTP URL (from the local file server) so the
+  // headless renderer can download the asset. Plain absolute paths are wrapped
+  // as file:// for local preview mode.
+  const musicSrc =
+    props.music.absPath.startsWith('http://') ||
+    props.music.absPath.startsWith('https://') ||
+    props.music.absPath.startsWith('file://')
+      ? props.music.absPath
+      : `file://${props.music.absPath}`;
 
   // Count chapter segments to derive chapterIndex (0-based) per card
   let chapterCount = 0;

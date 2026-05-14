@@ -38,8 +38,16 @@ interface ClipProps {
 export const Clip: React.FC<ClipProps> = ({ absPath, clipIndex }) => {
   const { playbackRate, muted } = getClipPlayback(clipIndex);
 
-  // Wrap the absolute path as a file:// URL for Remotion's OffthreadVideo
-  const src = absPath.startsWith('file://') ? absPath : `file://${absPath}`;
+  // Accept http://, https://, file://, or plain absolute paths.
+  // Plan 02-04's driver passes HTTP URLs (local file server) so the headless
+  // renderer can fetch the asset. Plain absolute paths are wrapped as file://
+  // for local Remotion Studio preview.
+  const src =
+    absPath.startsWith('http://') ||
+    absPath.startsWith('https://') ||
+    absPath.startsWith('file://')
+      ? absPath
+      : `file://${absPath}`;
 
   const gradeWrapperStyle: React.CSSProperties = {
     ...getCinematicGradeStyle(),
