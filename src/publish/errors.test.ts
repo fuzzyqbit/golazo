@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { OAuthError, TemplateError } from './errors.js';
+import { OAuthError, TemplateError, UploadError } from './errors.js';
 
 describe('OAuthError', () => {
   it('1. populates field, reason, remediation, and message correctly', () => {
@@ -73,5 +73,44 @@ describe('TemplateError', () => {
   it('8. err.name === "TemplateError"', () => {
     const err = new TemplateError({ field: 'game.scoreFor', reason: 'non-negative required', remediation: 'check manifest' });
     expect(err.name).toBe('TemplateError');
+  });
+});
+
+describe('UploadError', () => {
+  it('9. message format: "upload: <field>: <reason>. <remediation>"', () => {
+    const err = new UploadError({
+      field: 'videoId',
+      reason: 'response missing id',
+      remediation: 'inspect body',
+    });
+    expect(err.message).toBe('upload: videoId: response missing id. inspect body');
+    expect(err.field).toBe('videoId');
+    expect(err.reason).toBe('response missing id');
+    expect(err.remediation).toBe('inspect body');
+  });
+
+  it('10. instanceof UploadError and instanceof Error both true', () => {
+    const err = new UploadError({ field: 'episodePath', reason: 'file not found', remediation: "run 'golazo render'" });
+    expect(err).toBeInstanceOf(UploadError);
+    expect(err).toBeInstanceOf(Error);
+  });
+
+  it('11. toJSON() returns { name: "UploadError", field, reason, remediation }', () => {
+    const err = new UploadError({
+      field: 'thumbnailPath',
+      reason: 'file not found',
+      remediation: "run 'golazo render <folder>' first",
+    });
+    expect(err.toJSON()).toEqual({
+      name: 'UploadError',
+      field: 'thumbnailPath',
+      reason: 'file not found',
+      remediation: "run 'golazo render <folder>' first",
+    });
+  });
+
+  it('12. err.name === "UploadError"', () => {
+    const err = new UploadError({ field: 'videoId', reason: 'missing', remediation: 'inspect response' });
+    expect(err.name).toBe('UploadError');
   });
 });
