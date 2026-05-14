@@ -18,8 +18,8 @@
 
 ### Prepare
 
-- [ ] **PREP-01**: Pipeline parses folder name `YYYY-MM-DD_vs_<slug>_<for>-<against>` into `{date, opponent, scoreFor, scoreAgainst, result}`; malformed names fail loudly with the expected format echoed
-- [ ] **PREP-02**: Pipeline derives kid identity (`leo` / `mateo`) from the parent directory under `~/golazo/<kid>/...` and rejects unknown kids with the list of valid keys
+- [x] **PREP-01**: Pipeline parses folder name `YYYY-MM-DD_vs_<slug>_<for>-<against>` into `{date, opponent, scoreFor, scoreAgainst, result}`; malformed names fail loudly with the expected format echoed
+- [x] **PREP-02**: Pipeline derives kid identity (`leo` / `mateo`) from the parent directory under `~/golazo/<kid>/...` and rejects unknown kids with the list of valid keys
 - [ ] **PREP-03**: Pipeline discovers ordered clips by numeric filename prefix (`01-`, `02-`, ...); rejects folders with zero matching clips and lists skipped files
 - [ ] **PREP-04**: Pipeline probes each clip with `ffprobe` and records duration in the manifest; corrupt clips fail loudly by file name
 - [ ] **PREP-05**: Pipeline picks a music track deterministically from a curated YouTube Audio Library pool, seeded by `manifestHash` so re-renders are byte-stable
@@ -80,8 +80,8 @@
 | CLI-03 | Phase 3 | Pending |
 | CFG-01 | Phase 1 | Complete |
 | CFG-02 | Phase 1 | Complete |
-| PREP-01 | Phase 1 | Pending |
-| PREP-02 | Phase 1 | Pending |
+| PREP-01 | Phase 1 | Complete |
+| PREP-02 | Phase 1 | Complete |
 | PREP-03 | Phase 1 | Pending |
 | PREP-04 | Phase 1 | Pending |
 | PREP-05 | Phase 2 | Pending |
