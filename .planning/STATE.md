@@ -4,14 +4,14 @@ milestone: v1.0
 milestone_name: milestone
 status: executing
 stopped_at: Plan 02-01 complete; remotion/theme primitives + self-hosted fonts + tsconfig.check.json; 136 tests passing; Phase 2 Plan 1 of 4 complete
-last_updated: "2026-05-14T11:38:27Z"
-last_activity: 2026-05-14 -- Phase 02 Plan 01 complete (theme primitives)
+last_updated: "2026-05-14T11:50:46.557Z"
+last_activity: 2026-05-14
 progress:
   total_phases: 4
   completed_phases: 1
   total_plans: 9
-  completed_plans: 6
-  percent: 67
+  completed_plans: 7
+  percent: 78
 ---
 
 # Project State
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-05-13)
 ## Current Position
 
 Phase: 02 (Render Pipeline) — EXECUTING
-Plan: 2 of 4
-Status: Executing Phase 02
-Last activity: 2026-05-14 -- Phase 02 Plan 01 complete (theme primitives)
+Plan: 3 of 4
+Status: Ready to execute
+Last activity: 2026-05-14
 
-Progress: [███▒▒▒▒▒▒▒] 33% (Phase 1 of 4 complete, Phase 2 Plan 1/4 complete)
+Progress: [████████░░] 78%
 
 ## Performance Metrics
 
@@ -61,6 +61,7 @@ Progress: [███▒▒▒▒▒▒▒] 33% (Phase 1 of 4 complete, Phase 2 P
 | Phase 01-foundation-prepare-pipeline P04 | 7min 34s | 2 tasks | 14 files |
 | Phase 01-foundation-prepare-pipeline P05 | 12min 45s | 3 tasks | 9 files |
 | Phase 02-render-pipeline P01 | 6min 6s | 2 tasks | 14 files |
+| Phase 02-render-pipeline P02 | 7min 13s | 3 tasks | 14 files |
 
 ## Accumulated Context
 
@@ -105,6 +106,9 @@ Recent decisions affecting current work:
 - 02-01: getCinematicGradeStyle() filter: 'saturate(1.12) contrast(1.05) brightness(0.96)' — PINNED; Plans 03+04 must not change silently
 - 02-01: tsconfig.check.json extends base without mutating it; npm run typecheck covers src/ + remotion/ via --noEmit; base tsconfig.json rootDir:./src + outDir:./dist + include:["src/**/*"] UNCHANGED
 - 02-01: vitest.config.ts extended to include remotion/**/*.test.ts (Rule 3 auto-fix — runner was not covering remotion/ test files)
+- [Phase ?]: seed = sha256(manifestHash+':roll:'+r).slice(0,16)
+- [Phase ?]: manifest.music is a sibling of manifestHash, not in computeManifestHash input
+- [Phase ?]: deterministic longest-track selection when no track is long enough; pinned by picker test case 5
 
 ### Pending Todos
 
@@ -124,6 +128,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-05-14T11:38:27Z
+Last session: 2026-05-14T11:50:46.552Z
 Stopped at: Plan 02-01 complete; remotion/theme primitives + self-hosted fonts + tsconfig.check.json; 136 tests passing; Phase 2 Plan 1 of 4 complete
 Resume file: None

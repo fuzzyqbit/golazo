@@ -22,8 +22,8 @@
 - [x] **PREP-02**: Pipeline derives kid identity (`leo` / `mateo`) from the parent directory under `~/golazo/<kid>/...` and rejects unknown kids with the list of valid keys
 - [x] **PREP-03**: Pipeline discovers ordered clips by numeric filename prefix (`01-`, `02-`, ...); rejects folders with zero matching clips and lists skipped files
 - [x] **PREP-04**: Pipeline probes each clip with `ffprobe` and records duration in the manifest; corrupt clips fail loudly by file name
-- [ ] **PREP-05**: Pipeline picks a music track deterministically from a curated YouTube Audio Library pool, seeded by `manifestHash` so re-renders are byte-stable
-- [ ] **PREP-06**: Pipeline handles music vs episode length — trim+fade when track ≥ episode; deterministic re-roll for a longer track when shorter; crossfade two passes as final fallback with a stdout warning
+- [x] **PREP-05**: Pipeline picks a music track deterministically from a curated YouTube Audio Library pool, seeded by `manifestHash` so re-renders are byte-stable
+- [x] **PREP-06**: Pipeline handles music vs episode length — trim+fade when track ≥ episode; deterministic re-roll for a longer track when shorter; crossfade two passes as final fallback with a stdout warning
 - [x] **PREP-07**: Pipeline writes `<folder>/.golazo/manifest.json` whose `manifestHash` is sha256 over the sorted `(clipFile, clipSha256)` pairs plus the folder name (music and render metadata excluded), enabling stable cache invalidation
 
 ### Render
@@ -84,8 +84,8 @@
 | PREP-02 | Phase 1 | Complete |
 | PREP-03 | Phase 1 | Complete |
 | PREP-04 | Phase 1 | Complete |
-| PREP-05 | Phase 2 | Pending |
-| PREP-06 | Phase 2 | Pending |
+| PREP-05 | Phase 2 | Complete |
+| PREP-06 | Phase 2 | Complete |
 | PREP-07 | Phase 1 | Complete |
 | REN-01 | Phase 2 | Pending |
 | REN-02 | Phase 2 | Pending |
