@@ -37,7 +37,7 @@
 
 ### Publish
 
-- [ ] **PUB-01**: `publish` uploads `episode.mp4` via YouTube Data API v3 `videos.insert` with `privacyStatus: "unlisted"`, attaches the rendered thumbnail, and applies title/description templates from manifest + channel config
+- [x] **PUB-01**: `publish` uploads `episode.mp4` via YouTube Data API v3 `videos.insert` with `privacyStatus: "unlisted"`, attaches the rendered thumbnail, and applies title/description templates from manifest + channel config
 - [x] **PUB-02**: Title and description templates substitute `{Kid}`, `{Opponent}`, `{scoreFor}`, `{scoreAgainst}`, `{result}`, `{date}`, `{jersey}`, `{club}`, and `{source}` from manifest + channel data
 - [x] **PUB-03**: Opponent slug is pretty-printed via title-case + hyphen-to-space, with an acronym allow-list (`sc`, `fc`, `ac`) preserved upper-case
 - [x] **PUB-04**: OAuth tokens are stored per-kid at the path declared in `channels.yaml`; tokens refresh silently on use; refresh failures print a clear prompt to rerun `golazo auth <kid>`
@@ -93,7 +93,7 @@
 | REN-04 | Phase 2 | Complete |
 | REN-05 | Phase 2 | Complete |
 | REN-06 | Phase 2 | Complete |
-| PUB-01 | Phase 3 | Pending |
+| PUB-01 | Phase 3 | Complete |
 | PUB-02 | Phase 3 | Complete |
 | PUB-03 | Phase 3 | Complete |
 | PUB-04 | Phase 3 | Complete |
