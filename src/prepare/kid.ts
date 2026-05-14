@@ -52,7 +52,18 @@ export function resolveKidFromPath(
   const normalized = normalize(absoluteFolderPath).replace(trailingSepRe, '');
   const segments = normalized.split(sep).filter((s) => s.length > 0);
 
-  const golazoIdx = segments.indexOf(GOLAZO_SEGMENT);
+  // Use lastIndexOf rather than indexOf so paths that themselves live
+  // under a parent directory named `golazo` (e.g. the project's own
+  // checkout at `/Users/.../code/golazo/tests/fixtures/golazo/leo/...`,
+  // or any operator-side workspace that happens to nest one `golazo`
+  // inside another) resolve to the INNERMOST golazo. This is the
+  // semantic that matches operator intent: the closest enclosing
+  // `golazo/<kid>/<game-folder>/` triple is the one that owns the game
+  // folder. With first-occurrence semantics, the project-root `golazo`
+  // would shadow the fixture path and the kid would resolve to
+  // `tests`, which surfaced as a real verify-gate failure during Plan
+  // 05's integration smoke. See Plan 05 SUMMARY deviations.
+  const golazoIdx = segments.lastIndexOf(GOLAZO_SEGMENT);
   if (golazoIdx === -1 || golazoIdx >= segments.length - 1) {
     throw new KidPathError({
       folderPath: absoluteFolderPath,

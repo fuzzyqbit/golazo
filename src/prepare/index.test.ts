@@ -77,6 +77,12 @@ describe('runPrepare', () => {
         '2026-05-13_vs_united_3-1',
       );
       cpSync(FIXTURE_ABS, sandboxShared, { recursive: true });
+      // Defend against a leftover .golazo/ in the committed fixture (e.g.
+      // an operator ran the manual CLI smoke against the fixture
+      // earlier; the .golazo/ is gitignored but can exist locally).
+      // Copying it into the sandbox would short-circuit the first-run
+      // path; remove it before each test.
+      rmSync(join(sandboxShared, '.golazo'), { recursive: true, force: true });
     });
 
     afterEach(() => {
@@ -190,6 +196,12 @@ describe('runPrepare', () => {
       tmpHome = mkdtempSync(join(tmpdir(), 'golazo-prepare-case4-'));
       const sandbox = join(tmpHome, 'golazo', 'leo', '2026-05-13_vs_united_3-1');
       cpSync(FIXTURE_ABS, sandbox, { recursive: true });
+      // Defend against a leftover .golazo/ in the committed fixture (e.g.
+      // if an operator ran the manual CLI smoke against it earlier). The
+      // fixture's .golazo/ is gitignored, so it should never be checked
+      // in, but it can exist locally — and copying it into the sandbox
+      // would short-circuit the first-run path.
+      rmSync(join(sandbox, '.golazo'), { recursive: true, force: true });
 
       // Baseline: first run writes a manifest with the original hash.
       const baseline = await runPrepare({
@@ -233,6 +245,10 @@ describe('runPrepare', () => {
       const sandboxB = join(tmpHome, 'b', 'golazo', 'leo', '2026-05-13_vs_united_3-1');
       cpSync(FIXTURE_ABS, sandboxA, { recursive: true });
       cpSync(FIXTURE_ABS, sandboxB, { recursive: true });
+      // Strip any leftover .golazo/ copied from the source (see case 1
+      // describe block above for rationale).
+      rmSync(join(sandboxA, '.golazo'), { recursive: true, force: true });
+      rmSync(join(sandboxB, '.golazo'), { recursive: true, force: true });
 
       const a = await runPrepare({ folderPath: sandboxA, channelsPath: CHANNELS_PATH });
       const b = await runPrepare({ folderPath: sandboxB, channelsPath: CHANNELS_PATH });
@@ -243,6 +259,12 @@ describe('runPrepare', () => {
       tmpHome = mkdtempSync(join(tmpdir(), 'golazo-prepare-case6-'));
       const sandbox = join(tmpHome, 'golazo', 'leo', '2026-05-13_vs_united_3-1');
       cpSync(FIXTURE_ABS, sandbox, { recursive: true });
+      // Defend against a leftover .golazo/ in the committed fixture (e.g.
+      // if an operator ran the manual CLI smoke against it earlier). The
+      // fixture's .golazo/ is gitignored, so it should never be checked
+      // in, but it can exist locally — and copying it into the sandbox
+      // would short-circuit the first-run path.
+      rmSync(join(sandbox, '.golazo'), { recursive: true, force: true });
 
       writeFileSync(join(sandbox, '02-clip.mp4'), 'this is not a valid mp4', 'utf8');
 
@@ -299,10 +321,86 @@ describe('runPrepare', () => {
   });
 });
 
-// The `cli prepare integration` block (cases 11-13) lives at the bottom of
-// this file but is appended in Task 3 when the CLI handler is swapped from
-// the Plan 01 stub to the real runPrepare-calling implementation. Adding
-// the spawn-based cases together with the handler swap keeps every commit
-// in a green state — appending them now would RED the suite until Task 3
-// lands. (Documented as a deviation in 01-05-SUMMARY.md; the resulting
-// test file still covers all 13 cases by the end of Task 3.)
+/**
+ * CLI shell-out integration block (cases 11-13). Exercises the real CLI
+ * handler via `npx tsx src/cli/index.ts prepare ...` so the orchestrator
+ * is invoked end-to-end through commander, NOT through the in-process
+ * `runPrepare` import. No `pnpm build` step is required — tsx executes
+ * the TypeScript source directly. `HOME` is forwarded in the spawn env
+ * so the fixture's tilde-pathed oauth_token entries resolve.
+ *
+ * The orchestrator under test is identical across these three cases;
+ * what they verify is the CLI surface: argument parsing, success-line
+ * formatting, the `--force` flag, exit codes, and stderr routing.
+ *
+ * Each case clones the fixture into a fresh sandbox so the committed
+ * fixture bytes stay untouched and tests don't interfere with each
+ * other via shared `.golazo/manifest.json` state.
+ */
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
+
+const execFileAsync = promisify(execFile);
+
+describe('cli prepare integration (via npx tsx, no build dependency)', () => {
+  let tmpHome: string | null = null;
+  let sandbox = '';
+  const CLI_ENTRY = 'src/cli/index.ts';
+
+  beforeEach(() => {
+    tmpHome = mkdtempSync(join(tmpdir(), 'golazo-cli-prepare-'));
+    sandbox = join(tmpHome, 'golazo', 'leo', '2026-05-13_vs_united_3-1');
+    cpSync(FIXTURE_ABS, sandbox, { recursive: true });
+    // Strip any leftover .golazo/ copied from the source fixture (see
+    // case 1 describe block above for the same defensive cleanup).
+    rmSync(join(sandbox, '.golazo'), { recursive: true, force: true });
+  });
+
+  afterEach(() => {
+    if (tmpHome !== null) {
+      cleanup(tmpHome);
+      tmpHome = null;
+    }
+  });
+
+  /**
+   * Spawn the CLI with HOME stubbed to the repo root so the fixture's
+   * tilde-pathed channels.yaml entries resolve to the committed token
+   * files. Returns { stdout, stderr } from execFile.
+   */
+  async function runCli(args: string[]): Promise<{ stdout: string; stderr: string }> {
+    const { stdout, stderr } = await execFileAsync(
+      'npx',
+      ['tsx', CLI_ENTRY, 'prepare', ...args],
+      {
+        env: { ...process.env, HOME: REPO_ROOT },
+        cwd: REPO_ROOT,
+      },
+    );
+    return { stdout: stdout.toString(), stderr: stderr.toString() };
+  }
+
+  it('case 11: first invocation exits 0 and prints the manifest-written line', async () => {
+    const { stdout } = await runCli([sandbox, '--channels-config', CHANNELS_PATH]);
+    expect(stdout).toContain('manifest written to');
+    expect(stdout).toContain('3 clips');
+    expect(stdout).toContain('s total');
+  }, 30000);
+
+  it('case 12: second invocation on unchanged folder is a no-op', async () => {
+    await runCli([sandbox, '--channels-config', CHANNELS_PATH]);
+    const { stdout } = await runCli([sandbox, '--channels-config', CHANNELS_PATH]);
+    expect(stdout).toContain('manifest up to date (hash matches)');
+  }, 60000);
+
+  it('case 13: --force rewrites even when hash matches', async () => {
+    await runCli([sandbox, '--channels-config', CHANNELS_PATH]);
+    const { stdout } = await runCli([
+      sandbox,
+      '--channels-config',
+      CHANNELS_PATH,
+      '--force',
+    ]);
+    expect(stdout).toContain('force');
+  }, 60000);
+});

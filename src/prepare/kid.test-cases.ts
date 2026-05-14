@@ -234,4 +234,20 @@ export const KID_TEST_CASES: readonly KidTestCase[] = [
       messageContains: ['leo', 'mateo'],
     },
   },
+
+  // 11. NESTED golazo: when the absolute path contains MORE THAN ONE
+  //     `golazo` segment (e.g. the project's own checkout at
+  //     `/Users/.../code/golazo/tests/fixtures/golazo/leo/...`, or any
+  //     operator workspace that nests one golazo inside another), the
+  //     resolver picks the INNERMOST golazo. This case used to fail
+  //     before Plan 05's fix (resolveKidFromPath was using indexOf,
+  //     which picked the outermost golazo and shadowed the real kid).
+  //     The fix is `lastIndexOf` — see kid.ts for the rationale.
+  {
+    name: 'NESTED: path with two golazo segments resolves to the innermost (lastIndexOf semantics)',
+    tokenPaths: ['leo.token.json', 'mateo.token.json'],
+    folderPathBuilder: (tmpDir) =>
+      `${tmpDir}/golazo/outer/golazo/leo/2026-05-13_vs_united_3-1`,
+    expect: { kind: 'ok', value: 'leo' },
+  },
 ] as const;
