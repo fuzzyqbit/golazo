@@ -19,11 +19,16 @@
  * returns HTTP 403 with errors[0].reason === 'quotaExceeded'. Carries a
  * resumeAtHint (next UTC midnight) so the operator knows when to retry.
  *
+ * PublishError is thrown by runPublish (Plan 03-05) for orchestrator-level
+ * shape failures: missing manifest.json, missing episode.mp4, missing thumb.png,
+ * and corrupt publish.json on disk.
+ *
  * Message format mirrors ManifestError / RenderError:
  *   "oauth: <field>: <reason>. <remediation>"
  *   "template: <field>: <reason>. <remediation>"
  *   "upload: <field>: <reason>. <remediation>"
  *   "publish: quota: <reason>. Rerun after <resumeAtHint>."
+ *   "publish: <field>: <reason>. <remediation>"
  */
 
 // ---------------------------------------------------------------------------
@@ -270,6 +275,62 @@ export class QuotaExceededError extends Error {
       name: 'QuotaExceededError',
       reason: this.reason,
       resumeAtHint: this.resumeAtHint,
+    };
+  }
+}
+
+// ---------------------------------------------------------------------------
+// PublishError
+// ---------------------------------------------------------------------------
+
+/** Inputs to {@link PublishError}. */
+export interface PublishErrorInput {
+  /** Dotted field path or context label that failed. */
+  field: string;
+  /** Short reason for the failure. */
+  reason: string;
+  /** Operator-facing remediation hint. */
+  remediation: string;
+}
+
+/** Serialised representation of {@link PublishError} for structured logging. */
+export interface PublishErrorJson {
+  name: 'PublishError';
+  field: string;
+  reason: string;
+  remediation: string;
+}
+
+/**
+ * Thrown by Plan 03-05's `runPublish` orchestrator for shape failures:
+ *   - Missing `.golazo/manifest.json` (field: 'manifestPath')
+ *   - Missing `.golazo/episode.mp4`   (field: 'episodePath')
+ *   - Missing `.golazo/thumb.png`      (field: 'thumbnailPath')
+ *   - Corrupt `.golazo/publish.json`   (field: '(json)' or first failing zod path)
+ *
+ * Single-line message format `publish: <field>: <reason>. <remediation>`
+ * mirrors `OAuthError` / `TemplateError` / `UploadError` / `ManifestError`.
+ */
+export class PublishError extends Error {
+  public readonly field: string;
+  public readonly reason: string;
+  public readonly remediation: string;
+
+  constructor(input: PublishErrorInput) {
+    super(`publish: ${input.field}: ${input.reason}. ${input.remediation}`);
+    this.name = 'PublishError';
+    this.field = input.field;
+    this.reason = input.reason;
+    this.remediation = input.remediation;
+    Object.setPrototypeOf(this, PublishError.prototype);
+  }
+
+  toJSON(): PublishErrorJson {
+    return {
+      name: 'PublishError',
+      field: this.field,
+      reason: this.reason,
+      remediation: this.remediation,
     };
   }
 }

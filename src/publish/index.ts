@@ -35,5 +35,17 @@ export {
   DEFAULT_RETRY_DELAYS_MS,
 } from './retry.js';
 export type { ErrorClassification, WithRetryOpts } from './retry.js';
-export { QuotaExceededError } from './errors.js';
-export type { QuotaExceededErrorInput, QuotaExceededErrorJson } from './errors.js';
+export { QuotaExceededError, PublishError } from './errors.js';
+export type {
+  QuotaExceededErrorInput,
+  QuotaExceededErrorJson,
+  PublishErrorInput,
+  PublishErrorJson,
+} from './errors.js';
+export {
+  publishRecordSchema,
+  readPublishRecord,
+  writePublishRecord,
+  PUBLISH_RECORD_FILE_NAME,
+} from './publishRecord.js';
+export type { PublishRecordDoc } from './publishRecord.js';

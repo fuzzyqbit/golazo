@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { OAuthError, TemplateError, UploadError, QuotaExceededError } from './errors.js';
+import { OAuthError, TemplateError, UploadError, QuotaExceededError, PublishError } from './errors.js';
 
 describe('OAuthError', () => {
   it('1. populates field, reason, remediation, and message correctly', () => {
@@ -148,5 +148,54 @@ describe('QuotaExceededError', () => {
       reason: 'YouTube daily upload quota exhausted',
       resumeAtHint: '2026-05-14T00:00:00.000Z',
     });
+  });
+});
+
+describe('PublishError', () => {
+  it('17. message format: "publish: <field>: <reason>. <remediation>"', () => {
+    const err = new PublishError({
+      field: 'manifestPath',
+      reason: 'manifest not found',
+      remediation: "run 'golazo prepare <folder>' first",
+    });
+    expect(err.message).toBe(
+      "publish: manifestPath: manifest not found. run 'golazo prepare <folder>' first",
+    );
+    expect(err.field).toBe('manifestPath');
+    expect(err.reason).toBe('manifest not found');
+    expect(err.remediation).toBe("run 'golazo prepare <folder>' first");
+  });
+
+  it('18. instanceof PublishError and instanceof Error both true', () => {
+    const err = new PublishError({
+      field: 'episodePath',
+      reason: 'episode.mp4 not found',
+      remediation: "run 'golazo render <folder>' first",
+    });
+    expect(err).toBeInstanceOf(PublishError);
+    expect(err).toBeInstanceOf(Error);
+  });
+
+  it('19. toJSON() returns { name: "PublishError", field, reason, remediation }', () => {
+    const err = new PublishError({
+      field: 'thumbnailPath',
+      reason: 'thumb.png not found',
+      remediation: "run 'golazo render <folder>' first",
+    });
+    expect(err.toJSON()).toEqual({
+      name: 'PublishError',
+      field: 'thumbnailPath',
+      reason: 'thumb.png not found',
+      remediation: "run 'golazo render <folder>' first",
+    });
+  });
+
+  it('20. err.name === "PublishError"', () => {
+    const err = new PublishError({
+      field: '(json)',
+      reason: 'failed to parse',
+      remediation: "delete the file and rerun 'golazo publish'",
+    });
+    expect(err.name).toBe('PublishError');
   });
 });
