@@ -1,10 +1,10 @@
 /**
- * Custom error classes for the prepare pipeline. Mirrors the
- * `src/config/errors.ts` pattern: each class carries structured fields on
- * the instance + a `toJSON()` method, and the `message` is a single line
- * naming the offending input, the reason, and a remediation hint.
+ * Custom error classes for the prepare pipeline and render subsystem.
+ * Mirrors the `src/config/errors.ts` pattern: each class carries structured
+ * fields on the instance + a `toJSON()` method, and the `message` is a
+ * single line naming the offending input, the reason, and a remediation hint.
  *
- * Five classes:
+ * Seven classes:
  *  - {@link FilenameError} — thrown by `parseFilename` when a folder name
  *    does not match the canonical convention or the date is not a real
  *    calendar date or a score component is > 99.
@@ -23,6 +23,11 @@
  *    array, malformed on-disk manifest.json, zod validation failure on the
  *    parsed object). Carries the field that failed, the reason, and a
  *    remediation hint.
+ *  - {@link MusicPoolError} — thrown by `loadMusicPool` (Plan 02-02) when
+ *    `remotion/assets/music/index.json` is absent, malformed, fails zod
+ *    schema validation, or declares a file that is not present on disk.
+ *  - {@link MusicPickError} — thrown by `pickTrack` (Plan 02-02) when the
+ *    music pool is empty and no track can be selected.
  */
 
 /** Inputs to {@link FilenameError}. */
@@ -267,6 +272,101 @@ export class ManifestError extends Error {
     return {
       name: 'ManifestError',
       field: this.field,
+      reason: this.reason,
+      remediation: this.remediation,
+    };
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Music subsystem errors (Plan 02-02)
+// ---------------------------------------------------------------------------
+
+/** Inputs to {@link MusicPoolError}. */
+export interface MusicPoolErrorInput {
+  /**
+   * Dotted field path or context label that failed
+   * (e.g. `indexPath`, `pool`, `pool[0].file`).
+   */
+  field: string;
+  /** Short reason for the failure. */
+  reason: string;
+  /** Operator-facing remediation hint. */
+  remediation: string;
+}
+
+/** Serialised representation of {@link MusicPoolError} for structured logging. */
+export interface MusicPoolErrorJson {
+  name: 'MusicPoolError';
+  field: string;
+  reason: string;
+  remediation: string;
+}
+
+/**
+ * Thrown by `loadMusicPool` when `remotion/assets/music/index.json` is
+ * absent, not valid JSON, fails zod schema validation, or declares a file
+ * that is not present on disk. Single-line message format
+ * `music pool: <field>: <reason>. <remediation>` mirrors `ManifestError`.
+ */
+export class MusicPoolError extends Error {
+  public readonly field: string;
+  public readonly reason: string;
+  public readonly remediation: string;
+
+  constructor(input: MusicPoolErrorInput) {
+    super(`music pool: ${input.field}: ${input.reason}. ${input.remediation}`);
+    this.name = 'MusicPoolError';
+    this.field = input.field;
+    this.reason = input.reason;
+    this.remediation = input.remediation;
+    Object.setPrototypeOf(this, MusicPoolError.prototype);
+  }
+
+  toJSON(): MusicPoolErrorJson {
+    return {
+      name: 'MusicPoolError',
+      field: this.field,
+      reason: this.reason,
+      remediation: this.remediation,
+    };
+  }
+}
+
+/** Inputs to {@link MusicPickError}. */
+export interface MusicPickErrorInput {
+  /** Short reason why track selection failed. */
+  reason: string;
+  /** Operator-facing remediation hint. */
+  remediation: string;
+}
+
+/** Serialised representation of {@link MusicPickError} for structured logging. */
+export interface MusicPickErrorJson {
+  name: 'MusicPickError';
+  reason: string;
+  remediation: string;
+}
+
+/**
+ * Thrown by `pickTrack` when the music pool is empty and no track can be
+ * selected. Single-line message format `music pick: <reason>. <remediation>`.
+ */
+export class MusicPickError extends Error {
+  public readonly reason: string;
+  public readonly remediation: string;
+
+  constructor(input: MusicPickErrorInput) {
+    super(`music pick: ${input.reason}. ${input.remediation}`);
+    this.name = 'MusicPickError';
+    this.reason = input.reason;
+    this.remediation = input.remediation;
+    Object.setPrototypeOf(this, MusicPickError.prototype);
+  }
+
+  toJSON(): MusicPickErrorJson {
+    return {
+      name: 'MusicPickError',
       reason: this.reason,
       remediation: this.remediation,
     };
