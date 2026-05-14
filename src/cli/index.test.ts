@@ -47,22 +47,23 @@ describe('cli/index — commander wiring', () => {
 
   // Plan 02-04 replaced the render stub with a real handler.
   // Plan 03-01 replaced the auth stub with a real handler.
-  // The remaining stub commands (publish, all) still surface "not yet implemented".
-  it.each([
-    ['publish', './nope'],
-    ['all', './nope'],
-  ])('main() surfaces "%s: not yet implemented" with exit code 2', async (cmdName, arg) => {
-    let caught: unknown;
-    try {
-      await main(['node', 'golazo', cmdName, arg]);
-    } catch (err) {
-      caught = err;
-    }
-    expect(caught).toBeInstanceOf(CommanderError);
-    const cmdErr = caught as CommanderError;
-    expect(cmdErr.exitCode).toBe(2);
-    expect(cmdErr.message).toContain(`${cmdName}: not yet implemented`);
-  });
+  // Plan 03-05 replaced the publish stub with a real handler.
+  // The remaining stub command (all) still surfaces "not yet implemented".
+  it.each([['all', './nope']])(
+    'main() surfaces "%s: not yet implemented" with exit code 2',
+    async (cmdName, arg) => {
+      let caught: unknown;
+      try {
+        await main(['node', 'golazo', cmdName, arg]);
+      } catch (err) {
+        caught = err;
+      }
+      expect(caught).toBeInstanceOf(CommanderError);
+      const cmdErr = caught as CommanderError;
+      expect(cmdErr.exitCode).toBe(2);
+      expect(cmdErr.message).toContain(`${cmdName}: not yet implemented`);
+    },
+  );
 
   it('registers render with an action handler bound (Plan 02-04 replaced stub)', () => {
     const renderCmd = program.commands.find((c) => c.name() === 'render');
@@ -75,5 +76,11 @@ describe('cli/index — commander wiring', () => {
     const authCmd = program.commands.find((c) => c.name() === 'auth');
     expect(authCmd).toBeDefined();
     expect(typeof (authCmd as unknown as { _actionHandler: unknown })._actionHandler).toBe('function');
+  });
+
+  it('registers publish command with an action handler (Plan 03-05 replaced stub)', () => {
+    const publishCmd = program.commands.find((c) => c.name() === 'publish');
+    expect(publishCmd).toBeDefined();
+    expect(typeof (publishCmd as unknown as { _actionHandler: unknown })._actionHandler).toBe('function');
   });
 });
