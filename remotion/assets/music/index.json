@@ -1,0 +1,8 @@
+[
+  { "file": "atmos-1.mp3", "title": "Atmos 1 (test tone)", "durationSec": 200.072, "mood": "atmos" },
+  { "file": "atmos-2.mp3", "title": "Atmos 2 (test tone)", "durationSec": 60.056, "mood": "atmos" },
+  { "file": "atmos-3.mp3", "title": "Atmos 3 (test tone)", "durationSec": 240.065, "mood": "atmos" },
+  { "file": "atmos-4.mp3", "title": "Atmos 4 (test tone)", "durationSec": 30.067, "mood": "driving" },
+  { "file": "atmos-5.mp3", "title": "Atmos 5 (test tone)", "durationSec": 180.062, "mood": "uplift" },
+  { "file": "atmos-6.mp3", "title": "Atmos 6 (test tone)", "durationSec": 8.072, "mood": "tense" }
+]
