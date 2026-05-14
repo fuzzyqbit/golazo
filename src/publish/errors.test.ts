@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { OAuthError, TemplateError, UploadError } from './errors.js';
+import { OAuthError, TemplateError, UploadError, QuotaExceededError } from './errors.js';
 
 describe('OAuthError', () => {
   it('1. populates field, reason, remediation, and message correctly', () => {
@@ -112,5 +112,41 @@ describe('UploadError', () => {
   it('12. err.name === "UploadError"', () => {
     const err = new UploadError({ field: 'videoId', reason: 'missing', remediation: 'inspect response' });
     expect(err.name).toBe('UploadError');
+  });
+});
+
+describe('QuotaExceededError', () => {
+  it('13. default message starts with "publish: quota: YouTube daily upload quota exhausted. Rerun after " and ends with "Z."', () => {
+    const err = new QuotaExceededError();
+    expect(err.message).toMatch(
+      /^publish: quota: YouTube daily upload quota exhausted\. Rerun after .+Z\.$/,
+    );
+  });
+
+  it('14. custom reason + resumeAtHint: message matches expected format', () => {
+    const err = new QuotaExceededError({
+      reason: 'custom',
+      resumeAtHint: '2026-05-14T08:00:00.000Z',
+    });
+    expect(err.message).toBe('publish: quota: custom. Rerun after 2026-05-14T08:00:00.000Z.');
+  });
+
+  it('15. instanceof QuotaExceededError AND instanceof Error both true', () => {
+    const err = new QuotaExceededError();
+    expect(err).toBeInstanceOf(QuotaExceededError);
+    expect(err).toBeInstanceOf(Error);
+  });
+
+  it('16. err.name === "QuotaExceededError"; toJSON() returns { name, reason, resumeAtHint }', () => {
+    const err = new QuotaExceededError({
+      reason: 'YouTube daily upload quota exhausted',
+      resumeAtHint: '2026-05-14T00:00:00.000Z',
+    });
+    expect(err.name).toBe('QuotaExceededError');
+    expect(err.toJSON()).toEqual({
+      name: 'QuotaExceededError',
+      reason: 'YouTube daily upload quota exhausted',
+      resumeAtHint: '2026-05-14T00:00:00.000Z',
+    });
   });
 });

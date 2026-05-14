@@ -28,3 +28,12 @@ export {
   PRIVACY_STATUS,
 } from './uploader.js';
 export type { UploadEpisodeArgs, PublishRecord } from './uploader.js';
+export {
+  withRetry,
+  publishWithRetry,
+  classifyError,
+  DEFAULT_RETRY_DELAYS_MS,
+} from './retry.js';
+export type { ErrorClassification, WithRetryOpts } from './retry.js';
+export { QuotaExceededError } from './errors.js';
+export type { QuotaExceededErrorInput, QuotaExceededErrorJson } from './errors.js';

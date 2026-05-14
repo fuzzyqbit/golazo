@@ -15,11 +15,36 @@
  *  2. Missing thumbnail file on disk (field: 'thumbnailPath')
  *  3. YouTube response missing video id (field: 'videoId')
  *
+ * QuotaExceededError is thrown by withRetry (Plan 03-04) when the YouTube API
+ * returns HTTP 403 with errors[0].reason === 'quotaExceeded'. Carries a
+ * resumeAtHint (next UTC midnight) so the operator knows when to retry.
+ *
  * Message format mirrors ManifestError / RenderError:
  *   "oauth: <field>: <reason>. <remediation>"
  *   "template: <field>: <reason>. <remediation>"
  *   "upload: <field>: <reason>. <remediation>"
+ *   "publish: quota: <reason>. Rerun after <resumeAtHint>."
  */
+
+// ---------------------------------------------------------------------------
+// Internal helper: next UTC midnight from a given Date
+// ---------------------------------------------------------------------------
+
+/**
+ * Returns the Date at the next 00:00:00.000 UTC after `now`.
+ * If `now` is exactly at midnight UTC, returns the NEXT midnight (not the same).
+ *
+ * NOTE: YouTube's actual daily quota resets at midnight Pacific Time (PST = 08:00 UTC,
+ * PDT = 07:00 UTC). This function returns next UTC midnight as a conservative estimate —
+ * the operator may need to wait an additional few hours in the worst case. Plan 03-05
+ * operator docs should document this timezone reality.
+ */
+function computeDefaultResumeHint(): string {
+  const now = new Date();
+  return new Date(
+    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, 0, 0, 0, 0),
+  ).toISOString();
+}
 
 /** Inputs to {@link OAuthError}. */
 export interface OAuthErrorInput {
@@ -175,6 +200,76 @@ export class UploadError extends Error {
       field: this.field,
       reason: this.reason,
       remediation: this.remediation,
+    };
+  }
+}
+
+// ---------------------------------------------------------------------------
+// QuotaExceededError
+// ---------------------------------------------------------------------------
+
+/** Inputs to {@link QuotaExceededError}. */
+export interface QuotaExceededErrorInput {
+  /**
+   * Operator-friendly reason.
+   * Defaults to 'YouTube daily upload quota exhausted'.
+   */
+  reason?: string;
+  /**
+   * ISO 8601 UTC timestamp of the next quota reset.
+   * Defaults to the next UTC midnight (computed from clock at construction time).
+   */
+  resumeAtHint?: string;
+  /** Underlying error (the GaxiosError from googleapis). For debugging. */
+  cause?: unknown;
+}
+
+/** Serialised representation of {@link QuotaExceededError} for structured logging. */
+export interface QuotaExceededErrorJson {
+  name: 'QuotaExceededError';
+  reason: string;
+  resumeAtHint: string;
+}
+
+/**
+ * Thrown by Plan 03-04's `withRetry` when the YouTube API returns HTTP 403
+ * with `errors[0].reason === 'quotaExceeded'`. This is not a transient error
+ * and must NOT be retried — the quota resets daily.
+ *
+ * Single-line message format:
+ *   "publish: quota: <reason>. Rerun after <resumeAtHint>."
+ *
+ * Plan 03-05's CLI handler branches on `instanceof QuotaExceededError` to
+ * display the "rerun tomorrow" remediation message.
+ *
+ * NOTE on timezone: YouTube's quota resets at midnight Pacific Time
+ * (08:00 UTC under PST, 07:00 UTC under PDT). The `resumeAtHint` is the next
+ * UTC midnight — a conservative estimate. Operators may have to wait an
+ * additional few hours in the worst case.
+ */
+export class QuotaExceededError extends Error {
+  public readonly reason: string;
+  public readonly resumeAtHint: string;
+
+  constructor(input: QuotaExceededErrorInput = {}) {
+    const reason = input.reason ?? 'YouTube daily upload quota exhausted';
+    const resumeAtHint = input.resumeAtHint ?? computeDefaultResumeHint();
+    super(`publish: quota: ${reason}. Rerun after ${resumeAtHint}.`);
+    this.name = 'QuotaExceededError';
+    this.reason = reason;
+    this.resumeAtHint = resumeAtHint;
+    if (input.cause !== undefined) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (this as any).cause = input.cause;
+    }
+    Object.setPrototypeOf(this, QuotaExceededError.prototype);
+  }
+
+  toJSON(): QuotaExceededErrorJson {
+    return {
+      name: 'QuotaExceededError',
+      reason: this.reason,
+      resumeAtHint: this.resumeAtHint,
     };
   }
 }
