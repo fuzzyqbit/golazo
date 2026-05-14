@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: in_progress
-stopped_at: Phase 2 planned (4 plans, 3 waves); revised once by plan-checker. Ready for /gsd-execute-phase 02 starting with Wave 1 (02-01 theme + 02-02 music in parallel).
-last_updated: "2026-05-13T22:30:00.000Z"
-last_activity: 2026-05-13 -- Phase 02 planned by gsd-planner; revision pass cleared 3 plan-checker warnings
+status: executing
+stopped_at: Plan 02-01 complete; remotion/theme primitives + self-hosted fonts + tsconfig.check.json; 136 tests passing; Phase 2 Plan 1 of 4 complete
+last_updated: "2026-05-14T11:38:27Z"
+last_activity: 2026-05-14 -- Phase 02 Plan 01 complete (theme primitives)
 progress:
   total_phases: 4
   completed_phases: 1
   total_plans: 9
-  completed_plans: 5
-  percent: 25
+  completed_plans: 6
+  percent: 67
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-13)
 
 **Core value:** Drop a folder of clips on disk, get a cinematic per-game highlight episode uploaded to the right YouTube channel — minimal hands-on time per game even at 5+ games/week.
-**Current focus:** Phase 02 — Render Pipeline (planned, not started)
+**Current focus:** Phase 02 — Render Pipeline
 
 ## Current Position
 
-Phase: 02 — Render Pipeline (planned)
-Plan: 0 of 4 (Wave 1: 02-01 theme + 02-02 music — parallel; Wave 2: 02-03 compositions; Wave 3: 02-04 render driver + CLI swap)
-Status: Phase 02 plans written and verified; ready for execute-phase
-Last activity: 2026-05-13 -- Phase 02 planned by gsd-planner; revision pass cleared 3 plan-checker warnings
+Phase: 02 (Render Pipeline) — EXECUTING
+Plan: 2 of 4
+Status: Executing Phase 02
+Last activity: 2026-05-14 -- Phase 02 Plan 01 complete (theme primitives)
 
-Progress: [██▒▒▒▒▒▒▒▒] 25% (Phase 1 of 4 complete)
+Progress: [███▒▒▒▒▒▒▒] 33% (Phase 1 of 4 complete, Phase 2 Plan 1/4 complete)
 
 ## Performance Metrics
 
@@ -45,14 +45,14 @@ Progress: [██▒▒▒▒▒▒▒▒] 25% (Phase 1 of 4 complete)
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 1. Foundation & Prepare Pipeline | 4 | 27 min 32 s | 6 min 53 s |
-| 2. Render Pipeline | 0 | — | — |
+| 2. Render Pipeline | 1 | 6 min 6 s | 6 min 6 s |
 | 3. Publish Pipeline | 0 | — | — |
 | 4. Convenience & QA Polish | 0 | — | — |
 
 **Recent Trend:**
 
-- Last 5 plans: 01-01 (7 min), 01-02 (8 min 27 s), 01-03 (4 min 31 s), 01-04 (7 min 34 s)
-- Trend: steady; 01-04 added two atomic commits (Task 1 TDD + Task 2 fixture infra) plus four auto-fixed deviations (1 grep-gate compat, 1 ESLint flat-config, 2 `.gitignore` augmentations for fixture binaries + `.npm/` cache)
+- Last 5 plans: 01-02 (8 min 27 s), 01-03 (4 min 31 s), 01-04 (7 min 34 s), 01-05 (12 min 45 s), 02-01 (6 min 6 s)
+- Trend: steady; 02-01 added 2 atomic commits (font assets + theme/tests) plus 1 auto-fixed deviation (vitest.config.ts include for remotion/)
 
 *Updated after each plan completion*
 | Plan | Duration | Tasks | Files |
@@ -60,6 +60,7 @@ Progress: [██▒▒▒▒▒▒▒▒] 25% (Phase 1 of 4 complete)
 | 01-foundation-prepare-pipeline P03 | 4min 31s | 2 tasks | 8 files |
 | Phase 01-foundation-prepare-pipeline P04 | 7min 34s | 2 tasks | 14 files |
 | Phase 01-foundation-prepare-pipeline P05 | 12min 45s | 3 tasks | 9 files |
+| Phase 02-render-pipeline P01 | 6min 6s | 2 tasks | 14 files |
 
 ## Accumulated Context
 
@@ -99,6 +100,11 @@ Recent decisions affecting current work:
 - [Phase ?]: 01-05: case 4 CHANGED CONTENT uses appendFileSync not cpSync(03,02) - 3 committed fixture clips are byte-identical; appendFileSync preserves mp4 MOOV atom so probeDuration succeeds AND sha256 changes, exercising the hash-changed branch distinctly from case 6's ProbeError path
 - [Phase ?]: 01-05: runPrepare step order pins probe+hash BEFORE the existing-manifest hash compare so corrupt clips short-circuit to ProbeError, never reaching the hash-changed branch
 - [Phase ?]: 01-05: CLI shell-out integration tests via promisify(execFile)('npx', ['tsx', 'src/cli/index.ts', ...]) + HOME forwarded in spawn env - no pnpm build dependency; reusable pattern for Phase 2/3/4
+- 02-01: @remotion/fonts v4.0.461 uses loadFont() (single face per call) — not a plural loadFonts(); three calls in Promise.all() for Cormorant Garamond Italic + Inter Regular + Inter Bold
+- 02-01: Font URL resolution via new URL('../assets/fonts/<file>', import.meta.url).href — staticFile() only resolves public/ in Remotion; import.meta.url resolved by Remotion's webpack bundler at bundle time
+- 02-01: getCinematicGradeStyle() filter: 'saturate(1.12) contrast(1.05) brightness(0.96)' — PINNED; Plans 03+04 must not change silently
+- 02-01: tsconfig.check.json extends base without mutating it; npm run typecheck covers src/ + remotion/ via --noEmit; base tsconfig.json rootDir:./src + outDir:./dist + include:["src/**/*"] UNCHANGED
+- 02-01: vitest.config.ts extended to include remotion/**/*.test.ts (Rule 3 auto-fix — runner was not covering remotion/ test files)
 
 ### Pending Todos
 
@@ -118,6 +124,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-05-14T02:08:25.984Z
-Stopped at: Plan 01-05 complete; Phase 1 feature-complete (CLI-01 + PREP-07 closed, all 8 phase requirements complete) - ready for gsd-verify-work / gsd-verifier against Phase 1, then transition to Phase 2 (Render Pipeline)
+Last session: 2026-05-14T11:38:27Z
+Stopped at: Plan 02-01 complete; remotion/theme primitives + self-hosted fonts + tsconfig.check.json; 136 tests passing; Phase 2 Plan 1 of 4 complete
 Resume file: None
