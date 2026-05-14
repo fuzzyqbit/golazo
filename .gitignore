@@ -9,3 +9,18 @@ channels.yaml
 *.log
 .env*
 tests/fixtures/*.mp4
+# npm puts its log + update-notifier cache here when HOME is stubbed to
+# the repo root (see tests/fixtures/golazo/README.md — vitest / manual
+# CLI smokes use HOME="$PWD"). Not a build artifact; safe to ignore.
+.npm/
+
+# Allow committed integration-fixture binaries — see
+# tests/fixtures/golazo/README.md and scripts/build-fixtures.sh. The
+# broad rules above cover operator-side generated artifacts; these `!`
+# exceptions whitelist the version-controlled fixture assets so they
+# survive `git add`. The fixture's channels.yaml is also whitelisted
+# because the broad `channels.yaml` rule above is aimed at the operator's
+# real config at the repo root.
+!tests/fixtures/golazo/channels.yaml
+!tests/fixtures/golazo/leo/2026-05-13_vs_united_3-1/*.mp4
+!tests/fixtures/golazo/*.token.json
