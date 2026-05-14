@@ -19,3 +19,25 @@ Config.setOverwriteOutput(true);
 
 // Point the CLI at the Remotion entrypoint
 Config.setEntryPoint('remotion/Root.tsx');
+
+// ---------------------------------------------------------------------------
+// Webpack override: support NodeNext-style .js imports resolving to .ts files
+//
+// TypeScript with "moduleResolution": "NodeNext" requires explicit .js
+// extensions in import specifiers (e.g. `import from './foo.js'`), but
+// Remotion's webpack bundler does not remap `.js` -> `.ts` by default.
+// This override adds a resolve plugin that strips the `.js` suffix so webpack
+// can find the actual `.ts` / `.tsx` source file.
+// ---------------------------------------------------------------------------
+Config.overrideWebpackConfig((config) => {
+  return {
+    ...config,
+    resolve: {
+      ...config.resolve,
+      extensionAlias: {
+        '.js': ['.ts', '.tsx', '.js'],
+        '.jsx': ['.tsx', '.jsx'],
+      },
+    },
+  };
+});
