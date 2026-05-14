@@ -24,3 +24,11 @@ tests/fixtures/*.mp4
 !tests/fixtures/golazo/channels.yaml
 !tests/fixtures/golazo/leo/2026-05-13_vs_united_3-1/*.mp4
 !tests/fixtures/golazo/*.token.json
+
+# Allow committed Remotion font assets — see remotion/assets/fonts/README.md
+!remotion/assets/fonts/*.ttf
+
+# Allow committed Remotion music fixtures — see remotion/assets/music/README.md
+# (Plan 02-02 commits the .mp3 pool + index.json under remotion/assets/music/)
+!remotion/assets/music/*.mp3
+!remotion/assets/music/index.json
