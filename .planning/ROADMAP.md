@@ -47,7 +47,12 @@ Plans:
   3. The rendered `Episode` plays `TitleCard → (ChapterCard → Clip)× → Outro`, first clip at 0.5× rate with original audio muted, music ducked under match audio elsewhere, and the cinematic grade + Cormorant Garamond Italic / Inter typography visible in the output
   4. ChapterCard rhythm visibly differs between a ≤5-clip fixture (card before every clip) and a >5-clip fixture (card every 3 clips)
   5. Re-running `render` on an unchanged manifest skips work in under a second; `--force` re-renders and overwrites `.golazo/episode.mp4`
-**Plans**: TBD
+**Plans**: 4 plans
+Plans:
+- [ ] 02-01-PLAN.md — Theme tokens + cinematic grade/vignette helpers + self-hosted fonts under `remotion/assets/fonts/` (REN-03)
+- [ ] 02-02-PLAN.md — Music pool loader + deterministic seeded music picker (trim-fade / re-roll / crossfade) + additive optional `music` block on the manifest schema (PREP-05, PREP-06)
+- [ ] 02-03-PLAN.md — Remotion compositions: Root + Episode + Thumbnail + per-segment components + pure-logic timeline + chapter rhythm + inputProps schema (REN-01, REN-02, REN-04, REN-05)
+- [ ] 02-04-PLAN.md — Render driver (bundle + selectComposition + renderMedia + renderStill) + additive optional `render` block on the manifest schema + real CLI handler swap + CLI shell-out integration tests (REN-06)
 **UI hint**: yes
 
 ### Phase 3: Publish Pipeline
@@ -82,7 +87,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & Prepare Pipeline | 5/5 | Complete | 2026-05-14 |
-| 2. Render Pipeline | 0/TBD | Not started | - |
+| 2. Render Pipeline | 0/4 | Planned | - |
 | 3. Publish Pipeline | 0/TBD | Not started | - |
 | 4. Convenience & QA Polish | 0/TBD | Not started | - |
 
@@ -91,3 +96,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 *Phase 1 planned: 2026-05-13 by gsd-planner (4 plans, 3 waves)*
 *Phase 1 revised: 2026-05-13 by gsd-planner (5 plans, 5 waves — Plan 03 moved to wave 3 with depends_on [01,02]; Plan 04 split into 04 (leaf modules + fixtures) and 05 (manifest + orchestrator + CLI + integration); see 01-04 and 01-05 PLANs)*
 *Granularity: coarse (4 phases) · Mode: standard (horizontal layers) · Coverage: 28/28 v1 requirements mapped*
+*Phase 2 planned: 2026-05-13 by gsd-planner (4 plans, 3 waves — Wave 1: 02-01 theme + 02-02 music in parallel; Wave 2: 02-03 compositions; Wave 3: 02-04 render driver + CLI swap)*
