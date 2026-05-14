@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
-stopped_at: Plan 02-03 complete; Remotion compositions + pure-logic timeline/rhythm/ducking modules; 188 tests passing; Episode + Thumbnail registered via npx remotion compositions
-last_updated: "2026-05-14T12:03:58.272Z"
+status: verifying
+stopped_at: Plan 02-01 complete; remotion/theme primitives + self-hosted fonts + tsconfig.check.json; 136 tests passing; Phase 2 Plan 1 of 4 complete
+last_updated: "2026-05-14T12:28:43.074Z"
 last_activity: 2026-05-14
 progress:
   total_phases: 4
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 9
-  completed_plans: 8
-  percent: 89
+  completed_plans: 9
+  percent: 100
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-13)
 
 **Core value:** Drop a folder of clips on disk, get a cinematic per-game highlight episode uploaded to the right YouTube channel — minimal hands-on time per game even at 5+ games/week.
-**Current focus:** Phase 02 — Render Pipeline
+**Current focus:** Phase 03 — Publish Pipeline
 
 ## Current Position
 
-Phase: 02 (Render Pipeline) — EXECUTING
+Phase: 02 (Render Pipeline) — COMPLETE
 Plan: 4 of 4
-Status: Ready to execute
+Status: Phase 2 complete — ready for Phase 3
 Last activity: 2026-05-14
 
-Progress: [█████████░] 89%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
@@ -63,6 +63,7 @@ Progress: [█████████░] 89%
 | Phase 02-render-pipeline P01 | 6min 6s | 2 tasks | 14 files |
 | Phase 02-render-pipeline P02 | 7min 13s | 3 tasks | 14 files |
 | Phase 02-render-pipeline P03 | 9min 30s | 2 tasks | 17 files |
+| Phase 02-render-pipeline P04 | 18min | 3 tasks | 13 files |
 
 ## Accumulated Context
 
@@ -114,6 +115,11 @@ Recent decisions affecting current work:
 - 02-03: musicVolumeAtFrame step-function in musicVolume.ts (pure, no React/Remotion) — Episode.tsx imports, never redefines inline (Finding-3 fix)
 - 02-03: webpack extensionAlias .js->[.ts,.tsx,.js] in remotion.config.ts — NodeNext .js imports compatibility with Remotion webpack bundler
 - 02-03: Music volume boundary ramp deferred — step-function ships; fps parameter reserved in musicVolumeAtFrame signature for future ramp
+- 02-04: Remotion headless renderer requires HTTP URLs — local file server on port 0 (127.0.0.1) serves clips/music during render; file:// URLs unsupported by Node http.get() in headless Chrome
+- 02-04: render block is TOP-LEVEL sibling of manifestHash (not parent); PREP-07 hash invariant preserved end-to-end; case 21 + driver case 7 assert this
+- 02-04: hash-changed detection when episode.mp4 exists but manifest.render absent — existsSync(episodePath) check distinguishes first-render from hash-changed after runPrepare re-run
+- 02-04: CLI output strings frozen for Phase 3 chain parsing: episode rendered / render up to date / episode re-rendered (content changed) / episode re-rendered (force)
+- 02-04: prettyOpponent at src/render/opponentPretty.ts — Phase 3 PUB-03 imports same helper; may move to src/shared/ in Phase 3
 
 ### Pending Todos
 
@@ -133,6 +139,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-05-14T12:03:58.267Z
-Stopped at: Plan 02-01 complete; remotion/theme primitives + self-hosted fonts + tsconfig.check.json; 136 tests passing; Phase 2 Plan 1 of 4 complete
+Last session: 2026-05-14T12:28:43.074Z
+Stopped at: Plan 02-04 complete; runRender orchestrator + CLI handler; 215 tests passing; Phase 2 fully complete
 Resume file: None
