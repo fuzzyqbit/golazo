@@ -4,6 +4,7 @@ dist/
 coverage/
 .golazo/
 *.token.json
+channels.yaml
 .DS_Store
 *.log
 .env*

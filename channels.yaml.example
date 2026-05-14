@@ -1,0 +1,19 @@
+# Copy this file to channels.yaml and edit per-kid values. Never commit channels.yaml — see .gitignore.
+leo:
+  name: "Leo"
+  club: "FC Eagles"
+  jersey: 10
+  accent: "#ffce5a"
+  source: "Veo"
+  youtube:
+    channel_id: "UC_REPLACE_WITH_LEO_CHANNEL_ID"
+    oauth_token: "~/.golazo/leo.token.json"
+mateo:
+  name: "Mateo"
+  club: "City SC"
+  jersey: 7
+  accent: "#5acfff"
+  source: "Trace"
+  youtube:
+    channel_id: "UC_REPLACE_WITH_MATEO_CHANNEL_ID"
+    oauth_token: "~/.golazo/mateo.token.json"
