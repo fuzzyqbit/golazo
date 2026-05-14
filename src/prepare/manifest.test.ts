@@ -359,3 +359,153 @@ describe('manifest — music block (Plan 02-02)', () => {
     expect(result.manifestHash).toMatch(/^sha256:[0-9a-f]{64}$/);
   });
 });
+
+// ---------------------------------------------------------------------------
+// Cases 16-22: render block extension (Plan 02-04)
+// ---------------------------------------------------------------------------
+
+const RENDER_BLOCK = {
+  episodePath: '.golazo/episode.mp4',
+  thumbnailPath: '.golazo/thumb.png',
+  renderedAt: '2026-05-13T18:00:00.000Z',
+  manifestHash: `sha256:${'a'.repeat(64)}`,
+  width: 1920,
+  height: 1080,
+  durationSec: 12.34,
+};
+
+describe('manifest — render block (Plan 02-04)', () => {
+  it('case 16: schema accepts render block', () => {
+    const base = {
+      version: 1 as const,
+      kid: KID,
+      game: GAME_META,
+      clips: CLIPS,
+      totalDurationSec: 6,
+      manifestHash: `sha256:${'0'.repeat(64)}`,
+      render: RENDER_BLOCK,
+    };
+    const result = manifestSchema.safeParse(base);
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.render).toEqual(RENDER_BLOCK);
+    }
+  });
+
+  it('case 17: schema accepts absent render block (Phase 1 + Plan 02-02 manifests load unchanged)', () => {
+    const base = {
+      version: 1 as const,
+      kid: KID,
+      game: GAME_META,
+      clips: CLIPS,
+      totalDurationSec: 6,
+      manifestHash: `sha256:${'0'.repeat(64)}`,
+    };
+    const result = manifestSchema.safeParse(base);
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.render).toBeUndefined();
+    }
+  });
+
+  it('case 18: schema rejects render.episodePath at wrong location', () => {
+    const bad = {
+      version: 1 as const,
+      kid: KID,
+      game: GAME_META,
+      clips: CLIPS,
+      totalDurationSec: 6,
+      manifestHash: `sha256:${'0'.repeat(64)}`,
+      render: { ...RENDER_BLOCK, episodePath: 'output/episode.mp4' },
+    };
+    expect(manifestSchema.safeParse(bad).success).toBe(false);
+  });
+
+  it('case 19: schema rejects render.renderedAt not ISO datetime', () => {
+    const bad = {
+      version: 1 as const,
+      kid: KID,
+      game: GAME_META,
+      clips: CLIPS,
+      totalDurationSec: 6,
+      manifestHash: `sha256:${'0'.repeat(64)}`,
+      render: { ...RENDER_BLOCK, renderedAt: '2026-05-13 18:00' },
+    };
+    expect(manifestSchema.safeParse(bad).success).toBe(false);
+  });
+
+  it('case 20: schema rejects render.manifestHash without sha256: prefix', () => {
+    const bad = {
+      version: 1 as const,
+      kid: KID,
+      game: GAME_META,
+      clips: CLIPS,
+      totalDurationSec: 6,
+      manifestHash: `sha256:${'0'.repeat(64)}`,
+      render: { ...RENDER_BLOCK, manifestHash: 'a'.repeat(64) },
+    };
+    expect(manifestSchema.safeParse(bad).success).toBe(false);
+  });
+
+  it('case 21: HASH PRESERVATION — adding both music + render blocks does NOT change top-level manifestHash', () => {
+    const baseInput = {
+      folderName: FOLDER_NAME,
+      kid: KID,
+      gameMeta: GAME_META,
+      clips: CLIPS,
+    };
+    const minimal = buildManifest(baseInput);
+    const both = buildManifest({
+      ...baseInput,
+      music: { track: 'atmos-1.mp3', durationSec: 200, strategy: 'trim-fade' as const, reroll: 0 },
+      render: {
+        episodePath: '.golazo/episode.mp4',
+        thumbnailPath: '.golazo/thumb.png',
+        renderedAt: '2026-05-13T18:00:00.000Z',
+        manifestHash: minimal.manifestHash,
+        width: 1920,
+        height: 1080,
+        durationSec: 12.34,
+      },
+    });
+    expect(both.manifestHash).toBe(minimal.manifestHash);
+    expect(both.music?.track).toBe('atmos-1.mp3');
+    expect(both.render?.episodePath).toBe('.golazo/episode.mp4');
+  });
+
+  it('case 22: schema accepts render + music together and round-trips via writeManifest/readManifest', () => {
+    // This test needs a tmp dir
+    const { mkdtempSync, rmSync } = require('node:fs');
+    const { tmpdir } = require('node:os');
+    const { join } = require('node:path');
+    const tmp = mkdtempSync(join(tmpdir(), 'golazo-manifest-render-test-'));
+    try {
+      const m = buildManifest({
+        folderName: FOLDER_NAME,
+        kid: KID,
+        gameMeta: GAME_META,
+        clips: CLIPS,
+        music: MUSIC_BLOCK,
+        render: {
+          episodePath: '.golazo/episode.mp4',
+          thumbnailPath: '.golazo/thumb.png',
+          renderedAt: '2026-05-13T18:00:00.000Z',
+          manifestHash: `sha256:${'0'.repeat(64)}`,
+          width: 1920,
+          height: 1080,
+          durationSec: 12.34,
+        },
+      });
+      expect(m.music).toEqual(MUSIC_BLOCK);
+      expect(m.render?.episodePath).toBe('.golazo/episode.mp4');
+      writeManifest(tmp, m);
+      const roundTripped = readManifest(tmp);
+      expect(roundTripped).not.toBeNull();
+      expect(roundTripped?.music).toEqual(MUSIC_BLOCK);
+      expect(roundTripped?.render?.episodePath).toBe('.golazo/episode.mp4');
+      expect(roundTripped?.render?.durationSec).toBe(12.34);
+    } finally {
+      rmSync(tmp, { recursive: true, force: true });
+    }
+  });
+});

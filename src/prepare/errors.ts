@@ -372,3 +372,61 @@ export class MusicPickError extends Error {
     };
   }
 }
+
+// ---------------------------------------------------------------------------
+// Render subsystem errors (Plan 02-04)
+// ---------------------------------------------------------------------------
+
+/** Inputs to {@link RenderError}. */
+export interface RenderErrorInput {
+  /**
+   * Dotted field path or context label that failed
+   * (e.g. `'manifestPath'`, `'remotion'`, `'manifestHash'`).
+   */
+  field: string;
+  /** Short reason for the failure. */
+  reason: string;
+  /** Operator-facing remediation hint. */
+  remediation: string;
+}
+
+/** Serialised representation of {@link RenderError} for structured logging. */
+export interface RenderErrorJson {
+  name: 'RenderError';
+  field: string;
+  reason: string;
+  remediation: string;
+}
+
+/**
+ * Thrown by `runRender` for:
+ *   - missing manifest (operator must run `golazo prepare` first)
+ *   - Remotion bundle / renderMedia / renderStill failures
+ *   - manifestHash invariant violations (render block changed the top-level hash)
+ *
+ * Single-line message format `render: <field>: <reason>. <remediation>` mirrors
+ * `ManifestError` for stylistic consistency across pipeline error classes.
+ */
+export class RenderError extends Error {
+  public readonly field: string;
+  public readonly reason: string;
+  public readonly remediation: string;
+
+  constructor(input: RenderErrorInput) {
+    super(`render: ${input.field}: ${input.reason}. ${input.remediation}`);
+    this.name = 'RenderError';
+    this.field = input.field;
+    this.reason = input.reason;
+    this.remediation = input.remediation;
+    Object.setPrototypeOf(this, RenderError.prototype);
+  }
+
+  toJSON(): RenderErrorJson {
+    return {
+      name: 'RenderError',
+      field: this.field,
+      reason: this.reason,
+      remediation: this.remediation,
+    };
+  }
+}

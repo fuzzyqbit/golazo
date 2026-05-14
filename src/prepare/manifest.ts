@@ -38,6 +38,35 @@ import type { GameMeta } from './types.js';
 export const MANIFEST_SCHEMA_VERSION = 1 as const;
 
 /**
+ * Schema for the optional `render` block written by Plan 02-04's render
+ * driver after Remotion produces episode.mp4 + thumb.png.
+ *
+ * The block lives at the **TOP LEVEL** of the manifest alongside
+ * `manifestHash` and `music`. It is explicitly EXCLUDED from
+ * `computeManifestHash` (see hash.ts) — only clip list + folder name hash.
+ * `render.manifestHash` is a COPY of the top-level `manifestHash` recorded
+ * at render time so the idempotency check can detect content changes.
+ *
+ * Phase 3 will add a sibling `publish` block following the same pattern.
+ */
+export const renderSchema = z.object({
+  /** Canonical relative path to the output episode — enforced by regex. */
+  episodePath: z.string().regex(/^\.golazo\/episode\.mp4$/),
+  /** Canonical relative path to the thumbnail — enforced by regex. */
+  thumbnailPath: z.string().regex(/^\.golazo\/thumb\.png$/),
+  /** ISO 8601 UTC timestamp of when this render ran. */
+  renderedAt: z.string().datetime(),
+  /** Copy of the top-level manifestHash at render time (for skip-path check). */
+  manifestHash: z.string().regex(/^sha256:[0-9a-f]{64}$/),
+  /** Output width in pixels (committed for Phase 4 QA assertions). */
+  width: z.number().int().positive(),
+  /** Output height in pixels. */
+  height: z.number().int().positive(),
+  /** ffprobe-confirmed episode duration in seconds. */
+  durationSec: z.number().positive(),
+});
+
+/**
  * Schema for the optional `music` block written by Plan 02-04's render
  * driver after `pickTrack` resolves the episode's music selection.
  *
@@ -91,9 +120,12 @@ export const manifestSchema = z.object({
   totalDurationSec: z.number().positive(),
   // Top-level — see module JSDoc.
   manifestHash: z.string().regex(/^sha256:[0-9a-f]{64}$/),
+  // render block lives at the top level alongside manifestHash + music.
+  // NEITHER render NOR music is included in computeManifestHash (see hash.ts).
+  // Phase 02-04 SUMMARY documents the full rationale.
+  render: renderSchema.optional(),
   // music block lives at the top level alongside manifestHash. Phase 02-04
-  // will add a sibling 'render' block. NEITHER is included in
-  // computeManifestHash (see hash.ts).
+  // SUMMARY documents the no-hash-impact contract.
   music: musicSchema.optional(),
 });
 
@@ -117,6 +149,14 @@ export interface BuildManifestInput {
    * invalidate the clip-content hash (PREP-07 contract).
    */
   music?: z.infer<typeof musicSchema>;
+  /**
+   * Optional render result block from `runRender` (Plan 02-04). Written
+   * through verbatim; deliberately EXCLUDED from `computeManifestHash`
+   * so adding/changing the render output does NOT invalidate the hash.
+   * `render.manifestHash` is a copy of the top-level `manifestHash` at
+   * render time — used by the idempotency skip-path check.
+   */
+  render?: z.infer<typeof renderSchema>;
 }
 
 /**
@@ -170,6 +210,9 @@ export function buildManifest(input: BuildManifestInput): Manifest {
     // Spread music conditionally — do NOT write `music: undefined` so the JSON
     // stays tidy and Phase 1 manifests (no music) remain identical byte-for-byte.
     ...(input.music ? { music: input.music } : {}),
+    // Spread render conditionally — same pattern; Phase 1 + Phase 2 manifests
+    // without a render block remain byte-for-byte identical on first write.
+    ...(input.render ? { render: input.render } : {}),
   };
 
   const result = manifestSchema.safeParse(candidate);
