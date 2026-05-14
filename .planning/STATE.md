@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Plan 02-01 complete; remotion/theme primitives + self-hosted fonts + tsconfig.check.json; 136 tests passing; Phase 2 Plan 1 of 4 complete
-last_updated: "2026-05-14T11:50:46.557Z"
+stopped_at: Plan 02-03 complete; Remotion compositions + pure-logic timeline/rhythm/ducking modules; 188 tests passing; Episode + Thumbnail registered via npx remotion compositions
+last_updated: "2026-05-14T12:03:58.272Z"
 last_activity: 2026-05-14
 progress:
   total_phases: 4
   completed_phases: 1
   total_plans: 9
-  completed_plans: 7
-  percent: 78
+  completed_plans: 8
+  percent: 89
 ---
 
 # Project State
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-05-13)
 ## Current Position
 
 Phase: 02 (Render Pipeline) — EXECUTING
-Plan: 3 of 4
+Plan: 4 of 4
 Status: Ready to execute
 Last activity: 2026-05-14
 
-Progress: [████████░░] 78%
+Progress: [█████████░] 89%
 
 ## Performance Metrics
 
@@ -62,6 +62,7 @@ Progress: [████████░░] 78%
 | Phase 01-foundation-prepare-pipeline P05 | 12min 45s | 3 tasks | 9 files |
 | Phase 02-render-pipeline P01 | 6min 6s | 2 tasks | 14 files |
 | Phase 02-render-pipeline P02 | 7min 13s | 3 tasks | 14 files |
+| Phase 02-render-pipeline P03 | 9min 30s | 2 tasks | 17 files |
 
 ## Accumulated Context
 
@@ -109,6 +110,10 @@ Recent decisions affecting current work:
 - [Phase ?]: seed = sha256(manifestHash+':roll:'+r).slice(0,16)
 - [Phase ?]: manifest.music is a sibling of manifestHash, not in computeManifestHash input
 - [Phase ?]: deterministic longest-track selection when no track is long enough; pinned by picker test case 5
+- 02-03: Math.ceil frame conversion + first-clip doubling for slo-mo (0.5x playbackRate) — pinned by timing.test.ts
+- 02-03: musicVolumeAtFrame step-function in musicVolume.ts (pure, no React/Remotion) — Episode.tsx imports, never redefines inline (Finding-3 fix)
+- 02-03: webpack extensionAlias .js->[.ts,.tsx,.js] in remotion.config.ts — NodeNext .js imports compatibility with Remotion webpack bundler
+- 02-03: Music volume boundary ramp deferred — step-function ships; fps parameter reserved in musicVolumeAtFrame signature for future ramp
 
 ### Pending Todos
 
@@ -128,6 +133,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-05-14T11:50:46.552Z
+Last session: 2026-05-14T12:03:58.267Z
 Stopped at: Plan 02-01 complete; remotion/theme primitives + self-hosted fonts + tsconfig.check.json; 136 tests passing; Phase 2 Plan 1 of 4 complete
 Resume file: None

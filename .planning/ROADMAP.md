@@ -51,7 +51,7 @@ Plans:
 Plans:
 - [x] 02-01-PLAN.md — Theme tokens + cinematic grade/vignette helpers + self-hosted fonts under `remotion/assets/fonts/` (REN-03) — completed 2026-05-14, commits ecee31f + a03b0c6
 - [x] 02-02-PLAN.md — Music pool loader + deterministic seeded music picker (trim-fade / re-roll / crossfade) + additive optional `music` block on the manifest schema (PREP-05, PREP-06)
-- [ ] 02-03-PLAN.md — Remotion compositions: Root + Episode + Thumbnail + per-segment components + pure-logic timeline + chapter rhythm + inputProps schema (REN-01, REN-02, REN-04, REN-05)
+- [x] 02-03-PLAN.md — Remotion compositions: Root + Episode + Thumbnail + per-segment components + pure-logic timeline + chapter rhythm + inputProps schema (REN-01, REN-02, REN-04, REN-05)
 - [ ] 02-04-PLAN.md — Render driver (bundle + selectComposition + renderMedia + renderStill) + additive optional `render` block on the manifest schema + real CLI handler swap + CLI shell-out integration tests (REN-06)
 **UI hint**: yes
 
@@ -87,7 +87,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & Prepare Pipeline | 5/5 | Complete | 2026-05-14 |
-| 2. Render Pipeline | 2/4 | In Progress|  |
+| 2. Render Pipeline | 3/4 | In Progress|  |
 | 3. Publish Pipeline | 0/TBD | Not started | - |
 | 4. Convenience & QA Polish | 0/TBD | Not started | - |
 

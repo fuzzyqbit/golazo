@@ -28,11 +28,11 @@
 
 ### Render
 
-- [ ] **REN-01**: Remotion `Episode` composition sequences `TitleCard → (ChapterCard → Clip)× → Outro`; the first clip plays at 0.5× rate with original audio muted
-- [ ] **REN-02**: ChapterCard rhythm is rendered every clip when total clips ≤ 5, otherwise grouped every 3 clips
+- [x] **REN-01**: Remotion `Episode` composition sequences `TitleCard → (ChapterCard → Clip)× → Outro`; the first clip plays at 0.5× rate with original audio muted
+- [x] **REN-02**: ChapterCard rhythm is rendered every clip when total clips ≤ 5, otherwise grouped every 3 clips
 - [x] **REN-03**: Cinematic visual grade is applied (vignette + filter) and typography uses Cormorant Garamond Italic (display) + Inter (label), self-hosted under `remotion/assets/fonts/`
-- [ ] **REN-04**: Music is ducked under any clip with audible audio and muted entirely during the slo-mo first clip
-- [ ] **REN-05**: Remotion `Thumbnail` composition produces a pure-typographic 1280×720 PNG seeded from the same manifest
+- [x] **REN-04**: Music is ducked under any clip with audible audio and muted entirely during the slo-mo first clip
+- [x] **REN-05**: Remotion `Thumbnail` composition produces a pure-typographic 1280×720 PNG seeded from the same manifest
 - [ ] **REN-06**: Render driver spawns Remotion CLI programmatically, writes `episode.mp4` and `thumb.png` into `<folder>/.golazo/`, and skips when `manifestHash` matches the recorded render unless `--force`
 
 ### Publish
@@ -87,11 +87,11 @@
 | PREP-05 | Phase 2 | Complete |
 | PREP-06 | Phase 2 | Complete |
 | PREP-07 | Phase 1 | Complete |
-| REN-01 | Phase 2 | Pending |
-| REN-02 | Phase 2 | Pending |
+| REN-01 | Phase 2 | Complete |
+| REN-02 | Phase 2 | Complete |
 | REN-03 | Phase 2 | Complete |
-| REN-04 | Phase 2 | Pending |
-| REN-05 | Phase 2 | Pending |
+| REN-04 | Phase 2 | Complete |
+| REN-05 | Phase 2 | Complete |
 | REN-06 | Phase 2 | Pending |
 | PUB-01 | Phase 3 | Pending |
 | PUB-02 | Phase 3 | Pending |
