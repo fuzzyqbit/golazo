@@ -37,6 +37,22 @@ import type { GameMeta } from './types.js';
 /** Current manifest schema version. Bumped on any breaking change. */
 export const MANIFEST_SCHEMA_VERSION = 1 as const;
 
+/**
+ * Schema for the optional `music` block written by Plan 02-04's render
+ * driver after `pickTrack` resolves the episode's music selection.
+ *
+ * The block lives at the **TOP LEVEL** of the manifest alongside
+ * `manifestHash`. Phase 02-04 will add a sibling `render` block.
+ * NEITHER `music` nor `render` is included in `computeManifestHash`
+ * (see hash.ts) — only the clip list and folder name hash.
+ */
+export const musicSchema = z.object({
+  track: z.string().regex(/^[a-z0-9-]+\.mp3$/),
+  durationSec: z.number().positive(),
+  strategy: z.enum(['trim-fade', 'reroll', 'crossfade']),
+  reroll: z.number().int().min(0),
+});
+
 /** Path-relative location of the manifest under a game folder. */
 export const MANIFEST_FILE_NAME = '.golazo/manifest.json';
 
@@ -75,6 +91,10 @@ export const manifestSchema = z.object({
   totalDurationSec: z.number().positive(),
   // Top-level — see module JSDoc.
   manifestHash: z.string().regex(/^sha256:[0-9a-f]{64}$/),
+  // music block lives at the top level alongside manifestHash. Phase 02-04
+  // will add a sibling 'render' block. NEITHER is included in
+  // computeManifestHash (see hash.ts).
+  music: musicSchema.optional(),
 });
 
 /** Statically-typed manifest shape (inferred from {@link manifestSchema}). */
@@ -90,6 +110,13 @@ export interface BuildManifestInput {
   gameMeta: GameMeta;
   /** Per-clip records produced by Plan 04's discoverClips + probeDuration + computeClipSha256. */
   clips: { file: string; durationSec: number; sha256: string }[];
+  /**
+   * Optional music pick from `pickTrack` (Plan 02-02). Written through
+   * verbatim to the manifest; deliberately EXCLUDED from
+   * `computeManifestHash` so adding/changing the music selection does NOT
+   * invalidate the clip-content hash (PREP-07 contract).
+   */
+  music?: z.infer<typeof musicSchema>;
 }
 
 /**
@@ -140,6 +167,9 @@ export function buildManifest(input: BuildManifestInput): Manifest {
     })),
     totalDurationSec: sumDurations(input.clips),
     manifestHash,
+    // Spread music conditionally — do NOT write `music: undefined` so the JSON
+    // stays tidy and Phase 1 manifests (no music) remain identical byte-for-byte.
+    ...(input.music ? { music: input.music } : {}),
   };
 
   const result = manifestSchema.safeParse(candidate);

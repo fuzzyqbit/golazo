@@ -9,6 +9,7 @@ import {
   readManifest,
   writeManifest,
   manifestSchema,
+  musicSchema,
   MANIFEST_SCHEMA_VERSION,
   MANIFEST_FILE_NAME,
   type Manifest,
@@ -260,5 +261,101 @@ describe('manifest — exported constants', () => {
 
   it("MANIFEST_FILE_NAME === '.golazo/manifest.json'", () => {
     expect(MANIFEST_FILE_NAME).toBe('.golazo/manifest.json');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Cases 11-15: music block extension (Plan 02-02)
+// ---------------------------------------------------------------------------
+
+const MUSIC_BLOCK = {
+  track: 'atmos-1.mp3',
+  durationSec: 200,
+  strategy: 'trim-fade' as const,
+  reroll: 0,
+};
+
+describe('manifest — music block (Plan 02-02)', () => {
+  it('case 11: schema accepts optional music block and round-trips it unchanged', () => {
+    const base = {
+      version: 1 as const,
+      kid: KID,
+      game: GAME_META,
+      clips: CLIPS,
+      totalDurationSec: 6,
+      manifestHash: `sha256:${'0'.repeat(64)}`,
+      music: MUSIC_BLOCK,
+    };
+    const result = manifestSchema.safeParse(base);
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.music).toEqual(MUSIC_BLOCK);
+    }
+  });
+
+  it('case 12: schema accepts manifest without music key (Phase 1 manifests load unchanged)', () => {
+    const base = {
+      version: 1 as const,
+      kid: KID,
+      game: GAME_META,
+      clips: CLIPS,
+      totalDurationSec: 6,
+      manifestHash: `sha256:${'0'.repeat(64)}`,
+    };
+    const result = manifestSchema.safeParse(base);
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.music).toBeUndefined();
+    }
+  });
+
+  it('case 13: schema rejects malformed music.strategy', () => {
+    const bad = {
+      version: 1,
+      kid: KID,
+      game: GAME_META,
+      clips: CLIPS,
+      totalDurationSec: 6,
+      manifestHash: `sha256:${'0'.repeat(64)}`,
+      music: { track: 'atmos-1.mp3', durationSec: 200, strategy: 'fade-out', reroll: 0 },
+    };
+    expect(manifestSchema.safeParse(bad).success).toBe(false);
+  });
+
+  it('case 14: music block does not affect manifestHash (PREP-07 preserved)', () => {
+    const baseInput = {
+      folderName: FOLDER_NAME,
+      kid: KID,
+      gameMeta: GAME_META,
+      clips: CLIPS,
+    };
+    const withoutMusic = buildManifest(baseInput);
+    const withMusic = buildManifest({
+      ...baseInput,
+      music: { track: 'atmos-3.mp3', durationSec: 240, strategy: 'trim-fade' as const, reroll: 0 },
+    });
+    // Same hash regardless of music block presence
+    expect(withMusic.manifestHash).toBe(withoutMusic.manifestHash);
+    // Music block is present in the one that had it
+    expect(withMusic.music).toEqual({
+      track: 'atmos-3.mp3',
+      durationSec: 240,
+      strategy: 'trim-fade',
+      reroll: 0,
+    });
+    // Music block is absent in the one that didn't have it
+    expect(withoutMusic.music).toBeUndefined();
+  });
+
+  it('case 15: buildManifest accepts optional music and passes it through unchanged', () => {
+    const result = buildManifest({
+      folderName: FOLDER_NAME,
+      kid: KID,
+      gameMeta: GAME_META,
+      clips: CLIPS,
+      music: MUSIC_BLOCK,
+    });
+    expect(result.music).toEqual(MUSIC_BLOCK);
+    expect(result.manifestHash).toMatch(/^sha256:[0-9a-f]{64}$/);
   });
 });
