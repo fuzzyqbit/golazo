@@ -45,25 +45,12 @@ describe('cli/index — commander wiring', () => {
     expect(typeof internal._actionHandler).toBe('function');
   });
 
-  // Plan 02-04 replaced the render stub with a real handler.
-  // Plan 03-01 replaced the auth stub with a real handler.
-  // Plan 03-05 replaced the publish stub with a real handler.
-  // The remaining stub command (all) still surfaces "not yet implemented".
-  it.each([['all', './nope']])(
-    'main() surfaces "%s: not yet implemented" with exit code 2',
-    async (cmdName, arg) => {
-      let caught: unknown;
-      try {
-        await main(['node', 'golazo', cmdName, arg]);
-      } catch (err) {
-        caught = err;
-      }
-      expect(caught).toBeInstanceOf(CommanderError);
-      const cmdErr = caught as CommanderError;
-      expect(cmdErr.exitCode).toBe(2);
-      expect(cmdErr.message).toContain(`${cmdName}: not yet implemented`);
-    },
-  );
+  // Plan 04-01 replaced the all stub with a real handler chaining prepare→render→publish.
+  it('registers all command with an action handler (Plan 04-01 replaced stub)', () => {
+    const allCmd = program.commands.find((c) => c.name() === 'all');
+    expect(allCmd).toBeDefined();
+    expect(typeof (allCmd as unknown as { _actionHandler: unknown })._actionHandler).toBe('function');
+  });
 
   it('registers render with an action handler bound (Plan 02-04 replaced stub)', () => {
     const renderCmd = program.commands.find((c) => c.name() === 'render');
