@@ -32,3 +32,6 @@ tests/fixtures/*.mp4
 # (Plan 02-02 commits the .mp3 pool + index.json under remotion/assets/music/)
 !remotion/assets/music/*.mp3
 !remotion/assets/music/index.json
+
+# Snapshot diff outputs are debug artifacts only — never committed
+tests/snapshots/.diff/
