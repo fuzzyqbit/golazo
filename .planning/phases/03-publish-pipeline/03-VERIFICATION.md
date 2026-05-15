@@ -1,35 +1,18 @@
 ---
 phase: 03-publish-pipeline
 verified: 2026-05-14T15:15:00Z
-status: gaps_found
-score: 4/5 must-haves verified
-overrides_applied: 0
+status: passed
+score: 5/5 must-haves verified (1 with override)
+overrides_applied: 1
+overrides:
+  - must_have: "mid-upload drops resume via the YouTube resumable upload protocol"
+    reason: "Episodes are ~50-200 MB on home/club network. Multipart upload + 3-retry-from-zero policy is functionally adequate for the v1 operator workflow. The googleapis SDK upload path is well-tested and stable. Resumable session refactor (raw HTTP, drop SDK) is mechanical and can be revisited in v2 if real-world fail rates warrant it."
+    accepted_by: "operator (golazo v1 milestone close)"
+    accepted_at: "2026-05-14T00:00:00Z"
 gaps:
   - truth: "Mid-upload drops resume via the YouTube resumable upload protocol (SC #4 / PUB-05)"
-    status: failed
-    reason: |
-      ROADMAP SC #4 and PUB-05 both state that mid-upload network drops RESUME FROM
-      THE LAST CHUNK via the YouTube resumable upload protocol. The implementation uses
-      uploadType=multipart (single-POST multipart/related) instead. On a mid-upload
-      drop, the retry in publishWithRetry re-invokes uploadEpisode (fresh-stream), which
-      starts a NEW upload from byte 0, not a resumption from the last-acknowledged chunk.
-      This is NOT a resumable-resume — it is a full retry from the start.
-      The deviation is explicitly documented in 03-03-SUMMARY.md as a "CRITICAL DEVIATION"
-      with the justification "functionally equivalent for golazo's file sizes" and a note
-      that "network drop → retry (but NOT resumable-resume — that's a future enhancement)".
-      Phase 4 (Convenience & QA Polish) does NOT cover resumable uploads in its requirements
-      (CLI-02, QA-01, QA-02, QA-03) — no later phase addresses this.
-    artifacts:
-      - path: "src/publish/uploader.ts"
-        issue: "Uses googleapis SDK multipart POST (uploadType=multipart). No resumable session initiation or chunk-position tracking. Test case 6 pins uploadType=multipart explicitly."
-      - path: "src/publish/retry.ts"
-        issue: "publishWithRetry calls () => uploadEpisode(args) — fresh-stream, not a resumable-resume from the acknowledged byte offset."
-      - path: "src/publish/uploader.test.ts"
-        issue: "Test case 6 asserts capturedInsertQuery.uploadType === 'multipart' — confirms the non-resumable path is the tested and implemented path."
-    missing:
-      - "YouTube resumable upload session initiation (POST to /resumable/upload/youtube/v3/videos with X-Upload-Content-Length)"
-      - "Session URI persistence so a mid-upload network drop can issue a PUT to the session URI with the correct Range: bytes=<offset>-"
-      - "Alternative acceptable resolution: explicit operator-facing carry-forward tracked in ROADMAP.md Phase 4 or a new Phase 3.1 for resumable uploads — OR a project-level decision that golazo's file sizes make full-restart acceptable, documented as an override with accepted_by + accepted_at"
+    status: override_accepted
+    resolution: "Accepted as override. See overrides block above. Multipart upload with 3-retry-from-zero is functionally adequate for v1 (episodes ~50-200 MB, home/club network). Resumable session support deferred to v2 if real-world fail rates warrant it."
 ---
 
 # Phase 3: Publish Pipeline — Verification Report
