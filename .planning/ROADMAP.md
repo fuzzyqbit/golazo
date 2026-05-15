@@ -86,7 +86,7 @@ Plans:
 Plans:
 - [x] 04-01-PLAN.md — `runAll` orchestrator + `golazo all <folder>` CLI handler (replaces Plan 01-01 stub) with sequential prepare→render→publish, stage-labeled error surface, and shell-out integration tests (CLI-02)
 - [x] 04-02-PLAN.md — Coverage tooling: extend vitest.config.ts with 80% line threshold + src/-only include + remotion/+tests/+config exclude, add `npm run test:coverage` script, gitignore `coverage/`, README `## Testing` section (QA-02 tooling half)
-- [ ] 04-03-PLAN.md — QA-01 audit test (four mandated table-driven test-cases files asserted) + measure baseline coverage + close any gap to ≥ 80% via fill-in integration cases on existing test files (QA-01, QA-02 passing-run half)
+- [x] 04-03-PLAN.md — QA-01 audit test (four mandated table-driven test-cases files asserted) + measure baseline coverage + close any gap to ≥ 80% via fill-in integration cases on existing test files (QA-01, QA-02 passing-run half)
 - [ ] 04-04-PLAN.md — Remotion renderStill PNG baselines (Episode title-card + Thumbnail) + pixel-diff test (pixelmatch + pngjs at 1% threshold) + regen script + README docs + PUB-05 resumable-upload decision checkpoint (QA-03)
 **UI hint**: yes
 
@@ -100,7 +100,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | 1. Foundation & Prepare Pipeline | 5/5 | Complete | 2026-05-14 |
 | 2. Render Pipeline | 4/4 | Complete   | 2026-05-14 |
 | 3. Publish Pipeline | 5/5 | Complete   | 2026-05-14 |
-| 4. Convenience & QA Polish | 2/4 | In Progress|  |
+| 4. Convenience & QA Polish | 3/4 | In Progress|  |
 
 ---
 *Roadmap created: 2026-05-13 by gsd-roadmapper*
