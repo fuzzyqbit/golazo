@@ -18,6 +18,18 @@ npm run build
 ./dist/cli/index.js --help
 ```
 
+## Testing
+
+| Command | Purpose |
+|---------|---------|
+| `npm test` | Run the full vitest suite (unit + integration). |
+| `npm run test:coverage` | Run the suite with v8 coverage. Fails if line coverage on `src/` < 80%. |
+| `npm run typecheck` | Run `tsc --noEmit -p tsconfig.check.json` across `src/` and `remotion/`. |
+
+Remotion compositions under `remotion/` are excluded from line coverage and are
+visually regression-tested via committed `renderStill` snapshots under
+`tests/snapshots/` (see `tests/snapshots/README.md`).
+
 ## Subcommands
 
 ```

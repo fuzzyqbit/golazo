@@ -409,7 +409,9 @@ describe('all CLI in-process (with nock)', () => {
       expect(existsSync(join(folder, '.golazo', 'episode.mp4'))).toBe(true);
       expect(existsSync(join(folder, '.golazo', 'thumb.png'))).toBe(true);
     },
-    120_000,
+    // Two full Remotion renders (initial + --force re-run). Coverage instrumentation
+    // adds significant overhead — 240 s gives headroom in both modes.
+    240_000,
   );
 });
 
