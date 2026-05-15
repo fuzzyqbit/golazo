@@ -8,7 +8,7 @@
 ### CLI
 
 - [x] **CLI-01**: Operator can run `golazo prepare <folder>`, `golazo render <folder>`, `golazo publish <folder>` as separate idempotent subcommands; each is safe to re-run and only acts when needed
-- [ ] **CLI-02**: Operator can run `golazo all <folder>` to chain prepare → render → publish in one invocation
+- [x] **CLI-02**: Operator can run `golazo all <folder>` to chain prepare → render → publish in one invocation
 - [x] **CLI-03**: Operator can run `golazo auth <kid>` once per kid to perform YouTube OAuth and persist a refreshable token at the path declared in `channels.yaml`
 
 ### Config
@@ -76,7 +76,7 @@
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | CLI-01 | Phase 1 | Complete |
-| CLI-02 | Phase 4 | Pending |
+| CLI-02 | Phase 4 | Complete |
 | CLI-03 | Phase 3 | Complete |
 | CFG-01 | Phase 1 | Complete |
 | CFG-02 | Phase 1 | Complete |
