@@ -8,6 +8,22 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html'],
+      include: ['src/**/*.ts'],
+      exclude: [
+        '**/*.test.ts',
+        '**/*.test-cases.ts',
+        'tests/fixtures/**',
+        'tests/snapshots/**',
+        'remotion/**',
+        'dist/**',
+        '*.config.ts',
+        '*.config.js',
+        'eslint.config.js',
+        'src/**/types.ts',
+      ],
+      thresholds: {
+        lines: 80,
+      },
     },
   },
 });
