@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
-stopped_at: Plan 04-02 complete; v8 coverage gate wired; 86.72% line coverage passes 80% threshold; 380 tests passing
-last_updated: "2026-05-15T02:51:46.436Z"
+status: ready_for_verification
+stopped_at: "Plan 04-04 complete; snapshot baselines + pixelmatch tests; QA-03 closed; PUB-05 override accepted; 387 tests passing; v1 milestone ready"
+last_updated: "2026-05-15T03:00:58.007Z"
 last_activity: 2026-05-15
 progress:
   total_phases: 4
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 18
-  completed_plans: 17
-  percent: 94
+  completed_plans: 18
+  percent: 100
 ---
 
 # Project State
@@ -27,10 +27,10 @@ See: .planning/PROJECT.md (updated 2026-05-13)
 
 Phase: 04 (Convenience & QA Polish) — EXECUTING
 Plan: 4 of 4
-Status: Ready to execute
+Status: Phase complete — ready for verification
 Last activity: 2026-05-15
 
-Progress: [█████████░] 94%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
@@ -71,6 +71,7 @@ Progress: [█████████░] 94%
 | Phase 04 P01 | 9min 54s | 2 tasks | 5 files |
 | Phase 04-convenience-qa-polish P02 | 6min 16s | 2 tasks | 4 files |
 | Phase 04-convenience-qa-polish P03 | 4min | 2 tasks | 1 files |
+| Phase 04-convenience-qa-polish P04 | 351s | 3 tasks | 9 files |
 
 ## Accumulated Context
 
@@ -136,6 +137,9 @@ Recent decisions affecting current work:
 - [Phase ?]: 04-02: all.integration.test.ts test 5 timeout 120_000→240_000ms — two Remotion renders under coverage instrumentation exceed 120 s
 - [Phase ?]: 04-03: Gap-close loop is a no-op — baseline 86.72% lines already exceeds 80% threshold; Task 2 produced zero fill-in tests
 - [Phase ?]: 04-03: QA-01 audit asserts file existence + minimums: filename 20/8, channels 16/6, templates 10/6, musicPicker 11/5 — all green
+- 04-04: EPISODE_TITLECARD_FRAME=30 — MOTION.titleCardFrames=90>=60; first-third of 90-frame title-card window; named constant in _helpers.ts
+- 04-04: pixelmatch@7.2.0+pngjs@7.0.0 as devDeps; fixed inputProps (Leo/FC Eagles/#10/#ffce5a/2026-05-13 vs united 3-1 W) decoupled from fixture manifests so fixture rebuilds do not invalidate baselines
+- 04-04: PUB-05 option-a accepted — multipart+3-retry-from-zero adequate for v1 ~50-200MB episodes on home/club network; resumable session refactor deferred to v2
 
 ### Pending Todos
 
@@ -155,6 +159,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-05-15T02:51:46.431Z
-Stopped at: Plan 04-02 complete; v8 coverage gate wired; 86.72% line coverage passes 80% threshold; 380 tests passing
+Last session: 2026-05-15T02:59:18Z
+Stopped at: Plan 04-04 complete; snapshot baselines + pixelmatch tests; QA-03 closed; PUB-05 override accepted; 387 tests passing; v1 milestone ready for verification
 Resume file: None

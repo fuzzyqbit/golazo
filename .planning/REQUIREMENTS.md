@@ -49,7 +49,7 @@
 
 - [x] **QA-01**: Unit tests (vitest, table-driven) cover the filename parser, channels loader, music-picker determinism, and title/description renderers
 - [x] **QA-02**: Integration tests cover `prepare` against a shipped clip fixture, low-resolution `render` end-to-end, and `publish` with `nock`-stubbed YouTube API; coverage ≥ 80% lines on `src/`
-- [ ] **QA-03**: Remotion compositions are pinned by committed `renderStill` snapshots (one TitleCard frame + Thumbnail) with a 1% pixel-diff threshold
+- [x] **QA-03**: Remotion compositions are pinned by committed `renderStill` snapshots (one TitleCard frame + Thumbnail) with a 1% pixel-diff threshold
 
 ## v2 Requirements
 
@@ -102,7 +102,7 @@
 | PUB-07 | Phase 3 | Complete |
 | QA-01 | Phase 4 | Complete |
 | QA-02 | Phase 4 | Complete |
-| QA-03 | Phase 4 | Pending |
+| QA-03 | Phase 4 | Complete |
 
 **Coverage:**
 - v1 requirements: 28 total
