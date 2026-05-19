@@ -8,55 +8,38 @@ A local-Mac CLI that turns folders of downloaded soccer highlight clips into bra
 
 Drop a folder of clips on disk, get a cinematic per-game highlight episode uploaded to the right YouTube channel — minimal hands-on time per game even at 5+ games/week.
 
-## Requirements
+## Current State
 
-### Validated
+✅ **v1.0 shipped 2026-05-19**
 
-(None yet — ship to validate)
+The MVP is feature-complete and tested:
 
-### Active
+- `golazo prepare <folder>` writes idempotent `manifest.json` with `manifestHash`
+- `golazo render <folder>` produces `episode.mp4` (cinematic Remotion composition: TitleCard → ChapterCard×Clip → Outro, slo-mo first clip, music ducking, Cormorant Garamond Italic + Inter typography, vignette grade) + `thumb.png` at 1280×720
+- `golazo auth <kid>` performs YouTube OAuth and stores refreshable per-kid token
+- `golazo publish <folder>` uploads as `privacyStatus: "unlisted"` with title/description templates, retries on 5xx/network with 1s/4s/16s backoff, idempotent via `publish.json` videoId
+- `golazo all <folder>` chains prepare → render → publish with stage-labeled failures
+- 387 tests passing across 32 files · 86.72% line coverage · pixelmatch 1% snapshot gate on Episode title-card + Thumbnail PNGs
+- All 28 v1 requirements complete · 1 documented override (PUB-05 multipart-vs-resumable)
 
-- [ ] **CLI-01**: Three subcommands — `golazo prepare <folder>`, `golazo render <folder>`, `golazo publish <folder>` — each idempotent and safe to re-run
-- [ ] **CLI-02**: Convenience subcommand `golazo all <folder>` runs prepare → render → publish in sequence
-- [ ] **CLI-03**: One-time per-kid `golazo auth <kid>` subcommand performs YouTube OAuth and stores refreshable token
-- [ ] **CFG-01**: Single `channels.yaml` holds per-kid branding (name, club, jersey, accent color, footage source) and YouTube channel binding
-- [ ] **CFG-02**: Channel config validated at load time (zod schema): hex accent, jersey 1–99, oauth token path exists
-- [ ] **PREP-01**: Folder-name parser extracts `{date, opponent, scoreFor, scoreAgainst}` from `YYYY-MM-DD_vs_<slug>_<for>-<against>` convention, throws on malformed input
-- [ ] **PREP-02**: Kid identity (`leo` / `mateo`) derived from parent directory under `~/golazo/<kid>/...`
-- [ ] **PREP-03**: Clip discovery sorts ordered clips by numeric filename prefix; rejects folders with zero matching clips
-- [ ] **PREP-04**: ffprobe wrapper records per-clip duration into manifest
-- [ ] **PREP-05**: Music picker selects deterministically from a curated YouTube Audio Library pool, seeded by `manifestHash` so re-renders are stable
-- [ ] **PREP-06**: Music duration handling — trim+fade if track ≥ episode; re-roll for longer track if shorter; crossfade fallback if pool has none long enough
-- [ ] **PREP-07**: Manifest written to `<folder>/.golazo/manifest.json`; `manifestHash` is sha256 over sorted `(clipFile, clipSha256)` pairs + folder name (music + render metadata excluded)
-- [ ] **REN-01**: Remotion `Episode` composition sequences `TitleCard → (ChapterCard → Clip)× → Outro`; first clip plays at 0.5× rate with original audio muted
-- [ ] **REN-02**: ChapterCard rhythm — every clip if total ≤ 5, otherwise grouped every 3 clips
-- [ ] **REN-03**: Cinematic grade applied via Remotion CSS filter; serif italic display font (Cormorant Garamond Italic) + sans label font (Inter), self-hosted
-- [ ] **REN-04**: Music ducked under any clip audio; muted entirely during slo-mo first clip
-- [ ] **REN-05**: Remotion `Thumbnail` composition produces a pure typographic 1280×720 PNG seeded from the same manifest
-- [ ] **REN-06**: Render driver spawns Remotion CLI programmatically, writes `episode.mp4` + `thumb.png` into `<folder>/.golazo/`, skips when `manifestHash` matches unless `--force`
-- [ ] **PUB-01**: `publish` uploads `episode.mp4` via YouTube Data API v3 `videos.insert` with `privacyStatus: "unlisted"` and renders title/description templates from manifest + channel
-- [ ] **PUB-02**: Description and title templates substitute `{Kid}`, `{Opponent}`, `{scoreFor}`, `{scoreAgainst}`, `{result}`, `{date}`, `{jersey}`, `{club}`, `{source}`
-- [ ] **PUB-03**: Opponent slug pretty-printed via title-case + hyphen-to-space, with acronym allow-list (sc, fc, ac) preserved upper-case
-- [ ] **PUB-04**: OAuth tokens stored per-kid at the path declared in `channels.yaml`; silent refresh on use; clear remediation when refresh fails
-- [ ] **PUB-05**: Network/5xx retry with 3 attempts and exponential backoff (1s, 4s, 16s); resumable upload protocol used for large files
-- [ ] **PUB-06**: Quota-exhausted (HTTP 403 `quotaExceeded`) fails loudly with next-day rerun hint
-- [ ] **PUB-07**: `publish.json` records `videoId`, `watchUrl`, `uploadedAt`, `channelId`, `privacyStatus`; presence of `videoId` short-circuits subsequent runs unless `--force`
-- [ ] **QA-01**: Unit tests cover filename parser, channels loader, music picker determinism, template renderers; vitest, table-driven
-- [ ] **QA-02**: Integration tests cover `prepare` on a shipped fixture, low-res `render` end-to-end, `publish` with nock-stubbed YouTube API; 80% line coverage on `src/`
-- [ ] **QA-03**: Remotion compositions verified via committed `renderStill` snapshots (TitleCard frame + Thumbnail) with 1% pixel-diff threshold
+See [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md) and [milestones/v1.0-REQUIREMENTS.md](milestones/v1.0-REQUIREMENTS.md) for the full v1.0 history.
 
-### Out of Scope
+## Next Milestone Goals
 
-- AI player identification or clip extraction — operator supplies already-filtered clips; no need to find players in Veo footage
-- Cross-game compilations (weekly recaps, season montages) — episode = one game
-- Mobile or web UI — CLI only
-- Multi-operator support — single operator on one Mac
-- Voiceover, on-screen statistics, commentary — typographic title + score line only
-- Folder-watcher daemons or cloud execution — manual local trigger only
-- Cross-OS rendering (Windows / Linux) — macOS only, font and ffmpeg paths assume Homebrew layout
-- Public-by-default publishing — every upload is unlisted; operator promotes manually in YouTube Studio
-- Music outside YouTube Audio Library — no Epidemic Sound, Artlist, or custom tracks (copyright risk)
-- Cross-game scoring or season tables — date/opponent/score in filename is the only metadata
+*(Not yet defined. Start with `/gsd-new-milestone` to define v1.1 or v2.0 scope.)*
+
+Carry-forward candidates from v1.0:
+
+- **PUB-05-resumable** — Replace googleapis SDK upload with raw HTTP resumable upload session protocol (initiation POST → session URI → `Content-Range` PUT on retry). Closes the v1.0 override; useful if real-world fail rates on mid-upload drops become an issue.
+- **OAuth-DI** — Replace `GOLAZO_OAUTH_MOCK=1` env-var branch in `exchangeCode` with injectable factory pattern. Removes a test-only seam from production code.
+- **QA-03-extended** — Commit 6+-clip fixture + integration render to close visual chapter-rhythm regression coverage on the every-3-clips path.
+
+Other directions to consider when scoping the next milestone:
+
+- Real-world smoke test on production YouTube accounts before publishing public
+- Auto-detect Veo vs Trace footage source from folder content (currently declared in `channels.yaml`)
+- Multi-game recap mode (cross-game compilations were explicit v1 out-of-scope; revisit when v1 is validated)
+- Cross-OS support if a Linux/Windows operator emerges
 
 ## Context
 
@@ -80,14 +63,19 @@ Drop a folder of clips on disk, get a cinematic per-game highlight episode uploa
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Two YouTube channels, one per kid | Separate audiences and discoverability; different opponents and clubs | — Pending |
-| Filename convention encodes metadata (no sidecar) | Single-operator workflow; less to forget than a separate yaml | — Pending |
-| Remotion (vs. FFmpeg-only) | Cinematic typographic style is the chosen direction; Remotion makes typography programmable | — Pending |
-| Unlisted upload + manual public flip | Reviewable approval gate without re-encoding step | — Pending |
-| Deterministic music pick from manifest hash | Re-renders should be byte-identical when no inputs changed; supports cache skip | — Pending |
-| ChapterCard every clip if ≤5, else every 3 | Avoids over-titled feel on long episodes; preserves rhythm on short ones | — Pending |
-| Slo-mo first clip, audio muted | Music carries the opener; pitch-shifted audio sounded worse in spec discussion | — Pending |
-| YouTube Audio Library only | Zero copyright risk; small pool acceptable because episodes are short | — Pending |
+| Two YouTube channels, one per kid | Separate audiences and discoverability; different opponents and clubs | ✅ Shipped v1.0 |
+| Filename convention encodes metadata (no sidecar) | Single-operator workflow; less to forget than a separate yaml | ✅ Shipped v1.0 (PREP-01 + PREP-02) |
+| Remotion (vs. FFmpeg-only) | Cinematic typographic style is the chosen direction; Remotion makes typography programmable | ✅ Shipped v1.0 |
+| Unlisted upload + manual public flip | Reviewable approval gate without re-encoding step | ✅ Shipped v1.0 (PUB-01) |
+| Deterministic music pick from manifest hash | Re-renders should be byte-identical when no inputs changed; supports cache skip | ✅ Shipped v1.0 (PREP-05/06) |
+| ChapterCard every clip if ≤5, else every 3 | Avoids over-titled feel on long episodes; preserves rhythm on short ones | ✅ Shipped v1.0 (REN-02) |
+| Slo-mo first clip, audio muted | Music carries the opener; pitch-shifted audio sounded worse in spec discussion | ✅ Shipped v1.0 (REN-01, REN-04) |
+| YouTube Audio Library only | Zero copyright risk; small pool acceptable because episodes are short | ✅ Shipped v1.0 |
+| npm chosen over pnpm | pnpm not installed on dev Mac; `packageManager: "npm@10.9.0"` pinned | ✅ Plan 01-01 |
+| `tsconfig.check.json` split for typecheck | Base `tsconfig.json` rootDir stays `./src` so `dist/cli/index.js` bin path is preserved; check config covers `remotion/**/*` for typecheck-only | ✅ Plan 02-01 |
+| `PRIVACY_STATUS = 'unlisted' as const` typed constant | Defense-in-depth: source literal + TypeScript type + `z.literal('unlisted')` + `satisfies` bridge — accidental public upload structurally impossible | ✅ Plan 03-03 + 03-05 |
+| googleapis SDK multipart (not resumable) upload | SDK auto-selects multipart for stream+requestBody; retry-from-zero handles transient drops; resumable rewrite deferred to v2 | ✅ Plan 03-03 (with override at v1 close) |
+| Self-hosted fonts in `remotion/assets/fonts/` | Eliminates system-font drift for cross-machine determinism and snapshot stability | ✅ Plan 02-01 + 04-04 |
 
 ## Evolution
 
@@ -106,5 +94,14 @@ This document evolves at phase transitions and milestone boundaries.
 3. Audit Out of Scope — reasons still valid?
 4. Update Context with current state
 
+<details>
+<summary>v1.0 Requirements snapshot (archived 2026-05-19 — see milestones/v1.0-REQUIREMENTS.md for full final state)</summary>
+
+The v1.0 milestone defined 28 active requirements across 4 phases (CLI, Config, Prepare, Render, Publish, QA). All 28 shipped complete; 1 documented override on PUB-05 (multipart upload instead of resumable session protocol). Out-of-scope items: AI clip extraction, cross-game compilations, mobile/web UI, multi-operator, voiceover, daemons, cross-OS, public-by-default, licensed music, season tables.
+
+See `milestones/v1.0-REQUIREMENTS.md` for the complete shipped requirements table with per-requirement status.
+
+</details>
+
 ---
-*Last updated: 2026-05-13 after initialization (synthesized from `docs/superpowers/specs/2026-05-13-golazo-design.md`)*
+*Last updated: 2026-05-19 at v1.0 milestone close (initialized 2026-05-13)*

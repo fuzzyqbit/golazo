@@ -2,10 +2,10 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: ready_for_verification
-stopped_at: "Plan 04-04 complete; snapshot baselines + pixelmatch tests; QA-03 closed; PUB-05 override accepted; 387 tests passing; v1 milestone ready"
-last_updated: "2026-05-15T03:00:58.007Z"
-last_activity: 2026-05-15
+status: shipped
+stopped_at: "v1.0 milestone SHIPPED 2026-05-19; all 28 v1 requirements complete; 387 tests, 86.72% coverage; tagged v1.0. Ready for /gsd-new-milestone."
+last_updated: "2026-05-19T16:30:00.000Z"
+last_activity: 2026-05-19 -- v1.0 milestone closed and tagged
 progress:
   total_phases: 4
   completed_phases: 4
