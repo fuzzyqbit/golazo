@@ -1,0 +1,160 @@
+/*
+ * EpisodeRow.module.css — Styles for a single episode row in the list view.
+ *
+ * Desktop-only layout (UI-06). No @media queries required by integration tests.
+ * Row is a full-width anchor link wrapping all columns.
+ *
+ * COLORS mirror (from web/src/theme/tokens.ts):
+ *   background:    #0a0a0a
+ *   foreground:    #f5f1e8
+ *   accentDefault: #ffce5a
+ *   cardBg:        #0e0e0e
+ *   border:        rgba(245, 241, 232, 0.12)
+ *   muted:         rgba(245, 241, 232, 0.6)
+ *
+ * SPACING mirror:
+ *   xs: 0.25rem   (4px)
+ *   sm: 0.5rem    (8px)
+ *   md: 1rem      (16px)
+ *   lg: 1.5rem    (24px)
+ *   xl: 2.5rem    (40px)
+ */
+
+/* The whole row is a link — reset anchor defaults */
+.row {
+  display: grid;
+  grid-template-columns: 160px 1fr 1fr auto auto auto;
+  gap: 1rem; /* md */
+  align-items: center;
+  padding: 1rem; /* md */
+  background: #0e0e0e; /* cardBg */
+  border: 1px solid rgba(245, 241, 232, 0.12); /* border */
+  border-radius: 6px;
+  text-decoration: none;
+  color: #f5f1e8; /* foreground */
+  transition: border-color 0.15s ease;
+}
+
+.row:hover {
+  border-color: rgba(245, 241, 232, 0.3);
+}
+
+/* Thumb column */
+.thumbWrapper {
+  position: relative;
+  width: 160px;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 3px;
+  background: #0a0a0a; /* background — fallback while image loads */
+}
+
+.thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Typographic placeholder for 'prepared' status (no thumb on disk) */
+.placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0e0e0e; /* cardBg */
+  border: 1px solid rgba(245, 241, 232, 0.12); /* border */
+  border-radius: 3px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 2rem;
+  color: rgba(245, 241, 232, 0.3); /* muted-er */
+  user-select: none;
+}
+
+/* Kid chip — accent color applied via inline style (dynamic per-row value) */
+.kidChip {
+  display: inline-block;
+  padding: 0.2em 0.6em;
+  border: 1px solid currentColor; /* borderColor set via inline style */
+  border-radius: 4px;
+  font-family: var(--font-label);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.16em; /* TYPOGRAPHY.letterSpacing.label */
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Opponent — display font (Cormorant Garamond Italic) */
+.opponent {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.25rem;
+  letter-spacing: 0.02em; /* TYPOGRAPHY.letterSpacing.display */
+  color: #f5f1e8; /* foreground */
+}
+
+/* Date — label font, muted */
+.date {
+  font-family: var(--font-label);
+  font-size: 0.85rem;
+  color: rgba(245, 241, 232, 0.6); /* muted */
+  white-space: nowrap;
+}
+
+/* Score — label font, foreground */
+.score {
+  font-family: var(--font-label);
+  font-size: 1rem;
+  font-weight: 700;
+  color: #f5f1e8; /* foreground */
+  white-space: nowrap;
+}
+
+/* Status badge pills */
+.status_prepared {
+  display: inline-block;
+  padding: 0.25em 0.75em;
+  border-radius: 999px;
+  font-family: var(--font-label);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: rgba(245, 241, 232, 0.08);
+  color: rgba(245, 241, 232, 0.6); /* muted */
+  border: 1px solid rgba(245, 241, 232, 0.12); /* border */
+  white-space: nowrap;
+}
+
+.status_rendered {
+  display: inline-block;
+  padding: 0.25em 0.75em;
+  border-radius: 999px;
+  font-family: var(--font-label);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: rgba(245, 241, 232, 0.15);
+  color: #f5f1e8; /* foreground */
+  border: 1px solid rgba(245, 241, 232, 0.3);
+  white-space: nowrap;
+}
+
+.status_published {
+  display: inline-block;
+  padding: 0.25em 0.75em;
+  border-radius: 999px;
+  font-family: var(--font-label);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: rgba(255, 206, 90, 0.15); /* accentDefault at 15% */
+  color: #ffce5a; /* accentDefault */
+  border: 1px solid rgba(255, 206, 90, 0.4);
+  white-space: nowrap;
+}

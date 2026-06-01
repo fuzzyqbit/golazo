@@ -1,0 +1,127 @@
+/*
+ * EpisodeList.module.css — Styles for the episode list + controls.
+ *
+ * 'use client' component owns the sort dropdown + kid chip filter.
+ * List layout is a single-column flex stack on the current viewport (UI-06:
+ * desktop-only — no @media queries pinned by integration tests).
+ *
+ * COLORS mirror (from web/src/theme/tokens.ts):
+ *   foreground:    #f5f1e8
+ *   accentDefault: #ffce5a
+ *   cardBg:        #0e0e0e
+ *   border:        rgba(245, 241, 232, 0.12)
+ *   muted:         rgba(245, 241, 232, 0.6)
+ *
+ * SPACING mirror:
+ *   sm: 0.5rem    (8px)
+ *   md: 1rem      (16px)
+ *   lg: 1.5rem    (24px)
+ */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* md */
+  width: 100%;
+}
+
+/* Controls bar: kid chips + sort dropdown */
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* md */
+  flex-wrap: wrap;
+  padding-bottom: 1rem; /* md */
+  border-bottom: 1px solid rgba(245, 241, 232, 0.12); /* border */
+}
+
+/* Kid filter chips group */
+.kidChips {
+  display: flex;
+  gap: 0.5rem; /* sm */
+  align-items: center;
+}
+
+/* Individual kid filter chip button */
+.chipBtn {
+  display: inline-block;
+  padding: 0.3em 0.9em;
+  border-radius: 999px;
+  border: 1px solid rgba(245, 241, 232, 0.12); /* border */
+  font-family: var(--font-label);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(245, 241, 232, 0.6); /* muted */
+  background: transparent;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+
+.chipBtn:hover {
+  border-color: rgba(245, 241, 232, 0.4);
+  color: #f5f1e8; /* foreground */
+}
+
+/* Active chip — uses accentDefault background */
+.chipActive {
+  background: rgba(255, 206, 90, 0.15);
+  border-color: #ffce5a; /* accentDefault */
+  color: #ffce5a; /* accentDefault */
+}
+
+.chipActive:hover {
+  background: rgba(255, 206, 90, 0.25);
+  border-color: #ffce5a;
+  color: #ffce5a;
+}
+
+/* Sort dropdown */
+.sortSelect {
+  appearance: none;
+  background: #0e0e0e; /* cardBg */
+  border: 1px solid rgba(245, 241, 232, 0.12); /* border */
+  border-radius: 4px;
+  padding: 0.35em 2em 0.35em 0.75em;
+  font-family: var(--font-label);
+  font-size: 0.85rem;
+  color: #f5f1e8; /* foreground */
+  cursor: pointer;
+  min-width: 160px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23f5f1e8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.6em center;
+}
+
+.sortSelect:focus {
+  outline: none;
+  border-color: rgba(245, 241, 232, 0.4);
+}
+
+/* Total count label */
+.countLabel {
+  font-family: var(--font-label);
+  font-size: 0.8rem;
+  color: rgba(245, 241, 232, 0.6); /* muted */
+  margin-left: auto;
+}
+
+/* Episode rows list */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; /* sm */
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Inline filter-empty message (filtered to 0 but total > 0) */
+.filterEmpty {
+  padding: 2.5rem; /* xl */
+  text-align: center;
+  font-family: var(--font-label);
+  font-size: 0.95rem;
+  color: rgba(245, 241, 232, 0.6); /* muted */
+}

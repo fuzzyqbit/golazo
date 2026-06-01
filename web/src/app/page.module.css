@@ -1,23 +1,35 @@
+/*
+ * page.module.css — Styles for the root page Server Component.
+ *
+ * Replaces the Plan 05-04 placeholder styles entirely.
+ * Most list-view styling lives in EpisodeList.module.css and EpisodeRow.module.css.
+ * This file owns only the top-level layout + page heading.
+ *
+ * COLORS mirror (from web/src/theme/tokens.ts):
+ *   background:  #0a0a0a
+ *   foreground:  #f5f1e8
+ *
+ * SPACING mirror:
+ *   xl: 2.5rem  (40px)
+ */
+
 .main {
   min-height: 100vh;
-  padding: 2.5rem; /* matches SPACING.xl from tokens; literal value because CSS Modules cannot import TS */
+  padding: 2.5rem; /* xl */
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem; /* lg */
+  background: #0a0a0a; /* background — matches layout.tsx body background */
+  color: #f5f1e8; /* foreground */
 }
 
+/* Page title — display font (Cormorant Garamond Italic) via layout variable */
 .heading {
   font-family: var(--font-display);
   font-style: italic;
   font-size: clamp(2.5rem, 6vw, 5rem);
   letter-spacing: 0.02em;
   margin: 0;
-}
-
-.body {
-  font-family: var(--font-label);
-  font-size: 1rem;
-  letter-spacing: 0.02em;
-  color: rgba(245, 241, 232, 0.7);
-  margin: 0;
+  color: #f5f1e8; /* foreground */
+  line-height: 1.1;
 }
