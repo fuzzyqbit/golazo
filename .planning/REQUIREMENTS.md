@@ -16,7 +16,7 @@
 - [x] **DISC-01**: A filesystem scanner walks `~/golazo/<kid>/*/` for game folders that have a `.golazo/manifest.json` and (optionally) `.golazo/publish.json` + `.golazo/episode.mp4` + `.golazo/thumb.png`; returns a typed `EpisodeIndex` row per game
 - [x] **DISC-02**: Per-game status is derived from disk: `prepared` (manifest only), `rendered` (episode.mp4 + thumb.png present), `published` (publish.json with videoId). Status is recomputed on each scan, never stored as truth
 - [x] **DISC-03**: An sqlite database at `web/data/index.db` (gitignored) caches the scan results for fast UI queries. Filesystem is authoritative — sqlite is invalidated by mtime drift or `manifestHash` change. Empty/missing sqlite rebuilds from scan
-- [ ] **DISC-04**: A filesystem watcher (chokidar or node:fs/watch) invalidates sqlite rows when files under `~/golazo/<kid>/*/.golazo/` change; reflects updates in the UI within 2 s without full rescan
+- [x] **DISC-04**: A filesystem watcher (chokidar or node:fs/watch) invalidates sqlite rows when files under `~/golazo/<kid>/*/.golazo/` change; reflects updates in the UI within 2 s without full rescan
 - [x] **DISC-05**: Scanner ignores game folders whose folder name does not parse via `parseGameFolderName` from v1.0 (reuses `src/prepare/filename.ts`); broken folders surface as a single dev-mode banner, not silent skips
 
 ### Browse Surface
@@ -75,7 +75,7 @@
 | DISC-01 | TBD | Complete |
 | DISC-02 | TBD | Complete |
 | DISC-03 | TBD | Complete |
-| DISC-04 | TBD | Pending |
+| DISC-04 | TBD | Complete |
 | DISC-05 | TBD | Complete |
 | UI-01 | TBD | Pending |
 | UI-02 | TBD | Pending |

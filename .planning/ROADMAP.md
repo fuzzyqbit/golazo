@@ -51,7 +51,7 @@ golazo is a local-Mac CLI that transforms folders of soccer highlight clips into
 **Plans**: 4 plans
 - [x] 06-01-PLAN.md — Scanner: scanGolazoRoot + EpisodeIndex types + WarningBag + committed 3-game fixture (DISC-01, DISC-02, DISC-05)
 - [x] 06-02-PLAN.md — sqlite cache: better-sqlite3 schema + CRUD + invalidation predicates + < 50ms bench (DISC-03)
-- [ ] 06-03-PLAN.md — chokidar watcher: 500ms per-folder debounce + cache mutation within 2s (DISC-04)
+- [x] 06-03-PLAN.md — chokidar watcher: 500ms per-folder debounce + cache mutation within 2s (DISC-04)
 - [ ] 06-04-PLAN.md — Startup wiring: discoveryRuntime singleton + instrumentation.ts hook + /api/debug/discovery + end-to-end integration smoke (all DISC-*)
 
 ### Phase 7: Browse Surface
