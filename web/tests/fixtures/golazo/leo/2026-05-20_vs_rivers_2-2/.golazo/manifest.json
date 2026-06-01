@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "kid": "leo",
+  "game": {
+    "date": "2026-05-20",
+    "opponent": "rivers",
+    "scoreFor": 2,
+    "scoreAgainst": 2,
+    "result": "D"
+  },
+  "clips": [
+    {
+      "file": "01-clip.mp4",
+      "durationSec": 2,
+      "sha256": "ec9adf111a2b02b3cb5a4d2ddffd52af0c294dcd850a572bcd4f6d9d5f2a4209"
+    }
+  ],
+  "totalDurationSec": 2,
+  "manifestHash": "sha256:4fef999ee03c96156a144e66daa4b23e9e391c47334bc379099f27c90c79fbf3"
+}

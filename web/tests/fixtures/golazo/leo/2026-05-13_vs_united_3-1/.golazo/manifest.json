@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "kid": "leo",
+  "game": {
+    "date": "2026-05-13",
+    "opponent": "united",
+    "scoreFor": 3,
+    "scoreAgainst": 1,
+    "result": "W"
+  },
+  "clips": [
+    {
+      "file": "01-clip.mp4",
+      "durationSec": 2,
+      "sha256": "ec9adf111a2b02b3cb5a4d2ddffd52af0c294dcd850a572bcd4f6d9d5f2a4209"
+    },
+    {
+      "file": "02-clip.mp4",
+      "durationSec": 2,
+      "sha256": "ec9adf111a2b02b3cb5a4d2ddffd52af0c294dcd850a572bcd4f6d9d5f2a4209"
+    },
+    {
+      "file": "03-clip.mp4",
+      "durationSec": 2,
+      "sha256": "ec9adf111a2b02b3cb5a4d2ddffd52af0c294dcd850a572bcd4f6d9d5f2a4209"
+    }
+  ],
+  "totalDurationSec": 6,
+  "manifestHash": "sha256:b488578a244b5fc45d8b61b8a1dd35953bb9b8f623af16869d70f6be2185fa8d"
+}

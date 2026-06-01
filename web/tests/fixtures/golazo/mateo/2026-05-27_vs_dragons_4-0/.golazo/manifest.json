@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "kid": "mateo",
+  "game": {
+    "date": "2026-05-27",
+    "opponent": "dragons",
+    "scoreFor": 4,
+    "scoreAgainst": 0,
+    "result": "W"
+  },
+  "clips": [
+    {
+      "file": "01-clip.mp4",
+      "durationSec": 2,
+      "sha256": "ec9adf111a2b02b3cb5a4d2ddffd52af0c294dcd850a572bcd4f6d9d5f2a4209"
+    }
+  ],
+  "totalDurationSec": 2,
+  "manifestHash": "sha256:1c845d57bcb4642f445833cee6814039fafa6e04a5841fbb23fae5daad42fe5b"
+}

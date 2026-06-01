@@ -35,3 +35,15 @@ tests/fixtures/*.mp4
 
 # Snapshot diff outputs are debug artifacts only — never committed
 tests/snapshots/.diff/
+
+# Allow committed web fixture tree — see web/tests/fixtures/golazo/README.md.
+# The broad rules above (tests/fixtures/*.mp4, .golazo/, channels.yaml) need
+# explicit allow-lines for the per-game artifacts the scanner walks.
+!web/tests/fixtures/golazo/channels.yaml
+!web/tests/fixtures/golazo/**/*.mp4
+!web/tests/fixtures/golazo/**/*.png
+!web/tests/fixtures/golazo/**/.golazo/
+!web/tests/fixtures/golazo/**/.golazo/manifest.json
+!web/tests/fixtures/golazo/**/.golazo/episode.mp4
+!web/tests/fixtures/golazo/**/.golazo/thumb.png
+!web/tests/fixtures/golazo/**/.golazo/publish.json

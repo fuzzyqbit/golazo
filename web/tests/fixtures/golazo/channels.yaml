@@ -1,0 +1,27 @@
+# Stub channels.yaml for web scanner fixture tests.
+#
+# The scanner (web/src/lib/scanner.ts) does NOT read this file — it reads only
+# manifest.json and publish.json from each game folder's .golazo/ directory.
+# This file is committed alongside the fixture tree for completeness and so
+# that any future CLI integration tests running from web/tests/fixtures/golazo/
+# have a valid channels config available.
+#
+# Token paths are stubs — the scanner never resolves them.
+leo:
+  name: 'Leo'
+  club: 'FC Eagles'
+  jersey: 10
+  accent: '#ffce5a'
+  source: 'Veo'
+  youtube:
+    channel_id: 'UC_FIXTURE_LEO_CHANNEL_ID'
+    oauth_token: '~/.golazo/leo-token.json'
+mateo:
+  name: 'Mateo'
+  club: 'City SC'
+  jersey: 7
+  accent: '#5acfff'
+  source: 'Trace'
+  youtube:
+    channel_id: 'UC_FIXTURE_MATEO_CHANNEL_ID'
+    oauth_token: '~/.golazo/mateo-token.json'
