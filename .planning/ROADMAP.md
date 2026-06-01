@@ -48,7 +48,11 @@ golazo is a local-Mac CLI that transforms folders of soccer highlight clips into
   3. sqlite at `web/data/index.db` (gitignored) is populated on first scan; subsequent reads serve list queries in < 50 ms for a 100-game fixture
   4. Invalidation: a row is invalidated when (a) the on-disk `manifestHash` differs from the cached row, or (b) any tracked file's mtime is newer than the cached scan time. Empty/missing sqlite rebuilds from scan on startup
   5. Adding a new game folder under `~/golazo/leo/` reflects in the running app's UI list within 2 s via the chokidar watcher; deleting one removes the row in the same window
-**Plans**: TBD
+**Plans**: 4 plans
+- [ ] 06-01-PLAN.md — Scanner: scanGolazoRoot + EpisodeIndex types + WarningBag + committed 3-game fixture (DISC-01, DISC-02, DISC-05)
+- [ ] 06-02-PLAN.md — sqlite cache: better-sqlite3 schema + CRUD + invalidation predicates + < 50ms bench (DISC-03)
+- [ ] 06-03-PLAN.md — chokidar watcher: 500ms per-folder debounce + cache mutation within 2s (DISC-04)
+- [ ] 06-04-PLAN.md — Startup wiring: discoveryRuntime singleton + instrumentation.ts hook + /api/debug/discovery + end-to-end integration smoke (all DISC-*)
 
 ### Phase 7: Browse Surface
 **Goal**: Operator opens `/` and sees all indexed episodes with sort + per-kid filter + thumbnail posters; clicking any row deep-links to `/episodes/<manifestHash>` showing manifest details + rendered title/description templates + publish.json status.
