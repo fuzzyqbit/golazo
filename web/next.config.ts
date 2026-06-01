@@ -1,11 +1,21 @@
 import type { NextConfig } from 'next';
 
 const config: NextConfig = {
-  // Plan 03 will add hostname enforcement here OR via instrumentation.ts.
-  // Plan 04 will add font configuration only if next/font/local's
-  // file-relative resolution proves insufficient — current intent is to
-  // configure fonts entirely via `next/font/local` at the layout.tsx
-  // call site, so no next.config.ts changes for Plan 04.
+  /**
+   * serverExternalPackages: tell Turbopack/webpack NOT to bundle these packages.
+   * They are required for the server-side discovery runtime (Plan 04):
+   *
+   * - better-sqlite3: native Node.js addon (.node binary) — cannot be bundled
+   * - chokidar: depends on fsevents (macOS native .node) — ESM chunk incompatible
+   *
+   * Both packages are Node.js-only and run exclusively on the server (in the
+   * Node.js runtime). Marking them external causes Next.js to require() them
+   * at runtime from node_modules instead of statically inlining them into the
+   * build output. This is the standard Next.js pattern for native addons.
+   *
+   * Reference: https://nextjs.org/docs/app/api-reference/next-config-js/serverExternalPackages
+   */
+  serverExternalPackages: ['better-sqlite3', 'chokidar'],
 };
 
 export default config;
