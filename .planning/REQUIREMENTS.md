@@ -22,7 +22,7 @@
 ### Browse Surface
 
 - [ ] **UI-01**: The root route `/` lists all indexed episodes, sortable by date (default desc), opponent, result (W/L/D), and kid; sort persists in URL search params (`?sort=date.desc&kid=leo`)
-- [ ] **UI-02**: Each row in the list view shows: thumbnail (thumb.png poster, lazy-loaded), kid name + accent color chip from `channels.yaml`, opponent (pretty-printed via Phase 2 `prettyOpponent`), date, score, status badge (prepared / rendered / published)
+- [x] **UI-02**: Each row in the list view shows: thumbnail (thumb.png poster, lazy-loaded), kid name + accent color chip from `channels.yaml`, opponent (pretty-printed via Phase 2 `prettyOpponent`), date, score, status badge (prepared / rendered / published)
 - [ ] **UI-03**: A per-kid filter (chips: `all` / `leo` / `mateo`) reduces the list; combined with sort, all state lives in URL search params (deep-linkable, refresh-safe)
 - [ ] **UI-04**: Empty state renders a clear message + the path the scanner walked when no episodes are found; not a blank screen
 - [x] **UI-05**: Typography matches Remotion compositions — display uses Cormorant Garamond Italic (self-hosted under `web/public/fonts/`), labels use Inter; visual rhythm echoes the cinematic episode style
@@ -78,7 +78,7 @@
 | DISC-04 | TBD | Complete |
 | DISC-05 | TBD | Complete |
 | UI-01 | TBD | Pending |
-| UI-02 | TBD | Pending |
+| UI-02 | TBD | Complete |
 | UI-03 | TBD | Pending |
 | UI-04 | TBD | Pending |
 | UI-05 | TBD | Complete |
