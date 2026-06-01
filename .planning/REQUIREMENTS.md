@@ -25,7 +25,7 @@
 - [ ] **UI-02**: Each row in the list view shows: thumbnail (thumb.png poster, lazy-loaded), kid name + accent color chip from `channels.yaml`, opponent (pretty-printed via Phase 2 `prettyOpponent`), date, score, status badge (prepared / rendered / published)
 - [ ] **UI-03**: A per-kid filter (chips: `all` / `leo` / `mateo`) reduces the list; combined with sort, all state lives in URL search params (deep-linkable, refresh-safe)
 - [ ] **UI-04**: Empty state renders a clear message + the path the scanner walked when no episodes are found; not a blank screen
-- [ ] **UI-05**: Typography matches Remotion compositions — display uses Cormorant Garamond Italic (self-hosted under `web/public/fonts/`), labels use Inter; visual rhythm echoes the cinematic episode style
+- [x] **UI-05**: Typography matches Remotion compositions — display uses Cormorant Garamond Italic (self-hosted under `web/public/fonts/`), labels use Inter; visual rhythm echoes the cinematic episode style
 - [ ] **UI-06**: Layout is responsive but optimized for desktop (operator's MacBook). Touch targets and mobile breakpoints not in scope for v2.0
 
 ### Episode Detail + Playback
@@ -81,7 +81,7 @@
 | UI-02 | TBD | Pending |
 | UI-03 | TBD | Pending |
 | UI-04 | TBD | Pending |
-| UI-05 | TBD | Pending |
+| UI-05 | TBD | Complete |
 | UI-06 | TBD | Pending |
 | PLAY-01 | TBD | Pending |
 | PLAY-02 | TBD | Pending |
