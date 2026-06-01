@@ -26,6 +26,7 @@ import { loadChannel } from '@golazo/cli/dist/config/channels.js';
 import { renderTitle, renderDescription } from '@golazo/cli/dist/publish/templates.js';
 import type { TemplateInput } from '@golazo/cli/dist/publish/templates.js';
 import { EpisodeDetail } from '@/components/EpisodeDetail';
+import { resolveChannelsPath } from '@/lib/ui/channelAccents';
 
 import styles from './page.module.css';
 
@@ -65,7 +66,9 @@ export default async function EpisodeDetailPage({
   const publish = readPublishFromRow(row);
 
   // Step 6: Load channel config (skipTokenCheck: true — UI never reads OAuth token)
-  const channel = loadChannel(row.kid, { skipTokenCheck: true });
+  // Use resolveChannelsPath() to respect GOLAZO_CHANNELS_PATH env var (same as channelAccents.ts)
+  const channelsPath = resolveChannelsPath();
+  const channel = loadChannel(row.kid, { path: channelsPath, skipTokenCheck: true });
 
   // Step 7: Build TemplateInput + render title/description via Phase 3 templates
   const templateInput: TemplateInput = {
