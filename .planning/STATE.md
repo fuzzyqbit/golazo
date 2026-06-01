@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Web UI
-status: verifying
-stopped_at: Plan 05-03 complete; two-layer localhost defense (WEB-02 + WEB-03); 20 web tests + 403 root tests passing; ready for 05-04 fonts+theme
-last_updated: "2026-06-01T06:39:15.843Z"
-last_activity: 2026-06-01
+status: executing
+stopped_at: Plan 07-01 complete; URL state parse/serialize + list ops; 45 new web tests + 403 root tests passing; ready for 07-02
+last_updated: "2026-06-01T21:03:02Z"
+last_activity: 2026-06-01 -- Phase 07 Plan 01 complete
 progress:
   total_phases: 4
   completed_phases: 2
-  total_plans: 8
-  completed_plans: 8
-  percent: 100
+  total_plans: 12
+  completed_plans: 9
+  percent: 75
 ---
 
 # Project State
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-13)
 
 **Core value:** Drop a folder of clips on disk, get a cinematic per-game highlight episode uploaded to the right YouTube channel — minimal hands-on time per game even at 5+ games/week.
-**Current focus:** Phase 06 — Discovery + sqlite Cache + Watcher
+**Current focus:** Phase 07 — Browse Surface
 
 ## Current Position
 
-Phase: 06 (Discovery + sqlite Cache + Watcher) — EXECUTING
-Plan: 4 of 4
-Status: Phase complete — ready for verification
-Last activity: 2026-06-01
+Phase: 07 (Browse Surface) — EXECUTING
+Plan: 2 of 4
+Status: Executing Phase 07
+Last activity: 2026-06-01 -- Phase 07 Plan 01 complete (URL state parse/serialize + list ops)
 
 ## Performance Metrics
 
@@ -76,6 +76,7 @@ Last activity: 2026-06-01
 | Phase 06-discovery-sqlite-watcher P02 | 1070 | 3 tasks | 8 files |
 | Phase 06-discovery-sqlite-watcher P03 | 720 | 2 tasks | 4 files |
 | Phase 06-discovery-sqlite-watcher P04 | 9 min | 3 tasks | 4 files |
+| Phase 07-browse-surface P01 | 7min 0s | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -161,6 +162,11 @@ Recent decisions affecting current work:
 - [Phase ?]: better-sqlite3 over node:sqlite (still unstable in Node 22.x); sync API matches single-process Next.js server write-light workload
 - [Phase ?]: 16-col DDL mirrors EpisodeIndex, PK manifest_hash, covering index on kid/date/gameFolder
 - [Phase ?]: peekManifestHashFromFile uses regex over raw bytes, not JSON.parse — ~30x faster on chokidar hot path
+- 07-01: DEFAULT_LIST_PARAMS = { sort: { key: 'date', dir: 'desc' }, kid: 'all' } — date.desc + all omitted from URL
+- 07-01: RESULT_RANK = { W: 0, D: 1, L: 2 } — operator-intuitive ascending (best-first W → D → L)
+- 07-01: Sort tie-breaker = kid ASC → date DESC → gameFolder ASC (matches Phase 6 scanner contract)
+- 07-01: serializeListParams key order: sort before kid (deterministic)
+- 07-01: filterByKid('all', rows) returns rows as-is; other kids return rows.filter (new array)
 
 ### Pending Todos
 
