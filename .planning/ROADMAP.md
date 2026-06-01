@@ -16,7 +16,7 @@ golazo is a local-Mac CLI that transforms folders of soccer highlight clips into
 
 - [ ] **Phase 5: Web Scaffold + Workspaces** — Next.js 16 + Turbopack setup under `web/`, npm workspace conversion (root + web share types), localhost-only bind hardening, self-hosted fonts, theme primitives
 - [x] **Phase 6: Discovery + sqlite Cache + Watcher** — filesystem scanner over `~/golazo/`, per-game status derivation, sqlite invalidation by manifestHash + mtime, chokidar watcher (completed 2026-06-01)
-- [ ] **Phase 7: Browse Surface** — list view at `/` (sort, per-kid filter, URL state, thumb posters), detail view at `/episodes/<manifestHash>` (manifest + template renders + publish.json status)
+- [x] **Phase 7: Browse Surface** — list view at `/` (sort, per-kid filter, URL state, thumb posters), detail view at `/episodes/<manifestHash>` (manifest + template renders + publish.json status) (completed 2026-06-01)
 - [ ] **Phase 8: Player + Asset Serving + QA** — HTML5 video player, Next.js asset route handler with path-safety + HTTP Range support, vitest unit/integration, Playwright E2E, 80% coverage gate on `web/src/`
 
 ## Phase Details
@@ -68,7 +68,7 @@ golazo is a local-Mac CLI that transforms folders of soccer highlight clips into
 - [x] 07-01-PLAN.md — URL state + list operations: parseListParams/serializeListParams + sortEpisodes/filterByKid pure functions [UI-01, UI-03]
 - [x] 07-02-PLAN.md — channelAccents server helper: load channels.yaml accents map via @golazo/cli loader with skipTokenCheck [UI-02]
 - [x] 07-03-PLAN.md — List view: page.tsx Server Component + EpisodeList client component + EpisodeRow/EmptyState + path-safe thumb asset route stub [UI-01, UI-02, UI-03, UI-04, UI-06]
-- [ ] 07-04-PLAN.md — Detail view: /episodes/[manifestHash] Server Component + EpisodeDetail + manifest/publish read helpers + notFound() [PLAY-01, PLAY-02]
+- [x] 07-04-PLAN.md — Detail view: /episodes/[manifestHash] Server Component + EpisodeDetail + manifest/publish read helpers + notFound() [PLAY-01, PLAY-02]
 **UI hint**: yes
 
 ### Phase 8: Player + Asset Serving + QA
@@ -93,7 +93,7 @@ Phases execute in numeric order: 5 → 6 → 7 → 8
 |-------|----------------|--------|-----------|
 | 5. Web Scaffold + Workspaces | 2/4 | In Progress|  |
 | 6. Discovery + sqlite Cache + Watcher | 4/4 | Complete   | 2026-06-01 |
-| 7. Browse Surface | 3/4 | In Progress|  |
+| 7. Browse Surface | 4/4 | Complete   | 2026-06-01 |
 | 8. Player + Asset Serving + QA | 0/TBD | Not started | — |
 
 ## v2.1+ Backlog (carry-forwards + future)
