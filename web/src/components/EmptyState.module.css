@@ -1,0 +1,76 @@
+/*
+ * EmptyState.module.css — Styles for the "no episodes found" empty state.
+ *
+ * Uses CSS variable font references injected by next/font in layout.tsx.
+ * Color values are hand-mirrored from web/src/theme/tokens.ts because
+ * CSS Modules cannot import TypeScript (Plan 05-04 D-14 convention).
+ *
+ * COLORS mirror:
+ *   background:  #0a0a0a
+ *   foreground:  #f5f1e8
+ *   muted:       rgba(245, 241, 232, 0.6)
+ *   cardBg:      #0e0e0e
+ *   border:      rgba(245, 241, 232, 0.12)
+ *   accentDefault: #ffce5a
+ *
+ * SPACING mirror:
+ *   md: 1rem  (16px)
+ *   lg: 1.5rem (24px)
+ *   xl: 2.5rem (40px)
+ */
+
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  padding: 2.5rem; /* xl */
+  gap: 1.5rem; /* lg */
+  text-align: center;
+}
+
+.heading {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  letter-spacing: 0.02em;
+  color: #f5f1e8; /* foreground */
+  margin: 0;
+}
+
+.rootPath {
+  font-family: var(--font-label);
+  font-size: 1rem;
+  color: rgba(245, 241, 232, 0.6); /* muted */
+  margin: 0;
+  letter-spacing: 0.04em;
+}
+
+.rootPath code {
+  background: #0e0e0e; /* cardBg */
+  border: 1px solid rgba(245, 241, 232, 0.12); /* border */
+  border-radius: 4px;
+  padding: 0.2em 0.5em;
+  font-family: monospace;
+  font-size: 0.9em;
+  color: #ffce5a; /* accentDefault */
+  word-break: break-all;
+}
+
+.hint {
+  font-family: var(--font-label);
+  font-size: 0.9rem;
+  color: rgba(245, 241, 232, 0.6); /* muted */
+  margin: 0;
+}
+
+.hint code {
+  background: #0e0e0e; /* cardBg */
+  border: 1px solid rgba(245, 241, 232, 0.12); /* border */
+  border-radius: 4px;
+  padding: 0.15em 0.4em;
+  font-family: monospace;
+  font-size: 0.9em;
+  color: rgba(245, 241, 232, 0.6);
+}
