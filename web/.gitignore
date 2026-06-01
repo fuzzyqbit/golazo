@@ -3,3 +3,5 @@ next-env.d.ts.bak
 data/*.db
 data/*.db-shm
 data/*.db-wal
+# Guard against test artifacts when Next.js dev runs from web/ dir
+web/
