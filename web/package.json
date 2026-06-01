@@ -13,6 +13,7 @@
   "dependencies": {
     "@golazo/cli": "file:..",
     "better-sqlite3": "^12.0.0",
+    "chokidar": "^3.6.0",
     "next": "^16",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
