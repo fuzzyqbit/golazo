@@ -1,0 +1,237 @@
+/*
+ * EpisodeDetail.module.css — Styles for the episode detail presentational component.
+ *
+ * Typographic rhythm mirrors Plan 03's EpisodeRow/EpisodeList:
+ *   - Cormorant Garamond Italic for headings (var(--font-display))
+ *   - Inter for labels + body (var(--font-label))
+ *
+ * COLORS mirror (from web/src/theme/tokens.ts):
+ *   background:   #0a0a0a
+ *   foreground:   #f5f1e8
+ *   cardBg:       #0e0e0e
+ *   border:       rgba(245, 241, 232, 0.12)
+ *   muted:        rgba(245, 241, 232, 0.6)
+ *   accentDefault:#ffce5a
+ *
+ * SPACING mirror:
+ *   xs:  0.25rem  (4px)
+ *   sm:  0.5rem   (8px)
+ *   md:  1rem     (16px)
+ *   lg:  1.5rem   (24px)
+ *   xl:  2.5rem   (40px)
+ */
+
+/* Root article */
+.article {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem; /* lg+ */
+  max-width: 72ch;
+}
+
+/* Back nav */
+.nav {
+  display: flex;
+  align-items: center;
+}
+
+.backLink {
+  font-family: var(--font-label);
+  font-size: 0.8125rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(245, 241, 232, 0.6); /* muted */
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.backLink:hover {
+  color: #f5f1e8; /* foreground */
+}
+
+/* Per-kid accent bar */
+.accentBar {
+  height: 3px;
+  width: 3rem;
+  border-radius: 2px;
+}
+
+/* Title section */
+.titleSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; /* sm */
+}
+
+.title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.75rem, 4vw, 3.5rem);
+  letter-spacing: 0.02em;
+  margin: 0;
+  color: #f5f1e8; /* foreground */
+  line-height: 1.15;
+}
+
+/* Description section */
+.descriptionSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.description {
+  font-family: var(--font-label);
+  font-size: 0.9375rem;
+  color: rgba(245, 241, 232, 0.6); /* muted */
+  white-space: pre-line; /* preserves \n newlines from renderDescription */
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* Player mount seam (Phase 8 will add <video> here) */
+.playerMount {
+  min-height: 0; /* collapsed until Phase 8 fills it */
+}
+
+/* Manifest + Publish sections */
+.manifestSection,
+.publishSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* md */
+  padding: 1.5rem; /* lg */
+  background: #0e0e0e; /* cardBg */
+  border: 1px solid rgba(245, 241, 232, 0.12); /* border */
+  border-radius: 6px;
+}
+
+/* Section headings */
+.sectionLabel {
+  font-family: var(--font-label);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(245, 241, 232, 0.6); /* muted */
+  margin: 0;
+}
+
+/* Definition list */
+.metaList {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.5rem 1.5rem; /* sm lg */
+  margin: 0;
+  padding: 0;
+}
+
+.metaKey {
+  font-family: var(--font-label);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(245, 241, 232, 0.6); /* muted */
+  align-self: start;
+  padding-top: 0.125rem;
+}
+
+.metaValue {
+  font-family: var(--font-label);
+  font-size: 0.875rem;
+  color: #f5f1e8; /* foreground */
+  margin: 0;
+  word-break: break-all;
+}
+
+/* manifestHash in monospace */
+.metaHash {
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 0.6875rem;
+  color: rgba(245, 241, 232, 0.6); /* muted */
+  letter-spacing: 0.04em;
+  margin: 0;
+  word-break: break-all;
+}
+
+/* Clip list */
+.clipList {
+  list-style: decimal;
+  padding-left: 1.25rem;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.clipItem {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  color: #f5f1e8;
+}
+
+.clipFile {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.clipSpacer {
+  flex: 1;
+}
+
+.clipDuration {
+  flex-shrink: 0;
+  color: rgba(245, 241, 232, 0.6); /* muted */
+  font-size: 0.75rem;
+}
+
+/* Absent/placeholder text */
+.absent {
+  color: rgba(245, 241, 232, 0.4);
+  font-style: italic;
+}
+
+/* External link */
+.externalLink {
+  color: #ffce5a; /* accentDefault */
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: opacity 0.15s ease;
+}
+
+.externalLink:hover {
+  opacity: 0.8;
+}
+
+/* Not published block */
+.notPublished {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.notPublished p {
+  margin: 0;
+  font-family: var(--font-label);
+  font-size: 0.9375rem;
+  color: rgba(245, 241, 232, 0.6); /* muted */
+}
+
+.hint {
+  font-size: 0.8125rem !important;
+  color: rgba(245, 241, 232, 0.4) !important;
+}
+
+.code {
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 0.8125rem;
+  background: rgba(245, 241, 232, 0.06);
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+}

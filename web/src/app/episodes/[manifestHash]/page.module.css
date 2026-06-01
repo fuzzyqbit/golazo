@@ -1,0 +1,20 @@
+/*
+ * page.module.css — Detail page layout styles.
+ *
+ * COLORS mirror (from web/src/theme/tokens.ts):
+ *   background: #0a0a0a
+ *   foreground: #f5f1e8
+ *
+ * SPACING mirror:
+ *   xl: 2.5rem  (40px)
+ */
+
+.main {
+  min-height: 100vh;
+  padding: 2.5rem; /* xl */
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  background: #0a0a0a; /* background */
+  color: #f5f1e8; /* foreground */
+}

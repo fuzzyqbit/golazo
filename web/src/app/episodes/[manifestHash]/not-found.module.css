@@ -1,0 +1,57 @@
+/*
+ * not-found.module.css — Styles for the episode 404 page.
+ *
+ * COLORS mirror (from web/src/theme/tokens.ts):
+ *   background: #0a0a0a
+ *   foreground: #f5f1e8
+ *   muted: rgba(245, 241, 232, 0.6)
+ *
+ * SPACING mirror:
+ *   xl: 2.5rem  (40px)
+ *   lg: 1.5rem  (24px)
+ *   md: 1rem    (16px)
+ */
+
+.main {
+  min-height: 100vh;
+  padding: 2.5rem; /* xl */
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* lg */
+  background: #0a0a0a; /* background */
+  color: #f5f1e8; /* foreground */
+}
+
+/* 404 heading — display font (Cormorant Garamond Italic) */
+.heading {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  letter-spacing: 0.02em;
+  margin: 0;
+  color: #f5f1e8; /* foreground */
+  line-height: 1.1;
+}
+
+.message {
+  font-family: var(--font-label);
+  font-size: 1rem;
+  color: rgba(245, 241, 232, 0.6); /* muted */
+  margin: 0;
+  max-width: 40ch;
+}
+
+.backLink {
+  font-family: var(--font-label);
+  font-size: 0.875rem;
+  letter-spacing: 0.16em;
+  color: #f5f1e8; /* foreground */
+  text-decoration: none;
+  text-transform: uppercase;
+  opacity: 0.7;
+  transition: opacity 0.15s ease;
+}
+
+.backLink:hover {
+  opacity: 1;
+}
