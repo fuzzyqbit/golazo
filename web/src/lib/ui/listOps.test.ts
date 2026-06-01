@@ -100,13 +100,15 @@ describe('sortEpisodes', () => {
     [
       'date.desc — newest first',
       { key: 'date', dir: 'desc' },
-      // 2026-04-10 (mateo), then the two 2026-04-01 (leo), then 2026-03-15 (leo), 2026-03-05 (mateo), 2026-02-20 (mateo)
-      ['sha256:04', 'sha256:01', 'sha256:03', 'sha256:02', 'sha256:05', 'sha256:06'],
+      // 2026-04-10 (mateo/04), then 2026-04-01 two rows: tie-breaker gameFolder ASC → apex(03) before united(01)
+      // then 2026-03-15 (02), 2026-03-05 (05), 2026-02-20 (06)
+      ['sha256:04', 'sha256:03', 'sha256:01', 'sha256:02', 'sha256:05', 'sha256:06'],
     ],
     [
       'date.asc — oldest first',
       { key: 'date', dir: 'asc' },
-      ['sha256:06', 'sha256:05', 'sha256:02', 'sha256:01', 'sha256:03', 'sha256:04'],
+      // 2026-02-20 (06), 2026-03-05 (05), 2026-03-15 (02), then two 2026-04-01: apex(03) before united(01), then 2026-04-10 (04)
+      ['sha256:06', 'sha256:05', 'sha256:02', 'sha256:03', 'sha256:01', 'sha256:04'],
     ],
     [
       'opponent.asc — alphabetical by slug',
@@ -135,13 +137,15 @@ describe('sortEpisodes', () => {
     [
       'kid.asc — leo before mateo',
       { key: 'kid', dir: 'asc' },
-      // all 3 leo rows first, then 3 mateo rows; within each kid: date desc, gameFolder asc
-      ['sha256:01', 'sha256:03', 'sha256:02', 'sha256:04', 'sha256:05', 'sha256:06'],
+      // leo rows: tie-breaker date desc → 2026-04-01 tie → gameFolder asc (apex=03 before united=01) → 2026-03-15 (02)
+      // mateo rows: date desc → 2026-04-10 (04), 2026-03-05 (05), 2026-02-20 (06)
+      ['sha256:03', 'sha256:01', 'sha256:02', 'sha256:04', 'sha256:05', 'sha256:06'],
     ],
     [
       'kid.desc — mateo before leo',
       { key: 'kid', dir: 'desc' },
-      ['sha256:04', 'sha256:05', 'sha256:06', 'sha256:01', 'sha256:03', 'sha256:02'],
+      // mateo rows: tie-breaker date desc → 04, 05, 06; leo rows: 03, 01, 02
+      ['sha256:04', 'sha256:05', 'sha256:06', 'sha256:03', 'sha256:01', 'sha256:02'],
     ],
   ])('%s', (_label, sort, expectedHashes) => {
     const result = sortEpisodes(FIXTURE, sort);
