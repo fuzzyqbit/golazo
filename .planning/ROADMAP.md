@@ -15,7 +15,7 @@ golazo is a local-Mac CLI that transforms folders of soccer highlight clips into
 ### Phases
 
 - [ ] **Phase 5: Web Scaffold + Workspaces** — Next.js 16 + Turbopack setup under `web/`, npm workspace conversion (root + web share types), localhost-only bind hardening, self-hosted fonts, theme primitives
-- [ ] **Phase 6: Discovery + sqlite Cache + Watcher** — filesystem scanner over `~/golazo/`, per-game status derivation, sqlite invalidation by manifestHash + mtime, chokidar watcher
+- [x] **Phase 6: Discovery + sqlite Cache + Watcher** — filesystem scanner over `~/golazo/`, per-game status derivation, sqlite invalidation by manifestHash + mtime, chokidar watcher (completed 2026-06-01)
 - [ ] **Phase 7: Browse Surface** — list view at `/` (sort, per-kid filter, URL state, thumb posters), detail view at `/episodes/<manifestHash>` (manifest + template renders + publish.json status)
 - [ ] **Phase 8: Player + Asset Serving + QA** — HTML5 video player, Next.js asset route handler with path-safety + HTTP Range support, vitest unit/integration, Playwright E2E, 80% coverage gate on `web/src/`
 
@@ -52,7 +52,7 @@ golazo is a local-Mac CLI that transforms folders of soccer highlight clips into
 - [x] 06-01-PLAN.md — Scanner: scanGolazoRoot + EpisodeIndex types + WarningBag + committed 3-game fixture (DISC-01, DISC-02, DISC-05)
 - [x] 06-02-PLAN.md — sqlite cache: better-sqlite3 schema + CRUD + invalidation predicates + < 50ms bench (DISC-03)
 - [x] 06-03-PLAN.md — chokidar watcher: 500ms per-folder debounce + cache mutation within 2s (DISC-04)
-- [ ] 06-04-PLAN.md — Startup wiring: discoveryRuntime singleton + instrumentation.ts hook + /api/debug/discovery + end-to-end integration smoke (all DISC-*)
+- [x] 06-04-PLAN.md — Startup wiring: discoveryRuntime singleton + instrumentation.ts hook + /api/debug/discovery + end-to-end integration smoke (all DISC-*)
 
 ### Phase 7: Browse Surface
 **Goal**: Operator opens `/` and sees all indexed episodes with sort + per-kid filter + thumbnail posters; clicking any row deep-links to `/episodes/<manifestHash>` showing manifest details + rendered title/description templates + publish.json status.
@@ -88,7 +88,7 @@ Phases execute in numeric order: 5 → 6 → 7 → 8
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 5. Web Scaffold + Workspaces | 2/4 | In Progress|  |
-| 6. Discovery + sqlite Cache + Watcher | 2/4 | In Progress|  |
+| 6. Discovery + sqlite Cache + Watcher | 4/4 | Complete   | 2026-06-01 |
 | 7. Browse Surface | 0/TBD | Not started | — |
 | 8. Player + Asset Serving + QA | 0/TBD | Not started | — |
 
