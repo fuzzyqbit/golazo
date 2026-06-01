@@ -7,31 +7,16 @@
  *
  * If src/prepare/manifest.ts changes break this test's assertions, the failure
  * is immediate and loud — the desired behaviour for a shared-types contract.
+ *
+ * Pre-flight note: this test depends on `dist/prepare/manifest.js` existing.
+ * Run `npm run build` from the repo root before running this test on a clean clone.
  */
-import { existsSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
-import { execSync } from 'node:child_process';
-import { describe, it, expect, beforeAll } from 'vitest';
+import { describe, it, expect } from 'vitest';
 
 // Resolved at import time via workspace symlink:
 // node_modules/@golazo/cli -> <repo-root>
 // <repo-root>/dist/prepare/manifest.js is the compiled artifact.
 import { manifestSchema } from '@golazo/cli/dist/prepare/manifest.js';
-
-beforeAll(() => {
-  // Defensive pre-flight: ensure dist/prepare/manifest.js is compiled.
-  // On a clean clone, dist/ may be absent; running build here prevents a
-  // confusing "Cannot find module" error unrelated to the test logic.
-  const distManifestPath = fileURLToPath(
-    new URL('../node_modules/@golazo/cli/dist/prepare/manifest.js', import.meta.url),
-  );
-  if (!existsSync(distManifestPath)) {
-    const repoRoot = fileURLToPath(
-      new URL('../node_modules/@golazo/cli/', import.meta.url),
-    );
-    execSync('npm run build', { cwd: repoRoot, stdio: 'inherit' });
-  }
-});
 
 describe('cross-workspace @golazo/cli manifest schema import', () => {
   /**
