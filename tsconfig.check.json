@@ -7,5 +7,11 @@
     "lib": ["ES2023", "DOM"]
   },
   "include": ["src/**/*", "remotion/**/*", "web/src/**/*", "web/tests/**/*", "web/next.config.ts"],
-  "exclude": ["node_modules", "web/src/fonts.ts"]
+  "exclude": [
+    "node_modules",
+    "web/src/fonts.ts",
+    "web/src/app/**",
+    "web/src/theme/index.ts",
+    "web/instrumentation.ts"
+  ]
 }
