@@ -4,14 +4,14 @@ milestone: v2.0
 milestone_name: Web UI
 status: executing
 stopped_at: Plan 05-03 complete; two-layer localhost defense (WEB-02 + WEB-03); 20 web tests + 403 root tests passing; ready for 05-04 fonts+theme
-last_updated: "2026-06-01T05:47:11.782Z"
+last_updated: "2026-06-01T06:10:25.133Z"
 last_activity: 2026-06-01
 progress:
   total_phases: 4
   completed_phases: 1
   total_plans: 8
-  completed_plans: 5
-  percent: 63
+  completed_plans: 6
+  percent: 75
 ---
 
 # Project State
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-05-13)
 ## Current Position
 
 Phase: 06 (Discovery + sqlite Cache + Watcher) — EXECUTING
-Plan: 2 of 4
+Plan: 3 of 4
 Status: Ready to execute
 Last activity: 2026-06-01
 
@@ -73,6 +73,7 @@ Last activity: 2026-06-01
 | Phase 05-web-scaffold-workspaces P01 | 9min | 1 tasks | 3 files |
 | Phase 05-web-scaffold-workspaces P02 | 13min 10s | 2 tasks | 11 files |
 | Phase 05 P04 | 672 | 2 tasks | 9 files |
+| Phase 06-discovery-sqlite-watcher P02 | 1070 | 3 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -155,6 +156,9 @@ Recent decisions affecting current work:
 - 05-03: D-10 LOCKED: WEB-03 token pinned in error message; integration test enforces it
 - 05-03: D-11 LOCKED: unit (hostGuard.test.ts) + integration (host-binding.integration.test.ts) test split
 - 05-03: D-11b LOCKED: Scenario C integration test pins composed HOST=0.0.0.0 npm run dev path; script HOST=127.0.0.1 prefix wins
+- [Phase ?]: better-sqlite3 over node:sqlite (still unstable in Node 22.x); sync API matches single-process Next.js server write-light workload
+- [Phase ?]: 16-col DDL mirrors EpisodeIndex, PK manifest_hash, covering index on kid/date/gameFolder
+- [Phase ?]: peekManifestHashFromFile uses regex over raw bytes, not JSON.parse — ~30x faster on chokidar hot path
 
 ### Pending Todos
 
@@ -174,6 +178,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-01T05:47:11.777Z
+Last session: 2026-06-01T06:10:25.128Z
 Stopped at: Plan 05-03 complete; two-layer localhost defense (WEB-02 + WEB-03); 20 web tests + 403 root tests passing; ready for 05-04 fonts+theme
 Resume file: None

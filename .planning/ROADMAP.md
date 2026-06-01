@@ -50,7 +50,7 @@ golazo is a local-Mac CLI that transforms folders of soccer highlight clips into
   5. Adding a new game folder under `~/golazo/leo/` reflects in the running app's UI list within 2 s via the chokidar watcher; deleting one removes the row in the same window
 **Plans**: 4 plans
 - [x] 06-01-PLAN.md — Scanner: scanGolazoRoot + EpisodeIndex types + WarningBag + committed 3-game fixture (DISC-01, DISC-02, DISC-05)
-- [ ] 06-02-PLAN.md — sqlite cache: better-sqlite3 schema + CRUD + invalidation predicates + < 50ms bench (DISC-03)
+- [x] 06-02-PLAN.md — sqlite cache: better-sqlite3 schema + CRUD + invalidation predicates + < 50ms bench (DISC-03)
 - [ ] 06-03-PLAN.md — chokidar watcher: 500ms per-folder debounce + cache mutation within 2s (DISC-04)
 - [ ] 06-04-PLAN.md — Startup wiring: discoveryRuntime singleton + instrumentation.ts hook + /api/debug/discovery + end-to-end integration smoke (all DISC-*)
 
@@ -88,7 +88,7 @@ Phases execute in numeric order: 5 → 6 → 7 → 8
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 5. Web Scaffold + Workspaces | 2/4 | In Progress|  |
-| 6. Discovery + sqlite Cache + Watcher | 1/4 | In Progress|  |
+| 6. Discovery + sqlite Cache + Watcher | 2/4 | In Progress|  |
 | 7. Browse Surface | 0/TBD | Not started | — |
 | 8. Player + Asset Serving + QA | 0/TBD | Not started | — |
 
