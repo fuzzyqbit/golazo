@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Web UI
 status: executing
-stopped_at: Plan 05-02 complete; Next.js 16.2.6 web/ scaffold; WEB-01 SC#4 cross-workspace import proved; 403+3 tests passing
-last_updated: "2026-06-01T04:17:56.392Z"
+stopped_at: Plan 05-03 complete; two-layer localhost defense (WEB-02 + WEB-03); 20 web tests + 403 root tests passing; localhost guard integration test 3 scenarios all green
+last_updated: "2026-06-01T04:30:33.634Z"
 last_activity: 2026-06-01
 progress:
   total_phases: 4
   completed_phases: 0
   total_plans: 4
-  completed_plans: 2
-  percent: 50
+  completed_plans: 3
+  percent: 75
 ---
 
 # Project State
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-05-13)
 ## Current Position
 
 Phase: 05 (Web Scaffold + Workspaces) — EXECUTING
-Plan: 3 of 4
+Plan: 4 of 4
 Status: Ready to execute
 Last activity: 2026-06-01
 
@@ -149,6 +149,11 @@ Recent decisions affecting current work:
 - 05-02: D-06 LOCKED: @golazo/cli imports via dist/... subpath, no exports map — deferred to v2.1
 - 05-02: D-07 LOCKED: cross-workspace smoke in web/tests/workspace-import.test.ts — belongs to web package, runs under web tsconfig
 - 05-02: D-08 LOCKED: @golazo/cli referenced as file:.. in web/package.json — npm 10.9.4 does not resolve workspace-host via * wildcard from workspace members; file:.. is the correct npm idiom
+- 05-03: D-08 LOCKED: Two-layer localhost enforcement (CLI HOST=127.0.0.1 + -H 127.0.0.1 in scripts; instrumentation register guard)
+- 05-03: D-09 LOCKED: register() guards Node.js runtime only (NEXT_RUNTIME guard) — Edge runtime skipped
+- 05-03: D-10 LOCKED: WEB-03 token pinned in error message; integration test enforces it
+- 05-03: D-11 LOCKED: unit (hostGuard.test.ts) + integration (host-binding.integration.test.ts) test split
+- 05-03: D-11b LOCKED: Scenario C integration test pins composed HOST=0.0.0.0 npm run dev path; script HOST=127.0.0.1 prefix wins
 
 ### Pending Todos
 
@@ -168,6 +173,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-01T04:17:56.387Z
-Stopped at: Plan 04-04 complete; snapshot baselines + pixelmatch tests; QA-03 closed; PUB-05 override accepted; 387 tests passing; v1 milestone ready for verification
+Last session: 2026-06-01T04:30:33.630Z
+Stopped at: Plan 05-03 complete; two-layer localhost defense (WEB-02 + WEB-03); 20 web tests + 403 root tests passing; ready for 05-04 fonts+theme
 Resume file: None
