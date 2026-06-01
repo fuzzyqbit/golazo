@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
+import { displayFont, labelFont } from '@/fonts';
+import { COLORS } from '@/theme';
 
 export const metadata: Metadata = {
   title: 'golazo',
@@ -8,8 +10,17 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html lang="en" className={`${displayFont.variable} ${labelFont.variable}`}>
+      <body
+        style={{
+          background: COLORS.background,
+          color: COLORS.foreground,
+          margin: 0,
+          fontFamily: 'var(--font-label)',
+        }}
+      >
+        {children}
+      </body>
     </html>
   );
 }
