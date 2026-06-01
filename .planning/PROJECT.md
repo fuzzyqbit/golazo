@@ -24,22 +24,30 @@ The MVP is feature-complete and tested:
 
 See [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md) and [milestones/v1.0-REQUIREMENTS.md](milestones/v1.0-REQUIREMENTS.md) for the full v1.0 history.
 
-## Next Milestone Goals
+## Current Milestone: v2.0 Web UI
 
-*(Not yet defined. Start with `/gsd-new-milestone` to define v1.1 or v2.0 scope.)*
+**Goal:** Operator can browse and play rendered episodes from a local web UI at `localhost`, with a fast episode index over the filesystem-authoritative `~/golazo/<kid>/<game>/.golazo/` storage. No render/publish triggering from the browser in v2.0 — CLI remains the action surface.
 
-Carry-forward candidates from v1.0:
+**Target features:**
+- Localhost-only Next.js 16 web app at `web/` subdir (bound to 127.0.0.1, refuses 0.0.0.0)
+- Episode list across both kids, sortable by date / opponent / result, with thumb.png posters
+- Episode detail view plays episode.mp4 inline, shows manifest + title/description template render + publish.json status
+- Per-kid filter (leo / mateo); deep-link by manifestHash
+- sqlite cache over filesystem-authoritative discovery (walk `~/golazo/<kid>/*/.golazo/` on startup, watch for changes, fast UI queries)
+- Static asset serving for `.golazo/episode.mp4` + `.golazo/thumb.png` via Next.js route handler with path-safety guards
 
-- **PUB-05-resumable** — Replace googleapis SDK upload with raw HTTP resumable upload session protocol (initiation POST → session URI → `Content-Range` PUT on retry). Closes the v1.0 override; useful if real-world fail rates on mid-upload drops become an issue.
-- **OAuth-DI** — Replace `GOLAZO_OAUTH_MOCK=1` env-var branch in `exchangeCode` with injectable factory pattern. Removes a test-only seam from production code.
-- **QA-03-extended** — Commit 6+-clip fixture + integration render to close visual chapter-rhythm regression coverage on the every-3-clips path.
+**Key context:**
+- Built on top of v1.0 CLI — no changes to manifest.json / publish.json shapes; web UI is a read-only surface in v2.0
+- Same operator, same dev Mac, same single-user model. No auth: localhost bind is the access control
+- Shared types between CLI and web (manifest schema, channels config) need a workspace boundary — likely npm workspaces with `packages/` reshuffle, OR symlink-via-path-import. Decided at phase 1 planning
+- Web UI typography should echo Remotion compositions: Cormorant Garamond Italic display + Inter labels, self-hosted
 
-Other directions to consider when scoping the next milestone:
-
-- Real-world smoke test on production YouTube accounts before publishing public
-- Auto-detect Veo vs Trace footage source from folder content (currently declared in `channels.yaml`)
-- Multi-game recap mode (cross-game compilations were explicit v1 out-of-scope; revisit when v1 is validated)
-- Cross-OS support if a Linux/Windows operator emerges
+**v2.0 explicitly NOT in scope** (revisit in v2.1+):
+- PUB-05-resumable, OAuth-DI, QA-03-extended (carry-forwards from v1.0 — addressable independently if a real-world failure emerges)
+- Trigger render/publish from browser
+- Edit metadata / override score before publish
+- LAN access from phones / iPad
+- Multi-user auth or sessions
 
 ## Context
 

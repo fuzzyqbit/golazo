@@ -1,17 +1,16 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.0
-milestone_name: milestone
-status: shipped
-stopped_at: "v1.0 milestone SHIPPED 2026-05-19; all 28 v1 requirements complete; 387 tests, 86.72% coverage; tagged v1.0. Ready for /gsd-new-milestone."
-last_updated: "2026-05-19T16:30:00.000Z"
-last_activity: 2026-05-19 -- v1.0 milestone closed and tagged
+milestone: v2.0
+milestone_name: Web UI
+status: planning
+last_updated: "2026-06-01T02:45:30.019Z"
+last_activity: 2026-06-01
 progress:
-  total_phases: 4
-  completed_phases: 4
-  total_plans: 18
-  completed_plans: 18
-  percent: 100
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
@@ -25,12 +24,10 @@ See: .planning/PROJECT.md (updated 2026-05-13)
 
 ## Current Position
 
-Phase: 04 (Convenience & QA Polish) — EXECUTING
-Plan: 4 of 4
-Status: Phase complete — ready for verification
-Last activity: 2026-05-15
-
-Progress: [██████████] 100%
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-06-01 — Milestone v2.0 started
 
 ## Performance Metrics
 
