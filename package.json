@@ -1,7 +1,8 @@
 {
-  "name": "golazo",
+  "name": "@golazo/cli",
   "version": "0.1.0",
   "private": true,
+  "workspaces": ["web"],
   "description": "Local-Mac CLI: clip folder → branded YouTube episode",
   "type": "module",
   "engines": {
