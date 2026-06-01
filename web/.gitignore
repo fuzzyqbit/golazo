@@ -1,3 +1,5 @@
 .next/
 next-env.d.ts.bak
-data/
+data/*.db
+data/*.db-shm
+data/*.db-wal

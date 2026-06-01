@@ -47,3 +47,8 @@ tests/snapshots/.diff/
 !web/tests/fixtures/golazo/**/.golazo/episode.mp4
 !web/tests/fixtures/golazo/**/.golazo/thumb.png
 !web/tests/fixtures/golazo/**/.golazo/publish.json
+
+# sqlite cache — derived from filesystem, regenerated on first scan
+web/data/*.db
+web/data/*.db-shm
+web/data/*.db-wal

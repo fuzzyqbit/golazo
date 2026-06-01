@@ -12,6 +12,12 @@
     "web/src/fonts.ts",
     "web/src/app/**",
     "web/src/theme/index.ts",
-    "web/instrumentation.ts"
+    "web/instrumentation.ts",
+    "web/src/lib/cacheSchema.ts",
+    "web/src/lib/cache.ts",
+    "web/src/lib/cacheInvalidation.ts",
+    "web/src/lib/cache.test.ts",
+    "web/src/lib/cacheInvalidation.test.ts",
+    "web/tests/cache.bench.ts"
   ]
 }
