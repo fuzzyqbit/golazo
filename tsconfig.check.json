@@ -6,5 +6,5 @@
     "jsx": "react-jsx",
     "lib": ["ES2023", "DOM"]
   },
-  "include": ["src/**/*", "remotion/**/*", "web/instrumentation.ts", "web/src/**/*", "web/tests/**/*", "web/next.config.ts"]
+  "include": ["src/**/*", "remotion/**/*", "web/src/**/*", "web/tests/**/*", "web/next.config.ts"]
 }
