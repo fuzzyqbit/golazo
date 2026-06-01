@@ -6,9 +6,11 @@
  */
 import { describe, it, expect, afterEach } from 'vitest';
 import { statSync, existsSync } from 'node:fs';
-import { join, resolve } from 'node:path';
+import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { randomUUID } from 'node:crypto';
+
+import { fileURLToPath } from 'node:url';
 
 import {
   openCache,
@@ -53,8 +55,10 @@ function makeRow(overrides: Partial<EpisodeIndex> = {}): EpisodeIndex {
   return { ...base, ...overrides };
 }
 
-// Fixture root: resolve from repo root (vitest runs with cwd = repo root)
-const FIXTURE_ROOT = resolve('web/tests/fixtures/golazo');
+// Fixture root: resolve relative to this file (web/src/lib/cache.test.ts)
+// Two levels up from web/src/lib/ reaches web/, then tests/fixtures/golazo/
+const __dirname = fileURLToPath(new URL('.', import.meta.url));
+const FIXTURE_ROOT = join(__dirname, '../..', 'tests/fixtures/golazo');
 
 // ---------------------------------------------------------------------------
 // Test suite
