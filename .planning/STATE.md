@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Web UI
 status: executing
-stopped_at: Plan 04-04 complete; snapshot baselines + pixelmatch tests; QA-03 closed; PUB-05 override accepted; 387 tests passing; v1 milestone ready for verification
-last_updated: "2026-06-01T04:00:09.184Z"
+stopped_at: Plan 05-02 complete; Next.js 16.2.6 web/ scaffold; WEB-01 SC#4 cross-workspace import proved; 403+3 tests passing
+last_updated: "2026-06-01T04:17:56.392Z"
 last_activity: 2026-06-01
 progress:
   total_phases: 4
   completed_phases: 0
   total_plans: 4
-  completed_plans: 1
-  percent: 25
+  completed_plans: 2
+  percent: 50
 ---
 
 # Project State
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-05-13)
 ## Current Position
 
 Phase: 05 (Web Scaffold + Workspaces) — EXECUTING
-Plan: 2 of 4
+Plan: 3 of 4
 Status: Ready to execute
 Last activity: 2026-06-01
 
@@ -71,6 +71,7 @@ Last activity: 2026-06-01
 | Phase 04-convenience-qa-polish P03 | 4min | 2 tasks | 1 files |
 | Phase 04-convenience-qa-polish P04 | 351s | 3 tasks | 9 files |
 | Phase 05-web-scaffold-workspaces P01 | 9min | 1 tasks | 3 files |
+| Phase 05-web-scaffold-workspaces P02 | 13min 10s | 2 tasks | 11 files |
 
 ## Accumulated Context
 
@@ -143,6 +144,11 @@ Recent decisions affecting current work:
 - [Phase ?]: Plan 05-01 workspace layout
 - [Phase ?]: Plan 05-01 no exports map
 - [Phase ?]: Plan 05-01 npm workspaces behavior
+- 05-02: D-04 LOCKED: web/tsconfig.json uses moduleResolution:bundler — Next.js App Router + Turbopack require bundler; NodeNext forces .js extensions incompatible with Next.js conventions
+- 05-02: D-05 LOCKED: dev port 4173 — avoids Next.js default 3000; signals preview (Vite convention); fixed value
+- 05-02: D-06 LOCKED: @golazo/cli imports via dist/... subpath, no exports map — deferred to v2.1
+- 05-02: D-07 LOCKED: cross-workspace smoke in web/tests/workspace-import.test.ts — belongs to web package, runs under web tsconfig
+- 05-02: D-08 LOCKED: @golazo/cli referenced as file:.. in web/package.json — npm 10.9.4 does not resolve workspace-host via * wildcard from workspace members; file:.. is the correct npm idiom
 
 ### Pending Todos
 
@@ -162,6 +168,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-01T04:00:09.180Z
+Last session: 2026-06-01T04:17:56.387Z
 Stopped at: Plan 04-04 complete; snapshot baselines + pixelmatch tests; QA-03 closed; PUB-05 override accepted; 387 tests passing; v1 milestone ready for verification
 Resume file: None
