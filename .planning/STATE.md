@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Web UI
-status: planned
-last_updated: "2026-06-01T03:30:00.000Z"
-last_activity: 2026-06-01 -- Phase 5 planned by gsd-planner (4 plans, 3 waves); revision pass cleared 3 plan-checker warnings
-stopped_at: "Phase 5 plans written and verified; ready for /gsd-execute-phase 5"
+status: executing
+stopped_at: Plan 04-04 complete; snapshot baselines + pixelmatch tests; QA-03 closed; PUB-05 override accepted; 387 tests passing; v1 milestone ready for verification
+last_updated: "2026-06-01T04:00:09.184Z"
+last_activity: 2026-06-01
 progress:
   total_phases: 4
   completed_phases: 0
   total_plans: 4
-  completed_plans: 0
-  percent: 0
+  completed_plans: 1
+  percent: 25
 ---
 
 # Project State
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-13)
 
 **Core value:** Drop a folder of clips on disk, get a cinematic per-game highlight episode uploaded to the right YouTube channel — minimal hands-on time per game even at 5+ games/week.
-**Current focus:** Phase 04 — Convenience & QA Polish
+**Current focus:** Phase 05 — Web Scaffold + Workspaces
 
 ## Current Position
 
-Phase: Not started (defining requirements)
-Plan: —
-Status: Defining requirements
-Last activity: 2026-06-01 — Milestone v2.0 started
+Phase: 05 (Web Scaffold + Workspaces) — EXECUTING
+Plan: 2 of 4
+Status: Ready to execute
+Last activity: 2026-06-01
 
 ## Performance Metrics
 
@@ -70,6 +70,7 @@ Last activity: 2026-06-01 — Milestone v2.0 started
 | Phase 04-convenience-qa-polish P02 | 6min 16s | 2 tasks | 4 files |
 | Phase 04-convenience-qa-polish P03 | 4min | 2 tasks | 1 files |
 | Phase 04-convenience-qa-polish P04 | 351s | 3 tasks | 9 files |
+| Phase 05-web-scaffold-workspaces P01 | 9min | 1 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -138,6 +139,10 @@ Recent decisions affecting current work:
 - 04-04: EPISODE_TITLECARD_FRAME=30 — MOTION.titleCardFrames=90>=60; first-third of 90-frame title-card window; named constant in _helpers.ts
 - 04-04: pixelmatch@7.2.0+pngjs@7.0.0 as devDeps; fixed inputProps (Leo/FC Eagles/#10/#ffce5a/2026-05-13 vs united 3-1 W) decoupled from fixture manifests so fixture rebuilds do not invalidate baselines
 - 04-04: PUB-05 option-a accepted — multipart+3-retry-from-zero adequate for v1 ~50-200MB episodes on home/club network; resumable session refactor deferred to v2
+- [Phase ?]: Plan 05-01 workspace rename
+- [Phase ?]: Plan 05-01 workspace layout
+- [Phase ?]: Plan 05-01 no exports map
+- [Phase ?]: Plan 05-01 npm workspaces behavior
 
 ### Pending Todos
 
@@ -157,6 +162,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-05-15T02:59:18Z
+Last session: 2026-06-01T04:00:09.180Z
 Stopped at: Plan 04-04 complete; snapshot baselines + pixelmatch tests; QA-03 closed; PUB-05 override accepted; 387 tests passing; v1 milestone ready for verification
 Resume file: None

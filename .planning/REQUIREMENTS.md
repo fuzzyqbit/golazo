@@ -7,7 +7,7 @@
 
 ### Web Foundation
 
-- [ ] **WEB-01**: A Next.js 16 web app lives under `web/` subdir with its own `package.json`; root + web share types via npm workspaces (or path imports if workspaces are out). Type changes to `src/prepare/manifest.ts` or `src/config/channels.ts` are picked up by web without copying source
+- [x] **WEB-01**: A Next.js 16 web app lives under `web/` subdir with its own `package.json`; root + web share types via npm workspaces (or path imports if workspaces are out). Type changes to `src/prepare/manifest.ts` or `src/config/channels.ts` are picked up by web without copying source
 - [ ] **WEB-02**: `npm run web:dev` from repo root starts the web app on `127.0.0.1:<port>` via Turbopack; `npm run web:start` runs the production build. Both bind exclusively to localhost — connection to `0.0.0.0:<port>` is refused and logged
 - [ ] **WEB-03**: Web app refuses to start when `process.env.HOST` is set to anything other than `127.0.0.1` or `localhost` (defense-in-depth)
 
@@ -69,7 +69,7 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| WEB-01 | TBD | Pending |
+| WEB-01 | TBD | Complete |
 | WEB-02 | TBD | Pending |
 | WEB-03 | TBD | Pending |
 | DISC-01 | TBD | Pending |

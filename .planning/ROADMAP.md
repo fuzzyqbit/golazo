@@ -32,7 +32,7 @@ golazo is a local-Mac CLI that transforms folders of soccer highlight clips into
   4. Importing `manifestSchema` from `@golazo/cli` (or equivalent workspace name) inside `web/src/` typechecks against the live `src/prepare/manifest.ts` — no copying, no duplication
   5. Cormorant Garamond Italic + Inter are self-hosted under `web/public/fonts/` and applied to a placeholder home route; the page visibly uses the project's display + label fonts (same TTF files as `remotion/assets/fonts/`)
 **Plans**:
-- [ ] 05-01-PLAN.md — npm workspace conversion at root (rename to @golazo/cli, declare workspaces:["web"], pin v1.0 contracts) [WEB-01]
+- [x] 05-01-PLAN.md — npm workspace conversion at root (rename to @golazo/cli, declare workspaces:["web"], pin v1.0 contracts) [WEB-01]
 - [ ] 05-02-PLAN.md — Next.js 16 + Turbopack App Router scaffold under web/, root web:* scripts, cross-workspace type-import smoke [WEB-01]
 - [ ] 05-03-PLAN.md — Localhost-only enforcement: next dev -H 127.0.0.1 + instrumentation.ts HOST guard + integration test [WEB-02, WEB-03]
 - [ ] 05-04-PLAN.md — Self-hosted fonts via next/font/local + web theme tokens; visible Cormorant Garamond Italic + Inter on placeholder [UI-05]
@@ -83,7 +83,7 @@ Phases execute in numeric order: 5 → 6 → 7 → 8
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 5. Web Scaffold + Workspaces | 0/4 | Planned | — |
+| 5. Web Scaffold + Workspaces | 1/4 | In Progress|  |
 | 6. Discovery + sqlite Cache + Watcher | 0/TBD | Not started | — |
 | 7. Browse Surface | 0/TBD | Not started | — |
 | 8. Player + Asset Serving + QA | 0/TBD | Not started | — |
