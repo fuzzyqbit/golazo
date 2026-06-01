@@ -15,7 +15,7 @@ import { readPublishFromRow } from './publishRead';
 import type { EpisodeIndex } from '../episodeIndex';
 
 const __dir = dirname(fileURLToPath(import.meta.url));
-const FIXTURE_ROOT = resolve(__dir, '../../../../tests/fixtures/golazo');
+const FIXTURE_ROOT = resolve(__dir, '../../../tests/fixtures/golazo');
 
 // ---------------------------------------------------------------------------
 // Build a minimal EpisodeIndex row for testing
