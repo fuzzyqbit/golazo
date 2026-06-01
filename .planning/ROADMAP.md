@@ -64,7 +64,11 @@ golazo is a local-Mac CLI that transforms folders of soccer highlight clips into
   3. Per-kid chip filter (`all` / `leo` / `mateo`) reduces the list; combined sort + filter state lives in URL search params for deep-linkability
   4. Empty state (no episodes found) renders a clear message with the scanned root path — not a blank screen
   5. `/episodes/<manifestHash>` shows: rendered title via `renderTitle` (Phase 3), rendered description via `renderDescription`, full manifest details (clip list with durations, music pick info, render block), and publish.json contents when present (videoId, watchUrl, uploadedAt) with link out to YouTube Studio. Unknown hash → 404
-**Plans**: TBD
+**Plans**: 4 plans
+- [ ] 07-01-PLAN.md — URL state + list operations: parseListParams/serializeListParams + sortEpisodes/filterByKid pure functions [UI-01, UI-03]
+- [ ] 07-02-PLAN.md — channelAccents server helper: load channels.yaml accents map via @golazo/cli loader with skipTokenCheck [UI-02]
+- [ ] 07-03-PLAN.md — List view: page.tsx Server Component + EpisodeList client component + EpisodeRow/EmptyState + path-safe thumb asset route stub [UI-01, UI-02, UI-03, UI-04, UI-06]
+- [ ] 07-04-PLAN.md — Detail view: /episodes/[manifestHash] Server Component + EpisodeDetail + manifest/publish read helpers + notFound() [PLAY-01, PLAY-02]
 **UI hint**: yes
 
 ### Phase 8: Player + Asset Serving + QA
@@ -89,7 +93,7 @@ Phases execute in numeric order: 5 → 6 → 7 → 8
 |-------|----------------|--------|-----------|
 | 5. Web Scaffold + Workspaces | 2/4 | In Progress|  |
 | 6. Discovery + sqlite Cache + Watcher | 4/4 | Complete   | 2026-06-01 |
-| 7. Browse Surface | 0/TBD | Not started | — |
+| 7. Browse Surface | 0/4 | Not started | — |
 | 8. Player + Asset Serving + QA | 0/TBD | Not started | — |
 
 ## v2.1+ Backlog (carry-forwards + future)
@@ -105,3 +109,4 @@ Phases execute in numeric order: 5 → 6 → 7 → 8
 *Roadmap created: 2026-05-13 by gsd-roadmapper*
 *v1.0 shipped: 2026-05-19 — see milestones/v1.0-ROADMAP.md for full phase + plan history*
 *v2.0 planned: 2026-05-31 — 4 phases (5-8), 22 requirements, coarse granularity, npm workspaces decision deferred to Phase 5 planning*
+*Phase 7 planned: 2026-06-01 — 4 plans (07-01..07-04), 3-wave dependency structure (1: A+B pure logic + accents helper, 2: list view + thumb route stub, 3: detail view)*
