@@ -1,0 +1,59 @@
+{
+  "version": "1.0",
+  "timestamp": "2026-06-02T16:55:00.000Z",
+  "phase": null,
+  "phase_name": null,
+  "phase_dir": null,
+  "plan": null,
+  "task": null,
+  "total_tasks": null,
+  "status": "between_milestones",
+  "milestone_status": {
+    "v1.0": {"status": "shipped", "tag": "v1.0", "date": "2026-05-19"},
+    "v2.0": {"status": "shipped", "tag": "v2.0", "date": "2026-06-02"},
+    "active": null
+  },
+  "completed_tasks": [],
+  "remaining_tasks": [],
+  "blockers": [],
+  "human_actions_pending": [
+    {
+      "action": "Real-world smoke test on production YouTube channels",
+      "context": "Project is feature-complete + automated-tests-green but operationally unproven — no real Veo/Trace footage has been run through golazo prepare → render → publish on actual leo/mateo YouTube accounts. Until one game is uploaded as unlisted and flipped public, the pipeline is theoretical.",
+      "blocking": false
+    },
+    {
+      "action": "Run `npx playwright install chromium && npm run web:e2e` once locally",
+      "context": "Phase 8 verifier flagged this as human_needed; override accepted at v2.0 milestone close. Live browser run pins the golden-path E2E + path-traversal regression against a real Chromium binary. Specs are structurally correct; only the live execution is unconfirmed.",
+      "blocking": false
+    },
+    {
+      "action": "Configure git remote + push tags",
+      "context": "No remote configured. v1.0 + v2.0 tags are local-only. Run `git remote add origin <url>` then `git push origin main --tags` (or `gh repo create golazo --private --source=. --push --tags`) when ready to publish.",
+      "blocking": false
+    },
+    {
+      "action": "Review + pop or drop 8 outstanding git stashes",
+      "context": "Each phase boundary stashed pre-existing src/web mods (pre-phase2-src-cleanup-mods, pre-phase3-render-mods, pre-phase3-remotion-src-mods, pre-phase4-publish-mods, pre-phase4-cli-index-test, pre-v1.0-tag-mods, pre-phase6-workspace-test-fmt, pre-phase7-next-env). Run `git stash list` then `git stash show stash@{N}` per stash to decide merge or drop.",
+      "blocking": false
+    }
+  ],
+  "decisions": [],
+  "next_steps": [
+    "/gsd-new-milestone — scope v2.1 (or v3.0) from the v2.1+ backlog",
+    "Or: real-world smoke + Playwright live run before any new milestone work",
+    "Or: pop stashes, fix v1.0-typecheck-debt inline (7 tsc errors in src/cli + src/publish tests)"
+  ],
+  "v2_1_backlog": [
+    {"id": "WEB-E2E-LIVE-RUN", "source": "v2.0 override", "priority": "operator-side"},
+    {"id": "v1.0-typecheck-debt", "source": "v1.0 carry-forward via Phase 5 verification", "priority": "cleanup"},
+    {"id": "PUB-05-resumable", "source": "v1.0 override", "priority": "v2.1+"},
+    {"id": "OAuth-DI", "source": "v1.0 carry-forward", "priority": "v2.1+"},
+    {"id": "QA-03-extended", "source": "v1.0 carry-forward", "priority": "v2.1+"},
+    {"id": "WEB-VISUAL-REGRESSION", "source": "v2.0 deferred at planning", "priority": "v2.1+"},
+    {"id": "WEB-E2E-CROSS-BROWSER", "source": "v2.0 deferred at planning", "priority": "v2.1+"},
+    {"id": "WEB-TRIGGER", "source": "v2.0 explicit out-of-scope", "priority": "v3.0 candidate"},
+    {"id": "WEB-EDIT", "source": "v2.0 explicit out-of-scope", "priority": "v3.0 candidate"},
+    {"id": "WEB-LAN", "source": "v2.0 explicit out-of-scope", "priority": "v3.0 candidate"}
+  ]
+}
