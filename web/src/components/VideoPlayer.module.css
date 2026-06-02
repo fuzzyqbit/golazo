@@ -1,0 +1,34 @@
+/*
+ * VideoPlayer.module.css — Styles for the VideoPlayer client island.
+ *
+ * COLORS hand-mirrored from EpisodeDetail.module.css / tokens.ts
+ * (CSS Modules cannot import TS token modules — hand-mirror decision from Phase 7):
+ *   background:   #0a0a0a
+ *   foreground:   #f5f1e8
+ *   cardBg:       #0e0e0e
+ *   border:       rgba(245, 241, 232, 0.12)
+ *
+ * SPACING hand-mirrored:
+ *   md:  1rem     (16px)
+ *
+ * Layout: full-width container, 16:9 aspect ratio via aspect-ratio property.
+ * max-width: 72ch matches the parent EpisodeDetail article max-width.
+ */
+
+.container {
+  width: 100%;
+  max-width: 72ch;
+  margin-block: 1rem; /* md spacing */
+  background: #0a0a0a; /* background token */
+  border: 1px solid rgba(245, 241, 232, 0.12); /* border token */
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.video {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000000;
+  border-radius: 0; /* contained by parent .container radius */
+  display: block; /* removes inline baseline gap */
+}
