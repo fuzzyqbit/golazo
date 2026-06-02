@@ -229,8 +229,9 @@ describe.skipIf(SKIP)('detail player integration (port 4179)', () => {
     // Matches src="..." or src='...' patterns
     const srcMatch = html.match(/src="([^"]*episode\.mp4[^"]*)"/);
     expect(srcMatch).not.toBeNull();
+    expect(srcMatch![1]).toBeDefined();
 
-    const srcFromHtml = srcMatch![1];
+    const srcFromHtml = srcMatch![1] ?? '';
 
     // HTML-decode the value (Next.js may encode & as &amp; in attribute values)
     // For URL paths, only & is likely encoded; use a simple replace

@@ -5,18 +5,22 @@
  *   1. Back link — ← all episodes
  *   2. Title — rendered title from renderTitle() as <h1>
  *   3. Description — rendered description with preserved \n newlines (<pre>)
- *   4. Manifest section — hash + clip list + music pick + render block
- *   5. Publish section — videoId + watchUrl + YouTube Studio link, or "Not published yet"
+ *   4. Player — VideoPlayer client island (rendered/published) or hint (prepared)
+ *   5. Manifest section — hash + clip list + music pick + render block
+ *   6. Publish section — videoId + watchUrl + YouTube Studio link, or "Not published yet"
  *
  * No 'use client' directive — fully server-rendered.
- * Phase 8 will add the <video> player as a separate concern; this component
- * leaves a `player-mount` section as a clearly-labeled seam.
+ * VideoPlayer is a separate 'use client' island: server component imports it,
+ * Next.js handles the boundary automatically.
  */
 
 import Link from 'next/link';
 import type { EpisodeIndex } from '@/lib/episodeIndex';
 import type { Manifest } from '@/lib/ui/manifestRead';
 import type { PublishRecordDoc } from '@/lib/ui/publishRead';
+import { VideoPlayer } from './VideoPlayer';
+import { thumbUrlFor } from '@/lib/ui/thumbUrl';
+import { episodeUrlFor } from '@/lib/ui/episodeUrl';
 import styles from './EpisodeDetail.module.css';
 
 // ---------------------------------------------------------------------------
@@ -67,9 +71,13 @@ export function EpisodeDetail({
         <pre className={styles.description}>{description}</pre>
       </section>
 
-      {/* Phase 8 seam: video player will slot in here */}
-      <section className={styles.playerMount} aria-label="Video player (Phase 8)">
-        {/* PLAY-03/04/05: Phase 8 adds <video poster={thumbUrl} src={episodeUrl} controls> here */}
+      {/* Section 4: Video player (PLAY-03) */}
+      <section className={styles.playerMount} aria-label="Video player">
+        {row.status === 'prepared' ? (
+          <p className={styles.playerHint}>Render this episode to enable playback.</p>
+        ) : (
+          <VideoPlayer src={episodeUrlFor(row)} poster={thumbUrlFor(row)} />
+        )}
       </section>
 
       {/* Section 4: Manifest */}

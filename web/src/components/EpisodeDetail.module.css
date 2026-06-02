@@ -89,9 +89,20 @@
   line-height: 1.6;
 }
 
-/* Player mount seam (Phase 8 will add <video> here) */
+/* Player mount — renders VideoPlayer or prepared hint */
 .playerMount {
-  min-height: 0; /* collapsed until Phase 8 fills it */
+  min-height: 0;
+}
+
+/* Hint shown when episode is in 'prepared' status (no episode.mp4 on disk yet) */
+.playerHint {
+  font-family: var(--font-label);
+  font-size: 0.875rem;
+  font-style: italic;
+  color: rgba(245, 241, 232, 0.4); /* muted/dimmed — hand-mirrored from tokens.ts absent color */
+  padding-block: 1rem; /* md spacing */
+  margin: 0;
+  max-width: 72ch; /* matches article content column */
 }
 
 /* Manifest + Publish sections */
