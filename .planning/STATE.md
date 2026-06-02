@@ -4,14 +4,14 @@ milestone: v2.0
 milestone_name: Web UI
 status: executing
 stopped_at: Plan 05-03 complete; two-layer localhost defense (WEB-02 + WEB-03); 20 web tests + 403 root tests passing; ready for 05-04 fonts+theme
-last_updated: "2026-06-02T13:11:25.251Z"
+last_updated: "2026-06-02T13:20:11.329Z"
 last_activity: 2026-06-02
 progress:
   total_phases: 4
   completed_phases: 3
   total_plans: 16
-  completed_plans: 14
-  percent: 88
+  completed_plans: 15
+  percent: 94
 ---
 
 # Project State
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-05-13)
 ## Current Position
 
 Phase: 08 (Player + Asset Serving + QA) — EXECUTING
-Plan: 3 of 4
+Plan: 4 of 4
 Status: Ready to execute
 Last activity: 2026-06-02
 
@@ -81,6 +81,7 @@ Last activity: 2026-06-02
 | Phase 07 P03 | 512 | 3 tasks | 14 files |
 | Phase 07-browse-surface P04 | 15 | 3 tasks | 11 files |
 | Phase 08 P02 | 607s | 2 tasks | 7 files |
+| Phase 08 P03 | ~15min | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -171,6 +172,8 @@ Recent decisions affecting current work:
 - 07-01: Sort tie-breaker = kid ASC → date DESC → gameFolder ASC (matches Phase 6 scanner contract)
 - 07-01: serializeListParams key order: sort before kid (deterministic)
 - 07-01: filterByKid('all', rows) returns rows as-is; other kids return rows.filter (new array)
+- [Phase ?]: coverage exclusion rationale
+- [Phase ?]: web coverage gate passes
 
 ### Pending Todos
 
@@ -190,6 +193,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-02T13:11:25.246Z
+Last session: 2026-06-02T13:20:11.325Z
 Stopped at: Plan 05-03 complete; two-layer localhost defense (WEB-02 + WEB-03); 20 web tests + 403 root tests passing; ready for 05-04 fonts+theme
 Resume file: None

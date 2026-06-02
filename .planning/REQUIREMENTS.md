@@ -38,9 +38,9 @@
 
 ### Quality + Testing
 
-- [ ] **WEB-QA-01**: Vitest unit tests cover the scanner, sqlite cache, and per-game status derivation (prepared / rendered / published) — table-driven, following Phase 1+2 patterns
-- [ ] **WEB-QA-02**: Vitest integration tests verify list and detail routes against a fixtures dir under `web/tests/fixtures/golazo/` with at least 3 game folders spanning all three statuses
-- [ ] **WEB-QA-03**: Playwright E2E suite covers the golden path (open `/` → filter to leo → click first episode → video plays) and a path-traversal attempt (request `/api/asset/../../etc/passwd` returns 403). Runs in CI, ≥ 80% line coverage on `web/src/`
+- [x] **WEB-QA-01**: Vitest unit tests cover the scanner, sqlite cache, and per-game status derivation (prepared / rendered / published) — table-driven, following Phase 1+2 patterns
+- [x] **WEB-QA-02**: Vitest integration tests verify list and detail routes against a fixtures dir under `web/tests/fixtures/golazo/` with at least 3 game folders spanning all three statuses
+- [x] **WEB-QA-03**: Playwright E2E suite covers the golden path (open `/` → filter to leo → click first episode → video plays) and a path-traversal attempt (request `/api/asset/../../etc/passwd` returns 403). Runs in CI, ≥ 80% line coverage on `web/src/`
 
 ## v2.1+ Backlog (carry-forwards + future)
 
@@ -88,9 +88,9 @@
 | PLAY-03 | TBD | Complete |
 | PLAY-04 | TBD | Complete |
 | PLAY-05 | TBD | Complete |
-| WEB-QA-01 | TBD | Pending |
-| WEB-QA-02 | TBD | Pending |
-| WEB-QA-03 | TBD | Pending |
+| WEB-QA-01 | TBD | Complete |
+| WEB-QA-02 | TBD | Complete |
+| WEB-QA-03 | TBD | Complete |
 
 **Coverage:**
 - v2.0 requirements: 22 total

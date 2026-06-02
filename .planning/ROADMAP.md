@@ -84,7 +84,7 @@ golazo is a local-Mac CLI that transforms folders of soccer highlight clips into
 **Plans**: 4 plans
 - [x] 08-01-PLAN.md — Range parser + path-safe episode.mp4 route handler + 6-case integration suite [PLAY-03, PLAY-04, PLAY-05]
 - [x] 08-02-PLAN.md — episodeUrlFor helper + VideoPlayer client island + EpisodeDetail playerMount wiring + 4-case integration test [PLAY-03]
-- [ ] 08-03-PLAN.md — @vitest/coverage-v8 in web/ + 80% line gate + npm run web:coverage + WEB-QA-01/02 audit [WEB-QA-01, WEB-QA-02, WEB-QA-03]
+- [x] 08-03-PLAN.md — @vitest/coverage-v8 in web/ + 80% line gate + npm run web:coverage + WEB-QA-01/02 audit [WEB-QA-01, WEB-QA-02, WEB-QA-03]
 - [ ] 08-04-PLAN.md — Playwright (chromium-only) + golden-path E2E + path-traversal regression + npm run web:e2e [WEB-QA-03]
 **UI hint**: yes
 
@@ -98,7 +98,7 @@ Phases execute in numeric order: 5 → 6 → 7 → 8
 | 5. Web Scaffold + Workspaces | 2/4 | In Progress|  |
 | 6. Discovery + sqlite Cache + Watcher | 4/4 | Complete   | 2026-06-01 |
 | 7. Browse Surface | 4/4 | Complete   | 2026-06-01 |
-| 8. Player + Asset Serving + QA | 2/4 | In Progress|  |
+| 8. Player + Asset Serving + QA | 3/4 | In Progress|  |
 
 ## v2.1+ Backlog (carry-forwards + future)
 
