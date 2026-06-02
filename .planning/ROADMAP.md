@@ -8,16 +8,20 @@ golazo is a local-Mac CLI that transforms folders of soccer highlight clips into
 
 - ✅ **v1.0 — MVP** (shipped 2026-05-19): 4 phases · 18 plans · 387 tests · 86.72% line coverage · 28/28 v1 requirements (1 override on PUB-05). See [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md) and [milestones/v1.0-REQUIREMENTS.md](milestones/v1.0-REQUIREMENTS.md).
 
+## Shipped Milestones (cont.)
+
+- ✅ **v2.0 — Web UI** (shipped 2026-06-02): 4 phases (5-8) · 16 plans · 22 requirements · 403 root tests + 204 web unit tests + 2 Playwright E2E specs · 95% line coverage on web/src/ · all 22 v2.0 requirements closed
+
 ## Active Milestone: v2.0 — Web UI
 
 **Goal:** Operator browses and plays rendered episodes from a localhost Next.js app over the filesystem-authoritative `~/golazo/<kid>/<game>/.golazo/` storage. Read-only surface; CLI remains the action authority.
 
 ### Phases
 
-- [ ] **Phase 5: Web Scaffold + Workspaces** — Next.js 16 + Turbopack setup under `web/`, npm workspace conversion (root + web share types), localhost-only bind hardening, self-hosted fonts, theme primitives
+- [x] **Phase 5: Web Scaffold + Workspaces** — Next.js 16 + Turbopack setup under `web/`, npm workspace conversion (root + web share types), localhost-only bind hardening, self-hosted fonts, theme primitives (completed 2026-06-01)
 - [x] **Phase 6: Discovery + sqlite Cache + Watcher** — filesystem scanner over `~/golazo/`, per-game status derivation, sqlite invalidation by manifestHash + mtime, chokidar watcher (completed 2026-06-01)
 - [x] **Phase 7: Browse Surface** — list view at `/` (sort, per-kid filter, URL state, thumb posters), detail view at `/episodes/<manifestHash>` (manifest + template renders + publish.json status) (completed 2026-06-01)
-- [ ] **Phase 8: Player + Asset Serving + QA** — HTML5 video player, Next.js asset route handler with path-safety + HTTP Range support, vitest unit/integration, Playwright E2E, 80% coverage gate on `web/src/`
+- [x] **Phase 8: Player + Asset Serving + QA** — HTML5 video player, Next.js asset route handler with path-safety + HTTP Range support, vitest unit/integration, Playwright E2E, 80% coverage gate on `web/src/` (completed 2026-06-02)
 
 ## Phase Details
 
@@ -85,7 +89,7 @@ golazo is a local-Mac CLI that transforms folders of soccer highlight clips into
 - [x] 08-01-PLAN.md — Range parser + path-safe episode.mp4 route handler + 6-case integration suite [PLAY-03, PLAY-04, PLAY-05]
 - [x] 08-02-PLAN.md — episodeUrlFor helper + VideoPlayer client island + EpisodeDetail playerMount wiring + 4-case integration test [PLAY-03]
 - [x] 08-03-PLAN.md — @vitest/coverage-v8 in web/ + 80% line gate + npm run web:coverage + WEB-QA-01/02 audit [WEB-QA-01, WEB-QA-02, WEB-QA-03]
-- [ ] 08-04-PLAN.md — Playwright (chromium-only) + golden-path E2E + path-traversal regression + npm run web:e2e [WEB-QA-03]
+- [x] 08-04-PLAN.md — Playwright (chromium-only) + golden-path E2E + path-traversal regression + npm run web:e2e [WEB-QA-03]
 **UI hint**: yes
 
 ## Progress
@@ -95,10 +99,10 @@ Phases execute in numeric order: 5 → 6 → 7 → 8
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 5. Web Scaffold + Workspaces | 2/4 | In Progress|  |
+| 5. Web Scaffold + Workspaces | 4/4 | Complete   | 2026-06-01 |
 | 6. Discovery + sqlite Cache + Watcher | 4/4 | Complete   | 2026-06-01 |
 | 7. Browse Surface | 4/4 | Complete   | 2026-06-01 |
-| 8. Player + Asset Serving + QA | 3/4 | In Progress|  |
+| 8. Player + Asset Serving + QA | 4/4 | Complete   | 2026-06-02 |
 
 ## v2.1+ Backlog (carry-forwards + future)
 

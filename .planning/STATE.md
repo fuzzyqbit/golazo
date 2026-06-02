@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Web UI
-status: executing
-stopped_at: Plan 05-03 complete; two-layer localhost defense (WEB-02 + WEB-03); 20 web tests + 403 root tests passing; ready for 05-04 fonts+theme
-last_updated: "2026-06-02T13:20:11.329Z"
+status: complete
+stopped_at: Phase 8 Plan 08-04 complete; Playwright chromium-only E2E suite with golden-path + path-traversal regression; v2.0 milestone feature-complete (all 22 requirements closed)
+last_updated: "2026-06-02T09:45:00.000Z"
 last_activity: 2026-06-02
 progress:
   total_phases: 4
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 16
-  completed_plans: 15
-  percent: 94
+  completed_plans: 16
+  percent: 100
 ---
 
 # Project State
@@ -25,9 +25,9 @@ See: .planning/PROJECT.md (updated 2026-05-13)
 
 ## Current Position
 
-Phase: 08 (Player + Asset Serving + QA) — EXECUTING
-Plan: 4 of 4
-Status: Ready to execute
+Phase: 08 (Player + Asset Serving + QA) — COMPLETE
+Plan: 4 of 4 (ALL COMPLETE)
+Status: v2.0 milestone complete
 Last activity: 2026-06-02
 
 ## Performance Metrics
@@ -82,6 +82,7 @@ Last activity: 2026-06-02
 | Phase 07-browse-surface P04 | 15 | 3 tasks | 11 files |
 | Phase 08 P02 | 607s | 2 tasks | 7 files |
 | Phase 08 P03 | ~15min | 2 tasks | 4 files |
+| Phase 08-player-asset-serving-qa P04 | ~15min | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -174,6 +175,11 @@ Recent decisions affecting current work:
 - 07-01: filterByKid('all', rows) returns rows as-is; other kids return rows.filter (new array)
 - [Phase ?]: coverage exclusion rationale
 - [Phase ?]: web coverage gate passes
+- 08-04: Playwright chromium-only — Firefox + Webkit deferred to v2.1 (WEB-E2E-CROSS-BROWSER)
+- 08-04: Visual regression (pixelmatch) deferred to v2.1 (WEB-VISUAL-REGRESSION) — structural assertions adequate for v2.0
+- 08-04: Fixture decodability gate PASSED — ftyp box at bytes 4-7; Step 11 (currentTime > 0) enabled in golden-path.spec.ts
+- 08-04: path-traversal spec accepts [403, 404] — Next.js routing normalizes encoded '..' segments → 404 (same documented behavior as 08-01 Case 5)
+- 08-04: ESM __dirname fix in playwright.config.ts — uses import.meta.url + fileURLToPath (web/ is type:module)
 
 ### Pending Todos
 
@@ -193,6 +199,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-02T13:20:11.325Z
-Stopped at: Plan 05-03 complete; two-layer localhost defense (WEB-02 + WEB-03); 20 web tests + 403 root tests passing; ready for 05-04 fonts+theme
+Last session: 2026-06-02T09:45:00.000Z
+Stopped at: Phase 8 Plan 08-04 complete — Playwright chromium-only E2E (golden-path + path-traversal); v2.0 milestone feature-complete; 403 root tests + 204 web unit tests + 2 Playwright E2E specs all passing
 Resume file: None
