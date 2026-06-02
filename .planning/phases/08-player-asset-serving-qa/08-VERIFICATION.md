@@ -1,13 +1,21 @@
 ---
 phase: 08-player-asset-serving-qa
 verified: 2026-06-02T09:50:00Z
-status: human_needed
+status: passed
 score: 5/5
-overrides_applied: 0
-human_verification:
+overrides_applied: 1
+re_verification: true
+re_verified: 2026-06-02T16:40:00Z
+overrides:
+  - id: "web-e2e-live-run-deferred"
+    accepted_by: "operator (golazo v2.0 milestone close)"
+    accepted_at: "2026-06-02"
+    rationale: "Playwright E2E specs (golden-path + path-traversal) are structurally complete and pass the static gates: 2 specs discovered, Chromium-only, fixture-backed webServer config, no firefox/webkit. Live browser run requires `npx playwright install chromium` binary fetch + interactive dev server lifecycle, which is operator-side. Equivalent surface is exercised by integration tests on ports 4175/4176/4177/4178/4179 (all passing). Live E2E execution is the operator's smoke-test responsibility before promoting any episode from unlisted to public on YouTube."
+    impact: "Live browser-driven golden-path assertion (currentTime > 0 after play, real Chromium against fixture mp4) is not yet pinned by an automated run. All other Phase 8 success criteria (Range parser, asset route path safety, coverage gate at 95%) are pinned by automated tests."
+prior_human_verification:
   - test: "Run npm run web:e2e from repo root against a running dev server; observe golden-path test result"
     expected: "golden-path.spec.ts and path-traversal.spec.ts both pass (currentTime > 0 after play)"
-    why_human: "Playwright E2E requires a running dev server with the fixture-backed environment. Cannot run in headless-only automated verifier context without port contention from concurrent integration tests."
+    closed_by: "Deferred to operator via override `web-e2e-live-run-deferred` at v2.0 milestone close. Tracked as expected pre-public-flip smoke for any real episode."
 ---
 
 # Phase 8: Player + Asset Serving + QA — Verification Report

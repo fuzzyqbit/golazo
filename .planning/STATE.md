@@ -2,10 +2,10 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Web UI
-status: complete
-stopped_at: Phase 8 Plan 08-04 complete; Playwright chromium-only E2E suite with golden-path + path-traversal regression; v2.0 milestone feature-complete (all 22 requirements closed)
-last_updated: "2026-06-02T09:45:00.000Z"
-last_activity: 2026-06-02
+status: shipped
+stopped_at: "v2.0 milestone SHIPPED 2026-06-02; all 22 v2.0 + 28 v1.0 requirements closed; 609 tests, 95% web coverage; tagged v2.0. Ready for /gsd-new-milestone."
+last_updated: "2026-06-02T16:45:00.000Z"
+last_activity: 2026-06-02 -- v2.0 milestone closed and tagged
 progress:
   total_phases: 4
   completed_phases: 4

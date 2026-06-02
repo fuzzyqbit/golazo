@@ -1,22 +1,18 @@
 ---
 phase: 05-web-scaffold-workspaces
 verified: 2026-06-01T01:10:00Z
-status: gaps_found
-score: 4/5
-overrides_applied: 0
-gaps:
-  - truth: "npm run typecheck from repo root exits 0"
-    status: failed
-    reason: "tsconfig.check.json includes web/src/**/* under NodeNext moduleResolution, but web/src/app/layout.tsx uses @/fonts and @/theme path aliases (only defined in web/tsconfig.json), and web/src/theme/index.ts uses a no-extension barrel re-export. These produce 3 TS errors (TS2307 x2, TS2835 x1). The web-local typecheck (cd web && npx tsc --noEmit) passes cleanly; the root tsconfig.check.json check does not. Note: 7 additional src/ errors (all.test.ts, oauth.test.ts, retry.test.ts, runner.test.ts) are pre-existing from before Phase 5 and were explicitly documented in the Plan 04 SUMMARY as a known pre-existing issue."
-    artifacts:
-      - path: "tsconfig.check.json"
-        issue: "Missing paths alias (@/*) and the file includes web/src/app/layout.tsx and web/src/theme/index.ts which are incompatible with NodeNext moduleResolution"
-      - path: "web/src/app/layout.tsx"
-        issue: "Imports from '@/fonts' and '@/theme' — path aliases not present in root tsconfig.check.json context"
-      - path: "web/src/theme/index.ts"
-        issue: "export * from './tokens' (no .js extension) fails under NodeNext — TS2835"
-    missing:
-      - "Either: add '@/*' path mapping to tsconfig.check.json pointing at web/src/*; OR exclude web/src/app/layout.tsx and web/src/theme/index.ts from tsconfig.check.json (same precedent as web/src/fonts.ts and web/instrumentation.ts); OR add web/src/app/layout.tsx to the exclude list in tsconfig.check.json"
+status: passed
+score: 5/5
+overrides_applied: 1
+re_verification: true
+re_verified: 2026-06-02T16:40:00Z
+closure_source: "Commit bf1432f (fix(05): exclude web/src/app + theme/index from tsconfig.check.json) — the 3 Phase-5-introduced TS errors are resolved by adding web/src/app/**, web/src/theme/index.ts, and web/instrumentation.ts to the tsconfig.check.json exclude list (same precedent as web/src/fonts.ts). Web code typechecks cleanly via web/tsconfig.json which uses bundler resolution + jsx preserve + @/* path mapping."
+overrides:
+  - id: "v1.0-typecheck-debt"
+    accepted_by: "operator (golazo v2.0 milestone close prep)"
+    accepted_at: "2026-06-02"
+    rationale: "7 pre-existing tsc errors in src/cli/all.test.ts + src/publish/oauth.test.ts + retry.test.ts + runner.test.ts predate Phase 5 and slipped past v1.0 milestone close (vitest passed; tsc was not gated post-Plan-04-02). Not Phase 5's responsibility. Tracked as v1.0-typecheck-debt in v2.1+ backlog."
+    impact: "Root `npx tsc --noEmit -p tsconfig.check.json` exits with 7 errors against test files only. Production source compiles cleanly. Vitest runs all tests successfully. Affects developer experience (IDE shows red squiggles in 4 test files) but does not affect runtime behavior or shipped code."
 ---
 
 # Phase 5: Web Scaffold + Workspaces — Verification Report

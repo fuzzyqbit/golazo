@@ -10,44 +10,56 @@ Drop a folder of clips on disk, get a cinematic per-game highlight episode uploa
 
 ## Current State
 
-✅ **v1.0 shipped 2026-05-19**
+✅ **v2.0 shipped 2026-06-02** (built on v1.0 shipped 2026-05-19)
 
-The MVP is feature-complete and tested:
+The CLI pipeline and web browse UI are both feature-complete and tested:
 
+**v1.0 CLI surface:**
 - `golazo prepare <folder>` writes idempotent `manifest.json` with `manifestHash`
 - `golazo render <folder>` produces `episode.mp4` (cinematic Remotion composition: TitleCard → ChapterCard×Clip → Outro, slo-mo first clip, music ducking, Cormorant Garamond Italic + Inter typography, vignette grade) + `thumb.png` at 1280×720
 - `golazo auth <kid>` performs YouTube OAuth and stores refreshable per-kid token
 - `golazo publish <folder>` uploads as `privacyStatus: "unlisted"` with title/description templates, retries on 5xx/network with 1s/4s/16s backoff, idempotent via `publish.json` videoId
 - `golazo all <folder>` chains prepare → render → publish with stage-labeled failures
-- 387 tests passing across 32 files · 86.72% line coverage · pixelmatch 1% snapshot gate on Episode title-card + Thumbnail PNGs
-- All 28 v1 requirements complete · 1 documented override (PUB-05 multipart-vs-resumable)
 
-See [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md) and [milestones/v1.0-REQUIREMENTS.md](milestones/v1.0-REQUIREMENTS.md) for the full v1.0 history.
+**v2.0 web surface (read-only over CLI outputs):**
+- `npm run web:dev` from repo root serves a localhost-only Next.js 16 + Turbopack app at `127.0.0.1:4173` with two-layer HOST defense (inline env + CLI flag + `instrumentation.ts` guard)
+- `/` lists all indexed episodes with sort + per-kid chip filter + thumb posters; URL search params keep deep-link state
+- `/episodes/<manifestHash>` shows rendered title + description templates, full manifest, publish.json with YouTube Studio link; `notFound()` on unknown hash
+- HTML5 `<video controls preload="metadata">` streams `episode.mp4` via path-safe `/api/asset/<kid>/<game>/episode.mp4` route with HTTP Range support
+- sqlite cache via `better-sqlite3 ^12` + chokidar 3.6 watcher reflects filesystem changes within 2s
+- Typography echoes Remotion compositions — Cormorant Garamond Italic + Inter, same TTF bytes via `next/font/local` cross-workspace path
 
-## Current Milestone: v2.0 Web UI
+**Test counts:** 403 root vitest + 204 web unit + 2 Playwright E2E specs · web coverage 95% lines (gate 80%)
+**Requirements:** 28/28 v1 + 22/22 v2 = 50/50 closed · 2 documented overrides (PUB-05 multipart, WEB-QA-03 live run)
 
-**Goal:** Operator can browse and play rendered episodes from a local web UI at `localhost`, with a fast episode index over the filesystem-authoritative `~/golazo/<kid>/<game>/.golazo/` storage. No render/publish triggering from the browser in v2.0 — CLI remains the action surface.
+See [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md), [milestones/v1.0-REQUIREMENTS.md](milestones/v1.0-REQUIREMENTS.md), [milestones/v2.0-ROADMAP.md](milestones/v2.0-ROADMAP.md), and [milestones/v2.0-REQUIREMENTS.md](milestones/v2.0-REQUIREMENTS.md).
 
-**Target features:**
-- Localhost-only Next.js 16 web app at `web/` subdir (bound to 127.0.0.1, refuses 0.0.0.0)
-- Episode list across both kids, sortable by date / opponent / result, with thumb.png posters
-- Episode detail view plays episode.mp4 inline, shows manifest + title/description template render + publish.json status
-- Per-kid filter (leo / mateo); deep-link by manifestHash
-- sqlite cache over filesystem-authoritative discovery (walk `~/golazo/<kid>/*/.golazo/` on startup, watch for changes, fast UI queries)
-- Static asset serving for `.golazo/episode.mp4` + `.golazo/thumb.png` via Next.js route handler with path-safety guards
+## Next Milestone Goals
 
-**Key context:**
-- Built on top of v1.0 CLI — no changes to manifest.json / publish.json shapes; web UI is a read-only surface in v2.0
-- Same operator, same dev Mac, same single-user model. No auth: localhost bind is the access control
-- Shared types between CLI and web (manifest schema, channels config) need a workspace boundary — likely npm workspaces with `packages/` reshuffle, OR symlink-via-path-import. Decided at phase 1 planning
-- Web UI typography should echo Remotion compositions: Cormorant Garamond Italic display + Inter labels, self-hosted
+*(Not yet defined. Start with `/gsd-new-milestone` to define v2.1 or v3.0 scope.)*
 
-**v2.0 explicitly NOT in scope** (revisit in v2.1+):
-- PUB-05-resumable, OAuth-DI, QA-03-extended (carry-forwards from v1.0 — addressable independently if a real-world failure emerges)
-- Trigger render/publish from browser
-- Edit metadata / override score before publish
-- LAN access from phones / iPad
-- Multi-user auth or sessions
+Carry-forward candidates from v2.0:
+
+- **WEB-E2E-LIVE-RUN** — Operator-side `npx playwright install chromium && npm run web:e2e` smoke before any unlisted→public flip on YouTube. The specs are written and pass static gates; live browser execution is the final pre-public gate that hasn't been pinned by an automated run yet
+- **WEB-VISUAL-REGRESSION** — Pixelmatch snapshots of `/` and `/episodes/<hash>` to catch typographic drift across Cormorant Garamond + Inter rendering on macOS upgrades
+- **WEB-E2E-CROSS-BROWSER** — Firefox + Webkit Playwright projects (currently Chromium-only)
+- **WEB-TRIGGER** — Trigger render/publish from browser with real-time progress
+- **WEB-EDIT** — Override title/description/score before publish
+- **WEB-LAN** — LAN-accessible mode with shared-token auth for phone/iPad
+
+Carry-forwards from v1.0 (still open after v2.0):
+
+- **v1.0-typecheck-debt** — Fix 7 pre-existing tsc errors in src/cli/all.test.ts + src/publish/oauth.test.ts + retry.test.ts + runner.test.ts. Vitest tolerates them, tsc does not. Affects IDE DX, not runtime
+- **PUB-05-resumable** — Replace googleapis SDK upload with raw HTTP resumable upload session protocol (initiation POST → session URI → `Content-Range` PUT on retry)
+- **OAuth-DI** — Replace `GOLAZO_OAUTH_MOCK=1` env-var branch in `exchangeCode` with injectable factory pattern
+- **QA-03-extended** — Commit 6+-clip fixture + integration render for visual chapter-rhythm regression coverage
+
+Other directions to consider when scoping the next milestone:
+
+- Real-world smoke on production YouTube accounts (no actual upload has happened yet)
+- Auto-detect Veo vs Trace footage source from folder content (currently declared in `channels.yaml`)
+- Multi-game recap mode (explicit v1+v2 out-of-scope; revisit when v2 is operationally validated)
+- Cross-OS support if a Linux/Windows operator emerges
 
 ## Context
 
@@ -84,6 +96,15 @@ See [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md) and [milestones/v1.
 | `PRIVACY_STATUS = 'unlisted' as const` typed constant | Defense-in-depth: source literal + TypeScript type + `z.literal('unlisted')` + `satisfies` bridge — accidental public upload structurally impossible | ✅ Plan 03-03 + 03-05 |
 | googleapis SDK multipart (not resumable) upload | SDK auto-selects multipart for stream+requestBody; retry-from-zero handles transient drops; resumable rewrite deferred to v2 | ✅ Plan 03-03 (with override at v1 close) |
 | Self-hosted fonts in `remotion/assets/fonts/` | Eliminates system-font drift for cross-machine determinism and snapshot stability | ✅ Plan 02-01 + 04-04 |
+| Web UI under `web/` subdir as separate milestone (not v1 sprint) | Keeps CLI core stable; web is a read-only surface over filesystem outputs; localhost-only access control | ✅ Shipped v2.0 |
+| npm workspace `@golazo/cli` + `@golazo/web` (in-place, not `packages/` restructure) | Preserves all 387 v1.0 test fixture paths + `dist/cli/index.js` bin contract | ✅ Plan 05-01 |
+| Localhost-only enforced by two-layer defense | CLI flag `-H 127.0.0.1` + inline `HOST=127.0.0.1` env override + `instrumentation.ts` runtime guard with `WEB-03` stderr token. Neither layer alone is sufficient (`-H` doesn't override env HOST) | ✅ Plan 05-03 |
+| `better-sqlite3` cache, filesystem-authoritative | Sync API + native binding; sqlite is invalidatable by manifestHash regex peek + mtime; chokidar 500ms per-folder debounce reflects changes in <2s | ✅ Plan 06-02 + 06-03 |
+| Server Component reads via `getDiscoveryRuntime()`; only `EpisodeList` is `'use client'` | Prevents sqlite/node:fs reach across client boundary; URL state mutations re-render server-side via `router.replace` | ✅ Plan 07-03 |
+| `assertSafeAssetPath` extracted as helper (Phase 7 → Phase 8 reuse) | Path-safety logic written once for thumb.png route, reused verbatim for episode.mp4 + Range route | ✅ Plan 07-03 → 08-01 |
+| Range parser inline (~107 LOC, single-range RFC 7233) | Multipart ranges not needed for video players; malformed → 200 full per RFC §2.1; unsatisfiable → 416 | ✅ Plan 08-01 |
+| Playwright Chromium-only | Single-operator Mac, primary browser is Chromium; Firefox + Webkit add ~600MB + ~2× runtime; deferred to v2.1 `WEB-E2E-CROSS-BROWSER` | ✅ Plan 08-04 |
+| Coverage gate enforced (≤10 exclusions, ≥60% surface floor) | Prevents denominator-shrink gaming of the 80% line threshold | ✅ Plan 08-03 |
 
 ## Evolution
 
@@ -111,5 +132,14 @@ See `milestones/v1.0-REQUIREMENTS.md` for the complete shipped requirements tabl
 
 </details>
 
+<details>
+<summary>v2.0 Requirements snapshot (archived 2026-06-02 — see milestones/v2.0-REQUIREMENTS.md for full final state)</summary>
+
+The v2.0 milestone defined 22 active requirements across 4 phases (Web Foundation, Discovery+Indexing, Browse Surface, Detail+Playback, Quality+Testing). All 22 shipped complete; 1 documented override on WEB-QA-03 (live browser run via `npm run web:e2e` deferred to operator-side smoke before any unlisted→public YouTube flip). Out-of-scope items: render/publish from browser, multi-user auth, LAN access, cross-OS, public-by-default discovery, mobile-first responsive.
+
+See `milestones/v2.0-REQUIREMENTS.md` for the complete shipped requirements table with per-requirement status.
+
+</details>
+
 ---
-*Last updated: 2026-05-19 at v1.0 milestone close (initialized 2026-05-13)*
+*Last updated: 2026-06-02 at v2.0 milestone close (initialized 2026-05-13)*
