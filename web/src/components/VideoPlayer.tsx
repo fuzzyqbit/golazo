@@ -24,10 +24,20 @@ interface VideoPlayerProps {
 }
 
 // ---------------------------------------------------------------------------
-// Component (stub — returns null until GREEN)
+// Component
 // ---------------------------------------------------------------------------
 
 export function VideoPlayer({ src, poster }: VideoPlayerProps): React.JSX.Element {
-  // STUB: returns null — GREEN commit will implement
-  return null as unknown as React.JSX.Element;
+  return (
+    <div className={styles.container}>
+      {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+      <video
+        controls
+        preload="metadata"
+        poster={poster}
+        src={src}
+        className={styles.video}
+      />
+    </div>
+  );
 }
