@@ -4,13 +4,13 @@
  * Spawns `npx next dev -p 4178 -H 127.0.0.1` against the committed fixture
  * and asserts all HTTP status paths for the episode.mp4 asset route:
  *
- *   Case 1: GET (no Range)           → 200, full bytes, correct headers
- *   Case 2: GET Range: bytes=0-99    → 206, 100 bytes, Content-Range
- *   Case 3: GET Range: bytes=10-19   → 206, 10 bytes, Content-Range
- *   Case 4: GET Range out-of-bounds  → 416, Content-Range: bytes */<size>
- *   Case 5: GET path traversal       → 403 (assertSafeAssetPath)
- *   Case 6: GET missing episode.mp4  → 404 (prepared-only fixture)
- *   Case 7: POST                     → 405 Method Not Allowed
+ *   Case 1: GET (no Range)           - 200, full bytes, correct headers
+ *   Case 2: GET Range: bytes=0-99    - 206, 100 bytes, Content-Range
+ *   Case 3: GET Range: bytes=10-19   - 206, 10 bytes, Content-Range
+ *   Case 4: GET Range out-of-bounds  - 416, Content-Range: bytes star/size
+ *   Case 5: GET path traversal       - 403 (assertSafeAssetPath)
+ *   Case 6: GET missing episode.mp4  - 404 (prepared-only fixture)
+ *   Case 7: POST                     - 405 Method Not Allowed
  *
  * Port: 4178 (distinct from 4173 dev, 4175 list, 4176 list-empty, 4177 detail).
  * Skip gate: GOLAZO_SKIP_ASSET_INTEGRATION=1
