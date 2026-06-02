@@ -5,3 +5,8 @@ data/*.db-shm
 data/*.db-wal
 # Guard against test artifacts when Next.js dev runs from web/ dir
 web/
+# Playwright artifacts
+/test-results/
+/playwright-report/
+/playwright/.cache/
+/.playwright/

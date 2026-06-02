@@ -9,7 +9,9 @@
     "start": "HOST=127.0.0.1 next start -p 4173 -H 127.0.0.1",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:install": "playwright install chromium"
   },
   "dependencies": {
     "@golazo/cli": "file:..",
@@ -21,6 +23,7 @@
     "zod": "^4.4.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.51.0",
     "@types/better-sqlite3": "^7.6.0",
     "@types/node": "^25.7.0",
     "@types/react": "^19.2.14",
