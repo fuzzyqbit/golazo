@@ -83,3 +83,49 @@ gate from being gamed by denominator shrink.**
 | INCLUDED_PERCENT | 70% |
 | Gate threshold | ≥ 60% |
 | Status | PASSED |
+
+### E2E (Playwright)
+
+Playwright (Chromium-only) exercises the full app stack against the committed fixture via a Playwright-managed dev server.
+
+#### First-time setup
+
+```bash
+# From repo root — downloads Chromium browser (~150 MB to ~/Library/Caches/ms-playwright)
+npm run web:e2e:install
+```
+
+This step is a one-time download. The browser binary lives outside the repo and is not gitignored.
+
+#### Running E2E tests
+
+```bash
+# From repo root
+npm run web:e2e
+
+# From web/ directory
+npx playwright test
+```
+
+Playwright manages the dev server lifecycle via the `webServer` block in `web/playwright.config.ts`. The server starts automatically before tests and stops after. On local re-runs, the existing dev server is reused (`reuseExistingServer: !process.env.CI`).
+
+#### Specs covered
+
+| Spec | Description |
+|------|-------------|
+| `golden-path.spec.ts` | Navigates to `/`, filters by kid=leo, clicks the first episode row, asserts `<video>` element has correct `src` and `poster` attributes, and verifies the `play` event fires |
+| `path-traversal.spec.ts` | 3 sub-cases: encoded traversal on episode.mp4 route, thumb.png route, and literal `..%2F..%2F` form — all assert HTTP 403 |
+
+#### Browser scope
+
+**Chromium-only** — the operator's Mac primary browser is Chrome/Chromium. Firefox + Webkit add ~600 MB and roughly double E2E runtime with no proportional benefit for a single-operator workflow. Cross-browser coverage is deferred to v2.1.
+
+#### Visual regression
+
+Pixelmatch-style visual snapshots are deferred to v2.1 (`WEB-VISUAL-REGRESSION`). The golden-path structural assertions (DOM + attribute checks + play event) are sufficient for v2.0.
+
+#### Fixture decodability note
+
+The golden-path spec asserts the `play` event fires on the `<video>` element. This assertion holds regardless of whether `episode.mp4` in the fixture is a fully decodable MP4 or a byte-only stub, because `play` fires when `play()` is invoked.
+
+The optional `currentTime > 0` assertion (Step 11 in the spec) is enabled only when the fixture begins with an `ftyp` box (decodable ISO BMFF). The committed fixture at `web/tests/fixtures/golazo/leo/2026-05-20_vs_rivers_2-2/.golazo/episode.mp4` is a valid ISO BMFF file (`ftyp` confirmed at bytes 4–7), so Step 11 is currently enabled. Operators regenerating the fixture should preserve this property to keep the full assertion suite green.

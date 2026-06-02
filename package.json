@@ -25,7 +25,9 @@
     "web:build": "npm run build --workspace=@golazo/web",
     "web:start": "npm run start --workspace=@golazo/web",
     "web:test": "npm run test --workspace=@golazo/web",
-    "web:coverage": "npm run test:coverage --workspace=@golazo/web"
+    "web:coverage": "npm run test:coverage --workspace=@golazo/web",
+    "web:e2e": "npm run test:e2e --workspace=@golazo/web",
+    "web:e2e:install": "npm run test:e2e:install --workspace=@golazo/web"
   },
   "dependencies": {
     "@remotion/bundler": "^4.0.461",
