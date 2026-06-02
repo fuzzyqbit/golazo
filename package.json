@@ -23,7 +23,9 @@
     "typecheck": "tsc --noEmit -p tsconfig.check.json",
     "web:dev": "npm run dev --workspace=@golazo/web",
     "web:build": "npm run build --workspace=@golazo/web",
-    "web:start": "npm run start --workspace=@golazo/web"
+    "web:start": "npm run start --workspace=@golazo/web",
+    "web:test": "npm run test --workspace=@golazo/web",
+    "web:coverage": "npm run test:coverage --workspace=@golazo/web"
   },
   "dependencies": {
     "@remotion/bundler": "^4.0.461",
