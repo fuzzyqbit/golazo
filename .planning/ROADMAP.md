@@ -79,9 +79,13 @@ golazo is a local-Mac CLI that transforms folders of soccer highlight clips into
   1. Detail view renders an HTML5 `<video controls poster="<thumb url>" src="<asset url>"/>` that streams `episode.mp4` via `/api/asset/<kid>/<game>/episode.mp4`; thumb.png is the poster
   2. Asset route handler resolves requested paths against `~/golazo/` and refuses any request that escapes via `..`, symlink, or absolute path with HTTP 403; integration test pins both the escape attempt and the normal-path success
   3. Asset route honors HTTP `Range` requests for `episode.mp4` — issuing a request with `Range: bytes=0-99` returns HTTP 206 with the first 100 bytes; verified by integration test
-  4. Vitest unit tests cover scanner + sqlite cache + status derivation + path-safety helper (table-driven). Vitest integration tests verify list + detail routes against `web/tests/fixtures/golazo/` with ≥3 game folders spanning all three statuses
+  4. Vitest unit tests cover scanner + sqlite cache + status derivation + path-safety helper (table-driven). Vitest integration tests verify list + detail routes against `web/tests/fixtures/golazo/` with at least 3 game folders spanning all three statuses
   5. `pnpm playwright test` (or `npm run web:e2e`) runs the golden-path E2E (open `/` → filter to `leo` → click first episode → video element fires `play`) and the path-traversal regression (`GET /api/asset/../../etc/passwd` → 403). Coverage on `web/src/` ≥ 80% lines
-**Plans**: TBD
+**Plans**: 4 plans
+- [ ] 08-01-PLAN.md — Range parser + path-safe episode.mp4 route handler + 6-case integration suite [PLAY-03, PLAY-04, PLAY-05]
+- [ ] 08-02-PLAN.md — episodeUrlFor helper + VideoPlayer client island + EpisodeDetail playerMount wiring + 4-case integration test [PLAY-03]
+- [ ] 08-03-PLAN.md — @vitest/coverage-v8 in web/ + 80% line gate + npm run web:coverage + WEB-QA-01/02 audit [WEB-QA-01, WEB-QA-02, WEB-QA-03]
+- [ ] 08-04-PLAN.md — Playwright (chromium-only) + golden-path E2E + path-traversal regression + npm run web:e2e [WEB-QA-03]
 **UI hint**: yes
 
 ## Progress
@@ -94,7 +98,7 @@ Phases execute in numeric order: 5 → 6 → 7 → 8
 | 5. Web Scaffold + Workspaces | 2/4 | In Progress|  |
 | 6. Discovery + sqlite Cache + Watcher | 4/4 | Complete   | 2026-06-01 |
 | 7. Browse Surface | 4/4 | Complete   | 2026-06-01 |
-| 8. Player + Asset Serving + QA | 0/TBD | Not started | — |
+| 8. Player + Asset Serving + QA | 0/4 | Planned    | — |
 
 ## v2.1+ Backlog (carry-forwards + future)
 
@@ -104,9 +108,12 @@ Phases execute in numeric order: 5 → 6 → 7 → 8
 - **WEB-TRIGGER** — Trigger render/publish from browser with real-time progress. Source: v2.0 explicit out-of-scope.
 - **WEB-EDIT** — Override title/description/score before publish. Source: v2.0 explicit out-of-scope.
 - **WEB-LAN** — LAN-accessible mode with shared-token auth for phone/iPad use. Source: v2.0 explicit out-of-scope.
+- **WEB-VISUAL-REGRESSION** — Commit pixelmatch PNG snapshots of `/` and `/episodes/<hash>` to catch UI typography drift. Source: Phase 8 planning deferral (golden-path E2E covers structural; pure-visual snapshot adds nondeterminism without proportional value for single-operator v2.0).
+- **WEB-E2E-CROSS-BROWSER** — Expand Playwright project matrix to Firefox + Webkit. Source: Phase 8 Plan 08-04 deferral (operator's Mac primary browser is Chrome/Chromium; cross-browser adds ~600MB install + ~2x runtime).
 
 ---
 *Roadmap created: 2026-05-13 by gsd-roadmapper*
 *v1.0 shipped: 2026-05-19 — see milestones/v1.0-ROADMAP.md for full phase + plan history*
 *v2.0 planned: 2026-05-31 — 4 phases (5-8), 22 requirements, coarse granularity, npm workspaces decision deferred to Phase 5 planning*
 *Phase 7 planned: 2026-06-01 — 4 plans (07-01..07-04), 3-wave dependency structure (1: A+B pure logic + accents helper, 2: list view + thumb route stub, 3: detail view)*
+*Phase 8 planned: 2026-06-02 — 4 plans (08-01..08-04), 4-wave dependency structure (W1: range parser + episode.mp4 route, W2: VideoPlayer wiring, W3: coverage gate + audit, W4: Playwright E2E; W3+W4 sequenced due to package.json/README.md file overlap)*
