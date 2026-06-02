@@ -82,7 +82,7 @@ golazo is a local-Mac CLI that transforms folders of soccer highlight clips into
   4. Vitest unit tests cover scanner + sqlite cache + status derivation + path-safety helper (table-driven). Vitest integration tests verify list + detail routes against `web/tests/fixtures/golazo/` with at least 3 game folders spanning all three statuses
   5. `pnpm playwright test` (or `npm run web:e2e`) runs the golden-path E2E (open `/` → filter to `leo` → click first episode → video element fires `play`) and the path-traversal regression (`GET /api/asset/../../etc/passwd` → 403). Coverage on `web/src/` ≥ 80% lines
 **Plans**: 4 plans
-- [ ] 08-01-PLAN.md — Range parser + path-safe episode.mp4 route handler + 6-case integration suite [PLAY-03, PLAY-04, PLAY-05]
+- [x] 08-01-PLAN.md — Range parser + path-safe episode.mp4 route handler + 6-case integration suite [PLAY-03, PLAY-04, PLAY-05]
 - [ ] 08-02-PLAN.md — episodeUrlFor helper + VideoPlayer client island + EpisodeDetail playerMount wiring + 4-case integration test [PLAY-03]
 - [ ] 08-03-PLAN.md — @vitest/coverage-v8 in web/ + 80% line gate + npm run web:coverage + WEB-QA-01/02 audit [WEB-QA-01, WEB-QA-02, WEB-QA-03]
 - [ ] 08-04-PLAN.md — Playwright (chromium-only) + golden-path E2E + path-traversal regression + npm run web:e2e [WEB-QA-03]
@@ -98,7 +98,7 @@ Phases execute in numeric order: 5 → 6 → 7 → 8
 | 5. Web Scaffold + Workspaces | 2/4 | In Progress|  |
 | 6. Discovery + sqlite Cache + Watcher | 4/4 | Complete   | 2026-06-01 |
 | 7. Browse Surface | 4/4 | Complete   | 2026-06-01 |
-| 8. Player + Asset Serving + QA | 0/4 | Planned    | — |
+| 8. Player + Asset Serving + QA | 1/4 | In Progress|  |
 
 ## v2.1+ Backlog (carry-forwards + future)
 

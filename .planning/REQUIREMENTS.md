@@ -32,9 +32,9 @@
 
 - [x] **PLAY-01**: Route `/episodes/<manifestHash>` is the canonical permalink for a game — works whether episode is prepared, rendered, or published. Unknown hash → 404
 - [x] **PLAY-02**: Detail view shows: title rendered via Phase 3 `renderTitle` template, description rendered via `renderDescription`, full manifest contents (clip list with durations, music pick, render block), publish.json contents if present (videoId, watchUrl, uploadedAt) with link out to YouTube Studio
-- [ ] **PLAY-03**: When `episode.mp4` exists on disk, an HTML5 `<video>` element streams it via a Next.js route handler at `/api/asset/<kid>/<game>/episode.mp4`; thumb.png is the poster
-- [ ] **PLAY-04**: Asset route handler enforces path safety — request paths are resolved against `~/golazo/`; any path that escapes (via `..`, symlinks, or absolute paths) returns 403. No filesystem access outside the scanner root
-- [ ] **PLAY-05**: Asset route supports HTTP Range requests so the video player can seek without loading the whole file; verified by integration test (Range header → 206 Partial Content)
+- [x] **PLAY-03**: When `episode.mp4` exists on disk, an HTML5 `<video>` element streams it via a Next.js route handler at `/api/asset/<kid>/<game>/episode.mp4`; thumb.png is the poster
+- [x] **PLAY-04**: Asset route handler enforces path safety — request paths are resolved against `~/golazo/`; any path that escapes (via `..`, symlinks, or absolute paths) returns 403. No filesystem access outside the scanner root
+- [x] **PLAY-05**: Asset route supports HTTP Range requests so the video player can seek without loading the whole file; verified by integration test (Range header → 206 Partial Content)
 
 ### Quality + Testing
 
@@ -85,9 +85,9 @@
 | UI-06 | TBD | Complete |
 | PLAY-01 | TBD | Complete |
 | PLAY-02 | TBD | Complete |
-| PLAY-03 | TBD | Pending |
-| PLAY-04 | TBD | Pending |
-| PLAY-05 | TBD | Pending |
+| PLAY-03 | TBD | Complete |
+| PLAY-04 | TBD | Complete |
+| PLAY-05 | TBD | Complete |
 | WEB-QA-01 | TBD | Pending |
 | WEB-QA-02 | TBD | Pending |
 | WEB-QA-03 | TBD | Pending |
