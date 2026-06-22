@@ -1,44 +1,58 @@
-.superpowers/
+# --- Video files (per operator: the only content we never track) ---
+*.mp4
+*.mov
+*.mkv
+*.webm
+
+# --- Dependencies & build output ---
 node_modules/
 dist/
 coverage/
 .golazo/
+
+# --- Tooling / agent scratch dirs ---
+.superpowers/
+
+# --- Secrets / operator-local config (NEVER commit) ---
+# OAuth tokens are personal credentials; channels.yaml + .env hold the
+# operator's real config. Fixture copies are whitelisted below.
 *.token.json
 channels.yaml
+.env*
+*.env
+
+# --- Local junk & logs ---
 .DS_Store
 *.log
-.env*
-tests/fixtures/*.mp4
 # npm puts its log + update-notifier cache here when HOME is stubbed to
 # the repo root (see tests/fixtures/golazo/README.md — vitest / manual
 # CLI smokes use HOME="$PWD"). Not a build artifact; safe to ignore.
 .npm/
 
-# Allow committed integration-fixture binaries — see
-# tests/fixtures/golazo/README.md and scripts/build-fixtures.sh. The
-# broad rules above cover operator-side generated artifacts; these `!`
-# exceptions whitelist the version-controlled fixture assets so they
-# survive `git add`. The fixture's channels.yaml is also whitelisted
-# because the broad `channels.yaml` rule above is aimed at the operator's
-# real config at the repo root.
+# Snapshot diff outputs are debug artifacts only — never committed
+tests/snapshots/.diff/
+
+# sqlite cache — derived from filesystem, regenerated on first scan
+web/data/*.db
+web/data/*.db-shm
+web/data/*.db-wal
+
+# --- Whitelisted committed fixtures (must survive the broad rules above) ---
+# Integration-fixture binaries — see tests/fixtures/golazo/README.md and
+# scripts/build-fixtures.sh. These `!` exceptions re-include version-controlled
+# fixture assets the broad operator-side rules would otherwise ignore.
 !tests/fixtures/golazo/channels.yaml
 !tests/fixtures/golazo/leo/2026-05-13_vs_united_3-1/*.mp4
 !tests/fixtures/golazo/*.token.json
 
-# Allow committed Remotion font assets — see remotion/assets/fonts/README.md
+# Committed Remotion font assets — see remotion/assets/fonts/README.md
 !remotion/assets/fonts/*.ttf
 
-# Allow committed Remotion music fixtures — see remotion/assets/music/README.md
-# (Plan 02-02 commits the .mp3 pool + index.json under remotion/assets/music/)
+# Committed Remotion music fixtures — see remotion/assets/music/README.md
 !remotion/assets/music/*.mp3
 !remotion/assets/music/index.json
 
-# Snapshot diff outputs are debug artifacts only — never committed
-tests/snapshots/.diff/
-
-# Allow committed web fixture tree — see web/tests/fixtures/golazo/README.md.
-# The broad rules above (tests/fixtures/*.mp4, .golazo/, channels.yaml) need
-# explicit allow-lines for the per-game artifacts the scanner walks.
+# Committed web fixture tree — see web/tests/fixtures/golazo/README.md.
 !web/tests/fixtures/golazo/channels.yaml
 !web/tests/fixtures/golazo/**/*.mp4
 !web/tests/fixtures/golazo/**/*.png
@@ -47,8 +61,3 @@ tests/snapshots/.diff/
 !web/tests/fixtures/golazo/**/.golazo/episode.mp4
 !web/tests/fixtures/golazo/**/.golazo/thumb.png
 !web/tests/fixtures/golazo/**/.golazo/publish.json
-
-# sqlite cache — derived from filesystem, regenerated on first scan
-web/data/*.db
-web/data/*.db-shm
-web/data/*.db-wal
