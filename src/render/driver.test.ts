@@ -15,7 +15,7 @@
  * Remotion's first-time Chromium download (~150 MB) is handled in a
  * 120-second `beforeAll`. Subsequent tests reuse the cached binary.
  */
-import { describe, it, expect, beforeAll, afterEach } from 'vitest';
+import { describe, it, expect, beforeAll, afterEach, beforeEach, vi } from 'vitest';
 import {
   cpSync, rmSync, existsSync, appendFileSync, statSync, readFileSync,
   mkdtempSync, mkdirSync,
@@ -59,7 +59,16 @@ let chromiumAvailable = false;
 beforeAll(async () => {
   try {
     const { ensureBrowser } = await import('@remotion/renderer');
-    await ensureBrowser();
+    // Bound the download/launch probe so this hook cannot hang the whole file
+    // (e.g. macOS < 15 where Chrome Headless Shell never launches, or a slow
+    // first-time download). On timeout we treat Chromium as unavailable and
+    // the integration cases below skip themselves; the mocked unit tests do
+    // not need Chrome and run regardless.
+    const PROBE_TIMEOUT_MS = 90_000;
+    const timeout = new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error('ensureBrowser timed out')), PROBE_TIMEOUT_MS),
+    );
+    await Promise.race([ensureBrowser(), timeout]);
     chromiumAvailable = true;
   } catch {
     console.warn('Chromium unavailable — full-render tests will be skipped');
@@ -360,4 +369,168 @@ describe('runRender — integration', () => {
     const manifest = readManifest(sandbox);
     expect(manifest?.render?.manifestHash).toBe(manifest?.manifestHash);
   }, 60_000);
+});
+
+// ---------------------------------------------------------------------------
+// Unit tests: browserExecutable threading (mocked Remotion — no real Chrome)
+//
+// These tests fully mock @remotion/renderer, @remotion/bundler, and the
+// surrounding I/O so runRender reaches all four Remotion calls without
+// launching Chrome or touching disk. We use vi.doMock + vi.resetModules +
+// dynamic import so the integration suite above (which uses the REAL renderer)
+// is untouched by these module mocks.
+//
+// Contract under test (Quick 260622-msz): runRender reads
+// GOLAZO_BROWSER_EXECUTABLE once and threads it into selectComposition (×2),
+// renderMedia, and renderStill. Unset → browserExecutable: undefined.
+// ---------------------------------------------------------------------------
+
+describe('runRender — browserExecutable threading (unit)', () => {
+  /** Build a fully-mocked driver module + spies for the 4 Remotion calls. */
+  async function loadMockedDriver() {
+    vi.resetModules();
+
+    // Typed `args` parameters keep `.mock.calls[n][0]` well-typed for the
+    // assertions below (otherwise vitest infers a zero-length tuple).
+    type Args = Record<string, unknown>;
+    const selectComposition = vi.fn(async (_args: Args) => ({
+      id: 'mock',
+      width: 1920,
+      height: 1080,
+      fps: 30,
+      durationInFrames: 30,
+      defaultProps: {},
+      props: {},
+    }));
+    const renderMedia = vi.fn(async (_args: Args) => ({}));
+    const renderStill = vi.fn(async (_args: Args) => ({}));
+
+    vi.doMock('@remotion/renderer', () => ({
+      selectComposition,
+      renderMedia,
+      renderStill,
+    }));
+    vi.doMock('@remotion/bundler', () => ({
+      bundle: vi.fn(async () => '/mock/bundle'),
+    }));
+
+    // Manifest layer: provide a manifest with NO render block (→ first-render),
+    // a no-op writer, and a buildManifest that preserves manifestHash so the
+    // PREP-07 invariant check passes.
+    const fakeManifest = {
+      manifestHash: 'sha256:' + '0'.repeat(64),
+      totalDurationSec: 12,
+      kid: 'leo',
+      game: {
+        date: '2026-05-13',
+        opponent: 'united',
+        scoreFor: 3,
+        scoreAgainst: 1,
+        result: 'win',
+      },
+      clips: [{ file: '01-clip.mp4', durationSec: 12 }],
+    };
+    vi.doMock('../prepare/manifest.js', () => ({
+      readManifest: vi.fn(() => fakeManifest),
+      writeManifest: vi.fn(),
+      buildManifest: vi.fn(() => ({ ...fakeManifest, render: {}, music: {} })),
+    }));
+
+    // Channel + music: minimal stubs so the pre-render steps succeed.
+    vi.doMock('../config/channels.js', () => ({
+      loadChannel: vi.fn(() => ({
+        name: 'Leo',
+        club: 'FC',
+        jersey: 9,
+        accent: '#fff',
+      })),
+    }));
+    const poolEntry = { file: 'track.mp3', absPath: '/music/track.mp3' };
+    vi.doMock('./musicPool.js', () => ({
+      loadMusicPool: vi.fn(() => [poolEntry]),
+    }));
+    vi.doMock('./musicPicker.js', () => ({
+      pickTrack: vi.fn(() => ({
+        track: 'track.mp3',
+        durationSec: 12,
+        strategy: 'loop',
+        reroll: 0,
+      })),
+    }));
+
+    // ffprobe shells out via execFile — stub it to return a valid duration.
+    vi.doMock('node:child_process', async (importOriginal) => {
+      const actual = await importOriginal<typeof import('node:child_process')>();
+      return {
+        ...actual,
+        execFile: (
+          _cmd: string,
+          _args: readonly string[],
+          cb: (err: unknown, out: { stdout: string; stderr: string }) => void,
+        ) => {
+          cb(null, {
+            stdout: JSON.stringify({
+              streams: [{ codec_type: 'video', duration: '12.0' }],
+            }),
+            stderr: '',
+          });
+        },
+      };
+    });
+
+    const { runRender } = await import('./driver.js');
+    return { runRender, selectComposition, renderMedia, renderStill };
+  }
+
+  beforeEach(() => {
+    vi.unstubAllEnvs();
+  });
+
+  afterEach(() => {
+    vi.unstubAllEnvs();
+    vi.resetModules();
+    vi.restoreAllMocks();
+  });
+
+  it('threads GOLAZO_BROWSER_EXECUTABLE into all four Remotion calls when set', async () => {
+    const EXEC = '/opt/chrome/chrome-headless-shell';
+    vi.stubEnv('GOLAZO_BROWSER_EXECUTABLE', EXEC);
+
+    const { runRender, selectComposition, renderMedia, renderStill } =
+      await loadMockedDriver();
+
+    await runRender({ folderPath: '/tmp/whatever', force: true });
+
+    // Two selectComposition calls (Episode + Thumbnail)
+    expect(selectComposition).toHaveBeenCalledTimes(2);
+    for (const call of selectComposition.mock.calls) {
+      expect(call[0]).toMatchObject({ browserExecutable: EXEC });
+    }
+
+    expect(renderMedia).toHaveBeenCalledTimes(1);
+    expect(renderMedia.mock.lastCall?.[0]).toMatchObject({ browserExecutable: EXEC });
+
+    expect(renderStill).toHaveBeenCalledTimes(1);
+    expect(renderStill.mock.lastCall?.[0]).toMatchObject({ browserExecutable: EXEC });
+  });
+
+  it('passes browserExecutable: undefined to all four Remotion calls when unset', async () => {
+    vi.stubEnv('GOLAZO_BROWSER_EXECUTABLE', '');
+
+    const { runRender, selectComposition, renderMedia, renderStill } =
+      await loadMockedDriver();
+
+    await runRender({ folderPath: '/tmp/whatever', force: true });
+
+    expect(selectComposition).toHaveBeenCalledTimes(2);
+    for (const call of selectComposition.mock.calls) {
+      expect(call[0]).toHaveProperty('browserExecutable', undefined);
+    }
+
+    expect(renderMedia).toHaveBeenCalledTimes(1);
+    expect(renderMedia.mock.lastCall?.[0]).toHaveProperty('browserExecutable', undefined);
+
+    expect(renderStill).toHaveBeenCalledTimes(1);
+    expect(renderStill.mock.lastCall?.[0]).toHaveProperty('browserExecutable', undefined);
+  });
 });

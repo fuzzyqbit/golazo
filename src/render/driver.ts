@@ -240,6 +240,13 @@ export async function runRender(opts: RunRenderOpts): Promise<RenderResult> {
   const absFolder = resolve(opts.folderPath);
   const folderName = basename(absFolder);
 
+  // Optional override for the Chrome binary Remotion launches. On macOS < 15,
+  // Remotion's auto-downloaded Chrome Headless Shell never launches; the
+  // operator can point Remotion at a working binary (e.g. Playwright's
+  // chrome-headless-shell) via GOLAZO_BROWSER_EXECUTABLE. Unset → undefined →
+  // identical to Remotion's default behavior (no change on macOS 15+).
+  const browserExecutable = process.env.GOLAZO_BROWSER_EXECUTABLE || undefined;
+
   // Step 1: read manifest
   const manifest = readManifest(absFolder);
   if (manifest === null) {
@@ -405,6 +412,7 @@ export async function runRender(opts: RunRenderOpts): Promise<RenderResult> {
         serveUrl: bundleLocation,
         id: 'Episode',
         inputProps: episodeInputProps,
+        browserExecutable,
       });
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
@@ -427,6 +435,7 @@ export async function runRender(opts: RunRenderOpts): Promise<RenderResult> {
         imageFormat: 'jpeg',
         jpegQuality: 80,
         audioCodec: 'aac',
+        browserExecutable,
       });
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
@@ -449,6 +458,7 @@ export async function runRender(opts: RunRenderOpts): Promise<RenderResult> {
         serveUrl: bundleLocation,
         id: 'Thumbnail',
         inputProps: thumbnailInputProps,
+        browserExecutable,
       });
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
@@ -468,6 +478,7 @@ export async function runRender(opts: RunRenderOpts): Promise<RenderResult> {
         inputProps: thumbnailInputProps,
         imageFormat: 'png',
         scale: opts.lowRes ? 0.5 : 1,
+        browserExecutable,
       });
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
