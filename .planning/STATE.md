@@ -5,7 +5,7 @@ milestone_name: Web UI
 status: shipped
 stopped_at: "v2.0 milestone SHIPPED 2026-06-02; all 22 v2.0 + 28 v1.0 requirements closed; 609 tests, 95% web coverage; tagged v2.0. Ready for /gsd-new-milestone."
 last_updated: "2026-06-02T16:45:00.000Z"
-last_activity: 2026-06-02 -- v2.0 milestone closed and tagged
+last_activity: 2026-06-22 -- quick task 260622-d47 (OAuth loopback redirect) completed
 progress:
   total_phases: 4
   completed_phases: 4
@@ -196,6 +196,12 @@ Items acknowledged and carried forward from previous milestone close:
 | Category | Item | Status | Deferred At |
 |----------|------|--------|-------------|
 | *(none)* | | | |
+
+## Quick Tasks Completed
+
+| ID | Task | Date | Result |
+|----|------|------|--------|
+| 260622-d47 | OAuth OOB → 127.0.0.1 loopback redirect | 2026-06-22 | Replaced deprecated OOB flow (`urn:ietf:wg:oauth:2.0:oob`, Google-blocked 2023) with an ephemeral `node:http` loopback server on `127.0.0.1:0` that auto-captures the consent `?code=`; `readCode` seam + `GOLAZO_OAUTH_MOCK` shim preserved; 27/27 targeted tests green. Branch `quick/oauth-loopback-redirect`. Commits `5aa6565` (RED), `c946bfe` (GREEN). |
 
 ## Session Continuity
 

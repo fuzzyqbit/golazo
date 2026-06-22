@@ -16,6 +16,7 @@ import {
 } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { tmpdir } from 'node:os';
+import http from 'node:http';
 
 import { OAuthError } from './errors.js';
 import { UnknownKidError } from '../config/errors.js';
@@ -27,7 +28,28 @@ import {
   loadToken,
   saveToken,
   runAuth,
+  captureLoopbackCode,
 } from './oauth.js';
+
+// ---------------------------------------------------------------------------
+// Loopback test helper: GET a URL on the local capture server and collect the
+// response status + body so tests can assert the close-tab page was served.
+// ---------------------------------------------------------------------------
+
+function httpGet(url: string): Promise<{ status: number; body: string }> {
+  return new Promise((resolve, reject) => {
+    const req = http.get(url, (res) => {
+      let body = '';
+      res.on('data', (chunk) => {
+        body += chunk.toString();
+      });
+      res.on('end', () => {
+        resolve({ status: res.statusCode ?? 0, body });
+      });
+    });
+    req.on('error', reject);
+  });
+}
 
 // Helper: resolve the type of OAuth2Client from googleapis for spying
 // We import the class solely for prototype-level spying in vi.spyOn.
@@ -477,5 +499,86 @@ describe('src/publish/oauth', () => {
     expect(result.access_token).toBe('mock-access');
     expect(result.refresh_token).toBe('mock-refresh');
     expect(result.scope).toBe(YOUTUBE_UPLOAD_SCOPE);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Loopback capture (replaces deprecated OOB redirect)
+// ---------------------------------------------------------------------------
+
+describe('captureLoopbackCode (127.0.0.1 loopback redirect)', () => {
+  // A. bind + parse: capture resolves with the ?code= value and serves a 200 close-tab page.
+  it('A. binds 127.0.0.1, parses ?code, resolves the code, serves a 200 close-tab page', async () => {
+    const capture = await captureLoopbackCode();
+    expect(typeof capture.port).toBe('number');
+    expect(capture.port).toBeGreaterThan(0);
+    expect(capture.redirectUri).toBe(`http://127.0.0.1:${capture.port}`);
+
+    const res = await httpGet(`http://127.0.0.1:${capture.port}/?code=happy-code`);
+    const code = await capture.codePromise;
+
+    expect(code).toBe('happy-code');
+    expect(res.status).toBe(200);
+    expect(res.body.toLowerCase()).toContain('close');
+  });
+
+  // B. denial: ?error=access_denied rejects with OAuthError; response still served (200).
+  it('B. rejects with OAuthError when the redirect carries ?error=access_denied', async () => {
+    const capture = await captureLoopbackCode();
+
+    const res = await httpGet(`http://127.0.0.1:${capture.port}/?error=access_denied`);
+    expect(res.status).toBe(200);
+
+    await expect(capture.codePromise).rejects.toThrowError(OAuthError);
+    try {
+      await capture.codePromise;
+    } catch (err) {
+      expect((err as OAuthError).field).toBe('consent');
+      expect((err as OAuthError).reason).toContain('access_denied');
+    }
+  });
+
+  // C. port release: after a capture resolves, the same port can be rebound (no EADDRINUSE).
+  it('C. releases the ephemeral port after capture (no leaked listener)', async () => {
+    const capture = await captureLoopbackCode();
+    const port = capture.port;
+
+    await httpGet(`http://127.0.0.1:${port}/?code=done`);
+    await capture.codePromise;
+
+    // The capture server must have stopped listening once it resolved.
+    expect(capture.server.listening).toBe(false);
+
+    // And a fresh server must be able to bind the SAME port without EADDRINUSE.
+    await new Promise<void>((resolve, reject) => {
+      const probe = http.createServer();
+      probe.once('error', reject);
+      probe.listen(port, '127.0.0.1', () => {
+        probe.close(() => resolve());
+      });
+    });
+  });
+
+  // D. never logs: a full capture must not leak the authorization code to any stream.
+  it('D. never logs the authorization code on the capture path', async () => {
+    const captured: string[] = [];
+    const logSpy = vi.spyOn(console, 'log').mockImplementation((...a) => { captured.push(String(a)); });
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation((...a) => { captured.push(String(a)); });
+    const errSpy = vi.spyOn(console, 'error').mockImplementation((...a) => { captured.push(String(a)); });
+    const stdoutSpy = vi.spyOn(process.stdout, 'write').mockImplementation((c: unknown) => { captured.push(String(c)); return true; });
+    const stderrSpy = vi.spyOn(process.stderr, 'write').mockImplementation((c: unknown) => { captured.push(String(c)); return true; });
+
+    const capture = await captureLoopbackCode();
+    await httpGet(`http://127.0.0.1:${capture.port}/?code=secret-loopback-code`);
+    await capture.codePromise;
+
+    logSpy.mockRestore();
+    warnSpy.mockRestore();
+    errSpy.mockRestore();
+    stdoutSpy.mockRestore();
+    stderrSpy.mockRestore();
+
+    const allOutput = captured.join('|');
+    expect(allOutput).not.toContain('secret-loopback-code');
   });
 });
