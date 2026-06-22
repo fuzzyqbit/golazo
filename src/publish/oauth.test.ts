@@ -509,7 +509,7 @@ describe('src/publish/oauth', () => {
 describe('captureLoopbackCode (127.0.0.1 loopback redirect)', () => {
   // A. bind + parse: capture resolves with the ?code= value and serves a 200 close-tab page.
   it('A. binds 127.0.0.1, parses ?code, resolves the code, serves a 200 close-tab page', async () => {
-    const capture = captureLoopbackCode();
+    const capture = await captureLoopbackCode();
     expect(typeof capture.port).toBe('number');
     expect(capture.port).toBeGreaterThan(0);
     expect(capture.redirectUri).toBe(`http://127.0.0.1:${capture.port}`);
@@ -524,7 +524,7 @@ describe('captureLoopbackCode (127.0.0.1 loopback redirect)', () => {
 
   // B. denial: ?error=access_denied rejects with OAuthError; response still served (200).
   it('B. rejects with OAuthError when the redirect carries ?error=access_denied', async () => {
-    const capture = captureLoopbackCode();
+    const capture = await captureLoopbackCode();
 
     const res = await httpGet(`http://127.0.0.1:${capture.port}/?error=access_denied`);
     expect(res.status).toBe(200);
@@ -540,7 +540,7 @@ describe('captureLoopbackCode (127.0.0.1 loopback redirect)', () => {
 
   // C. port release: after a capture resolves, the same port can be rebound (no EADDRINUSE).
   it('C. releases the ephemeral port after capture (no leaked listener)', async () => {
-    const capture = captureLoopbackCode();
+    const capture = await captureLoopbackCode();
     const port = capture.port;
 
     await httpGet(`http://127.0.0.1:${port}/?code=done`);
@@ -568,7 +568,7 @@ describe('captureLoopbackCode (127.0.0.1 loopback redirect)', () => {
     const stdoutSpy = vi.spyOn(process.stdout, 'write').mockImplementation((c: unknown) => { captured.push(String(c)); return true; });
     const stderrSpy = vi.spyOn(process.stderr, 'write').mockImplementation((c: unknown) => { captured.push(String(c)); return true; });
 
-    const capture = captureLoopbackCode();
+    const capture = await captureLoopbackCode();
     await httpGet(`http://127.0.0.1:${capture.port}/?code=secret-loopback-code`);
     await capture.codePromise;
 
